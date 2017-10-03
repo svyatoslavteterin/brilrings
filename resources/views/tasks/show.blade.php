@@ -5,15 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Task Show</title>
 
 
     </head>
     <body>
-        <ul>
-        @foreach ($tasks as $task)
-        <li>{{ $task->title }}</li>
-        @endforeach
-        </ul>
+        {{ $task->title}}
     </body>
 </html>

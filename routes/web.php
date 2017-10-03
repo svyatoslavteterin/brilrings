@@ -11,6 +11,16 @@
 |
 */
 
+Route::get('/ring_sessions','RingSessionController@index');
+
+Route::get('/ring_options','RingOptionController@index');
+
+Route::get('/ring_option_values','RingOptionValueController@index');
+
+
 Route::get('/', function () {
-    return view('welcome');
+
+  $tasks=DB::table('tasks')->get();
+
+    return view('welcome',compact('tasks'));
 });
