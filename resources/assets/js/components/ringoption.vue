@@ -38,7 +38,7 @@
 
         },
         mounted:function(){
-          axios.get('/ring_options/'+this.ringOption.id+'/values').then(response=>this.ringOptionValues=response.data);
+        
 
         },
 

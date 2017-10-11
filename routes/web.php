@@ -22,7 +22,7 @@ Route::get('/ring_options/{ring_option}/values','RingOptionController@getValues'
 
 
 
-Route::get('/ring_option_values','RingOptionValueController@index');
+Route::get('/ring_option_values','RingOptionValueController@get');
 Route::get('/ring_option_values/{option}','RingOptionValueController@index');
 
 Route::get('/ring_sessions/create',function(){return view('sessions/create');});

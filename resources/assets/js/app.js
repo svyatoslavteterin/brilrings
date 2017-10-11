@@ -7,7 +7,18 @@
 
 require('./bootstrap');
 
+
+
 window.Vue = require('vue');
+
+window.Vuex=require('vuex');
+
+
+
+
+Vue.prototype.$http = axios;
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -20,7 +31,10 @@ window.Vue = require('vue');
 
  Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
 
-Vue.component('steps',require('./components/steps.vue'));
+Steps=Vue.component('steps',require('./components/steps.vue'));
+
+
+
 
 
 RingApp = new Vue({
@@ -41,11 +55,86 @@ RingApp = new Vue({
         	}
 
         },
-        'totalprice':0
+        'totalprice':0,
+        'ringOptions':{},
+        'ringOptionValues':{},
+        'steps':[{
+          'left':{
+            'options':['model'],
+          },
+          'center': {
+            'blocks':['result-img']
+          },
+          'right':{
+            'options':['material','stone'],
+            'blocks':['thumb-img']
+          },
+          'template':'base'
+        },
+        {
+          'left':{
+            'options':['stone','shape','weight','size','color','purity']
+          },
+          'center':{
+            'blocks':['result-img']
+          },
+          'right':{
+            'blocks':['result-table']
+          },
+          'template':'stone'
+
+        },
+        {
+          'center':{
+            'blocks':['result-img','thumb-img']
+          },
+          'right':{
+            'blocks':['result-table'],
+            'options':['fsize']
+          },
+          'template':'result'
+        }
+
+        ]
 
     },
 
     created:function(){
+      this.$http.get('/ring_options').then((response)=>{
+        this.ringOptions=response.data;
+
+
+      /*  var steps=[];
+
+
+        for (var key in this.ringOptions){
+
+          steps.push({'key':key,'options':this.ringOptions[key]});
+
+        }
+
+
+        steps.push({'key':'result','options':this});
+
+        this.steps=steps;
+        */
+      },(response)=> {
+
+      });
+      this.$http.get('/ring_option_values').then((response)=>{
+        this.ringOptionValues=response.data;
+      },(response)=> {
+
+      });
+    },
+    computed:{
+
+    },
+    mounted:function(){
+
+
+
+
 
     }
 });

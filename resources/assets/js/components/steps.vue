@@ -1,7 +1,35 @@
 <template>
     <div class="steps">
-        <div v-for="ringOptions in steps" class="steps__item">
-          <ringoptions :ringOptions="ringOptions"></ringoptions>
+        <div v-for="step in stepsList" class="steps__item">
+              <div v-if="step.template==='base'" class="container">
+                  <div class="row">
+                    <div class="col-md-1 left-col">
+                        <ringoptions :options="step.left.options"></ringoptions>
+                    </div>
+                    <div class="col-md-6 center-col" @click="update">center </div>
+                    <div class="col-md-5 center-col"> right</div>
+                  </div>
+              </div>
+              <div v-if="step.template==='stone'" class="container">
+                <div class="col-md-3 left-col">
+                  left
+                </div>
+                <div class="col-md-4 center-col">
+                    center
+                </div>
+                <div class="col-md-5 ">
+                    right
+                </div>
+              </div>
+              <div v-if="step.template==='result'" class="container">
+                  <div class="col-md-8 center-col">
+                    center
+                  </div>
+                  <div class="col-md-4 right-col">
+                      right
+                  </div>
+
+              </div>
         </div>
 
     </div>
@@ -11,33 +39,35 @@
 <script>
     module.exports = {
     methods: {
-      chooseOption: function () {
-        console.log('hello from mixin!');
-      }
+        update:function(){
+                this.ringOptions={'fdsf':2};
+
+        }
       },
 
         data:function(){
             return  {
-              steps:[]
+              ringChildOptions:this.ringOptions
             };
           },
 
-        props:['steps'],
+        props:['stepsList','ringOptions'],
 
         ready: function () {
 
-          console.log(this.steps);
 
         },
         mounted:function(){
-          axios.get('/ring_options').then(response=>this.steps=response.data);
+
 
         },
 
 
 
         computed: {
-
+          test:function(){
+            return "<ringoptions></ringoptions>";
+          }
         }
     }
 </script>

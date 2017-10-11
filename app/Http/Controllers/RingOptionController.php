@@ -9,14 +9,12 @@ class RingOptionController extends Controller
     //
     public function get(){
 
-      $ring_options=RingOption::all()->where('parent_id',0);
+      $ring_options=RingOption::all()->keyBy('key');;
 
-    
-      foreach ($ring_options as $ring_option){
-        $output[$ring_option->key]=$ring_option->children;
-      }
+      return $ring_options;
 
-      return $output;
+
+
     }
 
     public function show(RingOption $ring_option){

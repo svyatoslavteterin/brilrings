@@ -12,4 +12,15 @@ class RingOptionValueController extends Controller
 
     return $ring_option_values;
   }
+
+  public function get(){
+    $ring_option_values=RingOptionValue::all();
+    $output=array();
+    foreach ($ring_option_values as $ring_option_value) {
+
+      $output[$ring_option_value->ring_option_id][]=$ring_option_value;
+    }
+
+    return $output;
+  }
 }

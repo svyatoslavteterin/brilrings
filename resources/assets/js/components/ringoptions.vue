@@ -2,11 +2,6 @@
     <div class="options">
 
 
-        <ul  v-for="ringOption in ringOptions" :key="ringOption.id">
-          <ringoption  :ringOption="ringOption" :value="ringOption.value" ></ringoption>
-
-        </ul>
-
 
     </div>
 
@@ -27,7 +22,7 @@
         }
         },
 
-        props:['ringOptions'],
+        props:['options'],
 
         ready: function () {
 
@@ -35,7 +30,7 @@
 
         },
         mounted:function(){
-
+        
         },
 
 

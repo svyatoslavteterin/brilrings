@@ -18,10 +18,10 @@
 
       <div id="app">
 
-        <steps>
+        <steps :steps-list="steps" :ring-options.sync="ringOptions">
 
         </steps>
-        
+
       </div>
 
       @include('layouts.header')
