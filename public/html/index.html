@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue  test</title>
+
+    <style>
+      .is-loading{
+
+          background: tomato;
+      }
+
+    </style>
+  </head>
+<body>
+  <div id="app">
+    <h1>Completed</h1>
+    <ul>
+      <li v-for="task in tasks" v-if="task.completed" v-text="task.title"> </li>
+
+    </ul>
+    <h1>inCompletedTasks </h1>
+    <ul>
+      <li v-for="task in inCompletedTasks" v-text="task.title"> </li>
+    </ul>
+  </div>
+
+  <script src="https://unpkg.com/vue@2.1.4/dist/vue.js"></script>
+
+
+
+  <script type="text/javascript">
+
+
+      var app=new Vue({
+          el:"#app",
+          data:{
+            tasks:[
+              {'title':'Task1',completed:true},
+              {'title':'Task2',completed:true},
+              {'title':'Task3',completed:false},
+              {'title':'Task4',completed:false},
+              {'title':'Task5',completed:false}
+            ]
+          },
+          methods: {
+            toggleClass:function(){
+              this.isLoading=(this.isLoading)?false:true;
+            }
+          },
+          mounted:function(){
+
+          },
+          computed:{
+              inCompletedTasks(){
+                return this.tasks.filter(task=> !task.completed)
+              }
+          }
+      });
+
+
+  </script>
+
+</body>
+
+
+</html>

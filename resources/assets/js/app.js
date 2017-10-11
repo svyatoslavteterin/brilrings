@@ -15,8 +15,37 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+ Vue.component('ringoptions',require('./components/ringoptions.vue'));
+ Vue.component('ringoption',require('./components/ringoption.vue'));
 
-const app = new Vue({
-    el: '#app'
+ Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
+
+Vue.component('steps',require('./components/steps.vue'));
+
+
+RingApp = new Vue({
+    el: '#app',
+    data:{
+      'session': {
+        	'base': {
+        		'model':1,
+        		'material':1
+          },
+
+        'stone': {
+        		'shape':1,
+        		'size':1,
+        		'weight':1,
+        		'purity':1,
+        		'color':1
+        	}
+
+        },
+        'totalprice':0
+
+    },
+
+    created:function(){
+
+    }
 });

@@ -14,4 +14,9 @@ class RingSessionController extends Controller
 
       return $ring_sessions;
     }
+
+    public function create(){
+
+      RingSession::create(request()->all());
+    }
 }

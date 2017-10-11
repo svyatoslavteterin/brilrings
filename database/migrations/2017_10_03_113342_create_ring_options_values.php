@@ -15,7 +15,7 @@ class CreateRingOptionsValues extends Migration
     {
         Schema::create('ring_option_values', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('option_id');
+            $table->integer('ring_option_id');
             $table->text('value');
             $table->string('title');
             $table->integer('price');

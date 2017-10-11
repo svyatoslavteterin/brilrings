@@ -13,14 +13,43 @@
 
 Route::get('/ring_sessions','RingSessionController@index');
 
-Route::get('/ring_options','RingOptionController@index');
+
+Route::get('/ring_options/{ring_option}','RingOptionController@show');
+
+Route::get('/ring_options','RingOptionController@get');
+Route::get('/ring_options/{ring_option}/values','RingOptionController@getValues');
+
+
+
 
 Route::get('/ring_option_values','RingOptionValueController@index');
+Route::get('/ring_option_values/{option}','RingOptionValueController@index');
+
+Route::get('/ring_sessions/create',function(){return view('sessions/create');});
 
 
 Route::get('/', function () {
 
-  $tasks=DB::table('tasks')->get();
 
-    return view('welcome',compact('tasks'));
+  /*
+
+    $ring_options=App\RingOption::all()->where('parent_id',0);
+
+    $output=new StdClass();
+
+    foreach ($ring_options as $ring_option){
+
+
+      $output->{$ring_option->key}=$ring_option->children;
+    }
+
+    $ring_options=$output;
+    */
+
+
+
+    return view('constructor/index');
 });
+
+
+Route::post('/ring_sessions','RingSessionController@create');
