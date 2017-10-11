@@ -18,8 +18,10 @@
 
       <div id="app">
 
-      
+        <steps>
 
+        </steps>
+        
       </div>
 
       @include('layouts.header')
