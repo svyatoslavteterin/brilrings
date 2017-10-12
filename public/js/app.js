@@ -43042,21 +43042,13 @@ module.exports = Component.exports
 //
 
 module.exports = {
-  methods: {
-    chooseOption: function chooseOption() {
-      console.log('hello from mixin!');
-    }
-  },
 
   data: function data() {
     return {
-      field: '',
-      options: this.initialOptions
     };
   },
 
 
-  props: ['options'],
 
   ready: function ready() {},
   mounted: function mounted() {},
@@ -43072,7 +43064,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "options" })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -43154,24 +43145,17 @@ module.exports = Component.exports
 
 module.exports = {
   methods: {
-    chooseOption: function chooseOption() {
-      console.log('hello from mixin!');
-    }
   },
 
   data: function data() {
     return {
-      ringOptionValues: {},
-      active: { 'fdsfsd': 2 }
     };
   },
 
-  props: ['ringOption', 'active'],
 
   ready: function ready() {},
   mounted: function mounted() {},
 
-  computed: {}
 };
 
 /***/ }),
@@ -43182,33 +43166,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "ringoptionvalues" },
-    _vm._l(_vm.ringOptionValues, function(ringOptionValue) {
-      return _c(
-        "li",
-        { key: ringOptionValue.id },
-        [
-          _c(
-            "ringoptionvalue",
-            {
               attrs: {
-                ringOptionValue: ringOptionValue,
-                ringOption: _vm.ringOption
               }
-            },
-            [
-              _vm._v(
-                '\n                            :active.sync="active"\n                            '
-              )
-            ]
           )
-        ],
-        1
-      )
-    })
-  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -43292,7 +43252,6 @@ module.exports = {
     return {};
   },
 
-  props: ['ringOptionValue', 'ringOption', 'active'],
 
   ready: function ready() {},
   mounted: function mounted() {},
@@ -43308,19 +43267,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "a",
-    {
-      attrs: { href: "#" },
-      on: {
-        click: function($event) {
-          $event.preventDefault()
-          _vm.selectOption($event)
-        }
-      }
-    },
-    [_vm._v("\n    " + _vm._s(_vm.ringOptionValue.title) + "\n")]
-  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -43423,18 +43369,13 @@ module.exports = Component.exports
 
 module.exports = {
   methods: {
-    update: function update() {
-      this.ringOptions = { 'fdsf': 2 };
-    }
   },
 
   data: function data() {
     return {
-      ringChildOptions: this.ringOptions
     };
   },
 
-  props: ['stepsList', 'ringOptions'],
 
   ready: function ready() {},
   mounted: function mounted() {},
@@ -43466,7 +43407,6 @@ var render = function() {
                   "div",
                   { staticClass: "col-md-1 left-col" },
                   [
-                    _c("ringoptions", { attrs: { options: step.left.options } })
                   ],
                   1
                 ),
@@ -43480,25 +43420,12 @@ var render = function() {
                   [_vm._v("center ")]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-md-5 center-col" }, [
-                  _vm._v(" right")
-                ])
               ])
             ])
           : _vm._e(),
         _vm._v(" "),
         step.template === "stone"
           ? _c("div", { staticClass: "container" }, [
-              _c("div", { staticClass: "col-md-3 left-col" }, [
-                _vm._v("\n              left\n            ")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-4 center-col" }, [
-                _vm._v("\n                center\n            ")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-5 " }, [
-                _vm._v("\n                right\n            ")
               ])
             ])
           : _vm._e(),
@@ -43509,9 +43436,6 @@ var render = function() {
                 _vm._v("\n                center\n              ")
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-4 right-col" }, [
-                _vm._v("\n                  right\n              ")
-              ])
             ])
           : _vm._e()
       ])

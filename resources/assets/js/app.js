@@ -15,7 +15,6 @@ window.Vuex=require('vuex');
 
 
 
-
 Vue.prototype.$http = axios;
 
 
@@ -60,20 +59,50 @@ RingApp = new Vue({
         'ringOptionValues':{},
         'steps':[{
           'left':{
-            'options':['model'],
+            'options':[
+              {
+                'base':'imagebox'
+              }
+            ],
           },
           'center': {
             'blocks':['result-img']
           },
           'right':{
-            'options':['material','stone'],
+            'options':[
+              {
+                'material':'selectbox'
+              },
+              {
+                'stone':'selectbox'
+              }
+            ],
             'blocks':['thumb-img']
           },
           'template':'base'
         },
         {
           'left':{
-            'options':['stone','shape','weight','size','color','purity']
+            'options':[
+              {
+                'stone':'switch'
+              },
+              {
+                'shape':'imagebox'
+              },
+              {
+                'weight':'range'
+              },
+              {
+                'size':'range'
+              },
+              {
+                'color':'range'
+              },
+              {
+                'purity':'range'
+              }
+            ]
           },
           'center':{
             'blocks':['result-img']
@@ -90,7 +119,7 @@ RingApp = new Vue({
           },
           'right':{
             'blocks':['result-table'],
-            'options':['fsize']
+            'options':[{'fsize':'range'}]
           },
           'template':'result'
         }
@@ -122,6 +151,7 @@ RingApp = new Vue({
 
       });
       this.$http.get('/ring_option_values').then((response)=>{
+
         this.ringOptionValues=response.data;
       },(response)=> {
 
