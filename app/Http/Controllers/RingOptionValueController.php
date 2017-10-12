@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\RingOptionValue;
+use App\RingOptionValue,App\RingOption;
 
 class RingOptionValueController extends Controller
 {
@@ -15,12 +15,18 @@ class RingOptionValueController extends Controller
 
   public function get(){
     $ring_option_values=RingOptionValue::all();
+
     $output=array();
     foreach ($ring_option_values as $ring_option_value) {
 
-      $output[$ring_option_value->ring_option_id][]=$ring_option_value;
+      $c=clone $ring_option_value;
+      $ring_option=$c->ringOption;
+
+      $output[$ring_option->key][]=$ring_option_value;
+
     }
 
     return $output;
   }
+
 }

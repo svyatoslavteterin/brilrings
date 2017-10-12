@@ -1,11 +1,15 @@
 <template>
 
-            <a href="#" @click.prevent="selectOption">
-                {{ringOptionValue.title}}
-            </a>
+            <div v-if="optionTemplate==='range'">{{ringOptionValue.title}}</div>
+            <li v-else-if="optionTemplate=='imagebox'"><a href="#">{{ringOptionValue.title}}</a></li>
+            <option v-else-if="optionTemplate==='selectbox'">{{ringOptionValue.title}}</option>
+            <input v-else-if="optionTemplate==='text'" value="text">
+            <div v-else-if="optionTemplate==='switch'">{{ringOptionValue.title}}</div>
+
 
 
 </template>
+
 
 <script>
     module.exports = {
@@ -18,11 +22,12 @@
 
         data:function(){
             return  {
+              optionTemplate:this.optionTemplate
 
             };
           },
 
-        props:['ringOptionValue','ringOption','active'],
+        props:['ringOptionValue','optionTemplate'],
 
         ready: function () {
 

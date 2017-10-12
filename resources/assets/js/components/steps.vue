@@ -4,21 +4,25 @@
               <div v-if="step.template==='base'" class="container">
                   <div class="row">
                     <div class="col-md-1 left-col">
-                        <ringoptions :options="step.left.options"></ringoptions>
+                        <ringoptions :options="step.left.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
                     </div>
                     <div class="col-md-6 center-col" @click="update">center </div>
-                    <div class="col-md-5 center-col"> right</div>
+                    <div class="col-md-5 center-col">
+                        <ringoptions :options="step.right.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
+                    </div>
                   </div>
               </div>
               <div v-if="step.template==='stone'" class="container">
-                <div class="col-md-3 left-col">
-                  left
-                </div>
-                <div class="col-md-4 center-col">
-                    center
-                </div>
-                <div class="col-md-5 ">
-                    right
+                <div class="row">
+                  <div class="col-md-3 left-col">
+                      <ringoptions :options="step.left.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
+                  </div>
+                  <div class="col-md-4 center-col">
+                      center
+                  </div>
+                  <div class="col-md-5 ">
+                        <ringoptions :options="step.right.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
+                  </div>
                 </div>
               </div>
               <div v-if="step.template==='result'" class="container">
@@ -26,7 +30,7 @@
                     center
                   </div>
                   <div class="col-md-4 right-col">
-                      right
+                        <ringoptions :options="step.right.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
                   </div>
 
               </div>
@@ -40,18 +44,19 @@
     module.exports = {
     methods: {
         update:function(){
-                this.ringOptions={'fdsf':2};
+
 
         }
       },
 
         data:function(){
             return  {
-              ringChildOptions:this.ringOptions
+              ringOptions:this.ringOptions
+              
             };
           },
 
-        props:['stepsList','ringOptions'],
+        props:['stepsList','ringOptions','ringOptionValues'],
 
         ready: function () {
 

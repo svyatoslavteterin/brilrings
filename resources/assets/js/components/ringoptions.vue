@@ -3,6 +3,12 @@
 
 
 
+          <ringoption :option="option" v-for="(option,key,index)  in options" :ring-options="ringOptions"
+          :ring-option-values="ringOptionValues" :option-key="option"></ringoption>
+
+
+
+
     </div>
 
 </template>
@@ -10,19 +16,18 @@
 <script>
     module.exports = {
     methods: {
-      chooseOption: function () {
-        console.log('hello from mixin!');
-      }
+
       },
 
       data() {
+
+
         return {
           field: '',
-          options: this.initialOptions
         }
         },
 
-        props:['options'],
+        props:['options','ringOptions','ringOptionValues'],
 
         ready: function () {
 
@@ -30,7 +35,7 @@
 
         },
         mounted:function(){
-        
+
         },
 
 

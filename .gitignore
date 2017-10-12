@@ -12,3 +12,5 @@ yarn-error.log
 .env
 
 public/js/app.js
+
+public/js/app.js

@@ -18,7 +18,7 @@
 
       <div id="app">
 
-        <steps :steps-list="steps" :ring-options.sync="ringOptions">
+        <steps :steps-list="steps" :ring-options.sync="ringOptions" :ring-option-values="ringOptionValues">
 
         </steps>
 
