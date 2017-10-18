@@ -19,6 +19,7 @@ Route::get('/ring_options/{ring_option}','RingOptionController@show');
 Route::get('/ring_options','RingOptionController@get');
 Route::get('/ring_options/{ring_option}/values','RingOptionController@getValues');
 
+Route::get('/resultimage/{hash}/','RingImageController@getResultImg');
 
 
 

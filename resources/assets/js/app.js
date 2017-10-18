@@ -9,9 +9,17 @@ require('./bootstrap');
 
 
 
+
+
 window.Vue = require('vue');
 
 window.Vuex=require('vuex');
+
+
+
+
+Vue.use(Vuex);
+
 
 
 
@@ -26,19 +34,22 @@ Vue.prototype.$http = axios;
  */
 
  Vue.component('ringoptions',require('./components/ringoptions.vue'));
+ Vue.component('ringblocks',require('./components/ringblocks.vue'));
+
  Vue.component('ringoption',require('./components/ringoption.vue'));
 
  Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
 
-Steps=Vue.component('steps',require('./components/steps.vue'));
+Vue.component('steps',require('./components/steps.vue'));
 
 
 
 
 
-RingApp = new Vue({
+window.RingApp = new Vue({
     el: '#app',
     data:{
+
       'session': {
         	'base': {
         		'model':1,
@@ -57,11 +68,12 @@ RingApp = new Vue({
         'totalprice':0,
         'ringOptions':{},
         'ringOptionValues':{},
-        'steps':[{
+        'steps':[
+          {
           'left':{
             'options':[
               {
-                'base':'imagebox'
+                'base':'imageslider'
               }
             ],
           },
@@ -84,9 +96,6 @@ RingApp = new Vue({
         {
           'left':{
             'options':[
-              {
-                'stone':'switch'
-              },
               {
                 'shape':'imagebox'
               },
@@ -127,11 +136,14 @@ RingApp = new Vue({
         ]
 
     },
-
+    methods: {
+      getHash:function(){
+        return '12421412';
+      }
+    },
     created:function(){
       this.$http.get('/ring_options').then((response)=>{
         this.ringOptions=response.data;
-
 
       /*  var steps=[];
 

@@ -10,15 +10,27 @@
 
         <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+      <link href="https://file.myfontastic.com/uJGzALvzUvuwHW9GWF4MB3/icons.css" rel="stylesheet">
 
         <link  type="text/css" rel="stylesheet" href="/css/app.css" />
+
 
     </head>
     <body>
 
+<div class="container">
+
+
+</div>
+
+
       <div id="app">
 
-        <steps :steps-list="steps" :ring-options.sync="ringOptions" :ring-option-values="ringOptionValues">
+        <steps :steps-list="steps"
+        :s-ring-options="ringOptions"
+        :s-ring-option-values="ringOptionValues"
+        ref="steps"
+        >
 
         </steps>
 

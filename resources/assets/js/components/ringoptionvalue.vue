@@ -1,9 +1,15 @@
 <template>
 
-            <div v-if="optionTemplate==='range'">{{ringOptionValue.title}}</div>
-            <li v-else-if="optionTemplate=='imagebox'"><a href="#">{{ringOptionValue.title}}</a></li>
+
+            <li v-if="optionTemplate=='imageslider'"><a href="#" @click.prevent="update">
+
+              <img src="/resultimage/12421412.jpg" width="140" height="70" :title="ringOptionValue.title"/>
+            </a></li>
+
+            <li v-else-if="optionTemplate=='imagebox'"><a href="#" @click.prevent="selectOption"></a></li>
             <option v-else-if="optionTemplate==='selectbox'">{{ringOptionValue.title}}</option>
             <input v-else-if="optionTemplate==='text'" value="text">
+            <div v-else-if="optionTemplate==='card'"> </div>
             <div v-else-if="optionTemplate==='switch'">{{ringOptionValue.title}}</div>
 
 
@@ -15,19 +21,23 @@
     module.exports = {
     methods: {
       selectOption: function () {
-        this.active=this.ringOptionValue;
-        this.ringOptions.active=this.ringOptionValue;
+        this.$emit('selectOption',this.value);
+      },
+      update:function(){
+
+          this.$emit('value', this.value);
       }
       },
 
         data:function(){
             return  {
-              optionTemplate:this.optionTemplate
-
+              optionTemplate:this.optionTemplateValue,
+              session:{'base':3},
+              value:this.ringOptionValue.value
             };
           },
 
-        props:['ringOptionValue','optionTemplate'],
+        props:['ringOptionValue','optionTemplateValue','optionCount'],
 
         ready: function () {
 
@@ -41,6 +51,9 @@
 
 
         computed: {
+          rangeLabel:function(optionKey){
+            return this.optionValues[optionKey][this.value].title;
+          }
 
         }
     }

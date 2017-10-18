@@ -1,27 +1,36 @@
 <template>
     <div class="steps">
         <div v-for="step in stepsList" class="steps__item">
+              <div v-if="step.template==='start'" class="container">
+                  <ringoptions :options="step.center.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+
+
+              </div>
               <div v-if="step.template==='base'" class="container">
                   <div class="row">
-                    <div class="col-md-1 left-col">
-                        <ringoptions :options="step.left.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
+                    <div class="col-md-2 left-col">
+                        <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+
                     </div>
-                    <div class="col-md-6 center-col" @click="update">center </div>
+                    <div class="col-md-5 center-col" >
+                      <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
+                    </div>
                     <div class="col-md-5 center-col">
-                        <ringoptions :options="step.right.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
+                        <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+                        <p v-model="price" v-text="price"> </p>
                     </div>
                   </div>
               </div>
               <div v-if="step.template==='stone'" class="container">
                 <div class="row">
-                  <div class="col-md-3 left-col">
-                      <ringoptions :options="step.left.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
+                  <div class="col-md-4 left-col">
+                      <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
                   </div>
-                  <div class="col-md-4 center-col">
+                  <div class="col-md-3 center-col">
                       center
                   </div>
                   <div class="col-md-5 ">
-                        <ringoptions :options="step.right.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
+
                   </div>
                 </div>
               </div>
@@ -30,7 +39,7 @@
                     center
                   </div>
                   <div class="col-md-4 right-col">
-                        <ringoptions :options="step.right.options" :ring-options="ringOptions" :ring-option-values="ringOptionValues"></ringoptions>
+                        <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
                   </div>
 
               </div>
@@ -51,12 +60,12 @@
 
         data:function(){
             return  {
-              ringOptions:this.ringOptions
-              
+
+              'price':12400
             };
           },
 
-        props:['stepsList','ringOptions','ringOptionValues'],
+        props:['stepsList','SRingOptions','SRingOptionValues'],
 
         ready: function () {
 
