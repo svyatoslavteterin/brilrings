@@ -15,15 +15,54 @@ window.Vue = require('vue');
 
 window.Vuex=require('vuex');
 
-
-
-
 Vue.use(Vuex);
 
 
 
 
 Vue.prototype.$http = axios;
+
+import { mapState } from 'vuex';
+
+window.store = new Vuex.Store({
+  state: {
+    value:0,
+    totalPrice: 0,
+    session: {
+        'base':1,
+         'stone':1,
+         'material':1,
+         'shape':1,
+         'size':1,
+         'weight':1,
+         'purity':1,
+         'color':1,
+         'fsize':1
+        },
+      resultImg:'/resultimage/'+'12421412.jpg'
+
+  },
+  mutations: {
+    setOption (state,payload) {
+      state.session[payload.optionKey]=parseInt(payload.value);
+
+    },
+    refreshResultImg(state){
+
+      state.resultImg='/resultimage/'+this.getHash;
+
+    },
+    setImage(state,payload){
+      state.resultImg=payload.value;
+    }
+  },
+  getters: {
+
+  },
+  actions:{
+
+  }
+})
 
 
 
@@ -49,23 +88,6 @@ Vue.component('steps',require('./components/steps.vue'));
 window.RingApp = new Vue({
     el: '#app',
     data:{
-
-      'session': {
-        	'base': {
-        		'model':1,
-        		'material':1
-          },
-
-        'stone': {
-        		'shape':1,
-        		'size':1,
-        		'weight':1,
-        		'purity':1,
-        		'color':1
-        	}
-
-        },
-        'totalprice':0,
         'ringOptions':{},
         'ringOptionValues':{},
         'steps':[

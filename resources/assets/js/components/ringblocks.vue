@@ -5,6 +5,7 @@
 
               <div v-if="value==='result-img'">
                 <img :src="resultImg" />
+                <button @click.prevent="test">CHANGE IMAGE</button>
               </div>
 
           </div>
@@ -17,7 +18,10 @@
 <script>
     module.exports = {
     methods: {
+      test:function(){
+          store.commit('setImage',{'value':'12.jpg'});
 
+      }
       },
 
       data() {
@@ -43,10 +47,7 @@
 
         computed: {
           resultImg:function(){
-            return '/resultimage/'+this.getHash;
-          },
-          getHash:function(){
-            return '12421412.jpg';
+            return store.state.resultImg;
           }
         }
     }

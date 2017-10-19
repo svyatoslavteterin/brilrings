@@ -84,7 +84,7 @@ class RingImageController extends Controller
     }
 
     public function getResultImg($hash){
-
+    
        return \Image::make('images/rings/12421412.jpg')->response('jpg');
     }
 }

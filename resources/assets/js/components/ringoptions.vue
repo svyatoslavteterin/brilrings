@@ -3,8 +3,15 @@
 
 
 
-          <ringoption :option="value" v-for="(value,key,index)  in options" :ring-options="ringOptions"
-          :ring-option-values="ringOptionValues" :option-key="value" :key="index"></ringoption>
+          <ringoption
+          :option="value"
+          v-for="(value,key,index)  in options"
+          :ring-options="ringOptions"
+          :ring-option-values="ringOptionValues"
+          :option-key="value"
+          :key="index"
+          >
+          </ringoption>
 
 
 
