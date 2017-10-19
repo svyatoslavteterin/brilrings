@@ -51,3 +51,13 @@ if (token) {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+
+window.UIkit = UIkit;
+
+UIkit.use(Icons);
+
+UIkit.formCustom('.uk-form-select',{});

@@ -9,13 +9,60 @@ require('./bootstrap');
 
 
 
+
+
 window.Vue = require('vue');
 
 window.Vuex=require('vuex');
 
+Vue.use(Vuex);
+
+
 
 
 Vue.prototype.$http = axios;
+
+import { mapState } from 'vuex';
+
+window.store = new Vuex.Store({
+  state: {
+    value:0,
+    totalPrice: 0,
+    session: {
+        'base':1,
+         'stone':1,
+         'material':1,
+         'shape':1,
+         'size':1,
+         'weight':1,
+         'purity':1,
+         'color':1,
+         'fsize':1
+        },
+      resultImg:'/resultimage/'+'12421412.jpg'
+
+  },
+  mutations: {
+    setOption (state,payload) {
+      state.session[payload.optionKey]=parseInt(payload.value);
+
+    },
+    refreshResultImg(state){
+
+      state.resultImg='/resultimage/'+this.getHash;
+
+    },
+    setImage(state,payload){
+      state.resultImg=payload.value;
+    }
+  },
+  getters: {
+
+  },
+  actions:{
+
+  }
+})
 
 
 
@@ -26,42 +73,29 @@ Vue.prototype.$http = axios;
  */
 
  Vue.component('ringoptions',require('./components/ringoptions.vue'));
+ Vue.component('ringblocks',require('./components/ringblocks.vue'));
+
  Vue.component('ringoption',require('./components/ringoption.vue'));
 
  Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
 
-Steps=Vue.component('steps',require('./components/steps.vue'));
+Vue.component('steps',require('./components/steps.vue'));
 
 
 
 
 
-RingApp = new Vue({
+window.RingApp = new Vue({
     el: '#app',
     data:{
-      'session': {
-        	'base': {
-        		'model':1,
-        		'material':1
-          },
-
-        'stone': {
-        		'shape':1,
-        		'size':1,
-        		'weight':1,
-        		'purity':1,
-        		'color':1
-        	}
-
-        },
-        'totalprice':0,
         'ringOptions':{},
         'ringOptionValues':{},
-        'steps':[{
+        'steps':[
+          {
           'left':{
             'options':[
               {
-                'base':'imagebox'
+                'base':'imageslider'
               }
             ],
           },
@@ -84,9 +118,6 @@ RingApp = new Vue({
         {
           'left':{
             'options':[
-              {
-                'stone':'switch'
-              },
               {
                 'shape':'imagebox'
               },
@@ -127,11 +158,14 @@ RingApp = new Vue({
         ]
 
     },
-
+    methods: {
+      getHash:function(){
+        return '12421412';
+      }
+    },
     created:function(){
       this.$http.get('/ring_options').then((response)=>{
         this.ringOptions=response.data;
-
 
       /*  var steps=[];
 
