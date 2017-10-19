@@ -1,23 +1,20 @@
 <template>
     <div class="steps">
-        <div v-for="step in stepsList" class="steps__item">
-              <div v-if="step.template==='start'" class="container">
-                  <ringoptions :options="step.center.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+        <div v-for="(step,key,index) in stepsList" class="steps__item" >
 
-
-              </div>
-              <div v-if="step.template==='base'" class="container">
+        {{index}}
+              <div v-if="step.template==='base'" class="container" >
                   <div class="row">
                     <div class="col-md-2 left-col">
                         <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
 
                     </div>
-                    <div class="col-md-5 center-col" >
+                    <div class="col-md-8 center-col" >
                       <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                     </div>
-                    <div class="col-md-5 center-col">
+                    <div class="col-md-2 center-col">
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
-                        <p v-model="price" v-text="price"> </p>
+                        <p v-model="getTotalPrice" v-text="getTotalPrice" > </p>
                     </div>
                   </div>
               </div>
@@ -26,11 +23,11 @@
                   <div class="col-md-4 left-col">
                       <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
                   </div>
-                  <div class="col-md-3 center-col">
-                      center
+                  <div class="col-md-5 center-col">
+                        <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                   </div>
-                  <div class="col-md-5 ">
-
+                  <div class="col-md-3 ">
+                        <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                   </div>
                 </div>
               </div>
@@ -60,8 +57,8 @@
 
         data:function(){
             return  {
+              'active':1
 
-              'price':12400
             };
           },
 
@@ -79,8 +76,13 @@
 
 
         computed: {
-          test:function(){
-            return "<ringoptions></ringoptions>";
+          getTotalPrice:function(){
+            return store.state.totalPrice;
+          },
+          isActive:function(){
+            if (this.active===store.state.step){
+              return true;
+            }
           }
         }
     }

@@ -22,4 +22,14 @@ class RingOption extends Model
 
 
     }
+
+    public static function getHash($arr){
+      $str='';
+      foreach ($arr as $key=>$value){
+          $str.=$key.$value;
+      }
+
+      return md5($str);
+
+    }
 }

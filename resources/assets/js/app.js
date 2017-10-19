@@ -7,7 +7,7 @@
 
 require('./bootstrap');
 
-
+var md5 = require('md5');
 
 
 
@@ -18,51 +18,11 @@ window.Vuex=require('vuex');
 Vue.use(Vuex);
 
 
-
-
 Vue.prototype.$http = axios;
 
 import { mapState } from 'vuex';
 
-window.store = new Vuex.Store({
-  state: {
-    value:0,
-    totalPrice: 0,
-    session: {
-        'base':1,
-         'stone':1,
-         'material':1,
-         'shape':1,
-         'size':1,
-         'weight':1,
-         'purity':1,
-         'color':1,
-         'fsize':1
-        },
-      resultImg:'/resultimage/'+'12421412.jpg'
 
-  },
-  mutations: {
-    setOption (state,payload) {
-      state.session[payload.optionKey]=parseInt(payload.value);
-
-    },
-    refreshResultImg(state){
-
-      state.resultImg='/resultimage/'+this.getHash;
-
-    },
-    setImage(state,payload){
-      state.resultImg=payload.value;
-    }
-  },
-  getters: {
-
-  },
-  actions:{
-
-  }
-})
 
 
 
@@ -82,12 +42,72 @@ window.store = new Vuex.Store({
 Vue.component('steps',require('./components/steps.vue'));
 
 
+window.store = new Vuex.Store({
+  state: {
+    value:0,
+    totalPrice: 0,
+    session: {},
+    resultImg:'',
+    step:1
 
+  },
+  mutations: {
+    init(state,payload){
+      state.session=payload;
+    },
+    setOption (state,payload) {
+      state.session[payload.optionKey]=parseInt(payload.value);
+
+        var excludeParams=RingApp.$data.excludeParams;
+
+      //Refresh image after change option but watch exclude params
+
+      if (excludeParams.indexOf(payload.optionKey)==-1)  store.dispatch('refreshResultImg');
+
+
+    },
+    refreshResultImg(state){
+
+      state.resultImg='/resultimage/'+this.getHash;
+
+    },
+    setImage(state,payload){
+      state.resultImg=payload.value;
+    }
+  },
+  getters: {
+
+  },
+  actions:{
+    refreshResultImg(context){
+      var str='';
+
+
+      var excludeParams=RingApp.$data.excludeParams;
+
+      var params=context.state.session;
+
+      for (var prop in params) {
+
+        if (excludeParams.indexOf(prop)>-1) {
+
+          params[prop]=1;
+        }
+         str+=prop+params[prop];
+      }
+
+      context.state.resultImg='/resultimage/'+md5(str);
+
+
+    }
+  }
+})
 
 
 window.RingApp = new Vue({
     el: '#app',
     data:{
+        'excludeParams':['fsize','purity','stone','color'],
         'ringOptions':{},
         'ringOptionValues':{},
         'steps':[
@@ -160,27 +180,27 @@ window.RingApp = new Vue({
     },
     methods: {
       getHash:function(){
-        return '12421412';
+
       }
     },
     created:function(){
-      this.$http.get('/ring_options').then((response)=>{
+        this.$http.get('/ring_options').then((response)=>{
         this.ringOptions=response.data;
-
-      /*  var steps=[];
-
-
-        for (var key in this.ringOptions){
-
-          steps.push({'key':key,'options':this.ringOptions[key]});
-
-        }
+        var session={};
+        var str='';
 
 
-        steps.push({'key':'result','options':this});
+        _.forOwn(this.ringOptions, function(value, key) {
+          session[key]=1;
+          str+=key+1;
+        });
 
-        this.steps=steps;
-        */
+        
+
+        store.state.resultImg='/resultimage/'+md5(str);
+        store.commit('init',session);
+
+
       },(response)=> {
 
       });
@@ -192,7 +212,9 @@ window.RingApp = new Vue({
       });
     },
     computed:{
-
+      getTotalPrice:function(){
+        return store.state.totalPrice;
+      }
     },
     mounted:function(){
 

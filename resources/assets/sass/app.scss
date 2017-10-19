@@ -389,3 +389,18 @@ $form-range-track-focus-background:              #93D5C4;
   border:4px solid #93D5C4;
   display: inline-block;
 }
+
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1380px;
+  }
+}
+
+@media (min-width: 1200px) {
+
+.container {
+    width: auto;
+}
+
+}

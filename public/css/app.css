@@ -23398,3 +23398,15 @@ nav ul li {
   display: inline-block;
 }
 
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1380px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: auto;
+  }
+}
+
