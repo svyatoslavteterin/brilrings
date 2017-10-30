@@ -14,7 +14,7 @@
 
         <link  type="text/css" rel="stylesheet" href="/css/app.css" />
 
-        <base href="http://brilrings.dev/" />
+        <base href="{{ url('/') }}" />
     </head>
     <body>
 
