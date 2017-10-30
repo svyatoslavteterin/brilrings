@@ -23,7 +23,28 @@
         </ul>
 
         </div>
+        <div class="options__item" :class="optionKey" v-else-if="optionTemplate==='card'">
 
+
+          <div class="cards-container">
+
+              <div class="row">
+                <ringoptionvalue v-for="ringOptionValue in ringOptionValues[optionKey]"
+                                :ring-option-value="ringOptionValue"
+                                :option-template-value="optionTemplate"
+                                :key="optionKey"
+                                :option-key="optionKey"
+                                v-on:choose="update"
+
+
+                                >
+                </ringoptionvalue>
+              </div>
+
+
+          </div>
+
+          </div>
 
 
           <div class="options__item" :class="optionKey" v-else-if="optionTemplate==='selectbox'">

@@ -45,10 +45,10 @@ Vue.component('steps',require('./components/steps.vue'));
 window.store = new Vuex.Store({
   state: {
     value:0,
-    totalPrice: 0,
+    totalPrice: 22000,
     session: {},
     resultImg:'',
-    step:1
+    step:'base'
 
   },
   mutations: {
@@ -110,72 +110,9 @@ window.RingApp = new Vue({
         'excludeParams':['fsize','purity','stone','color'],
         'ringOptions':{},
         'ringOptionValues':{},
-        'steps':[
-          {
-          'left':{
-            'options':[
-              {
-                'base':'imageslider'
-              }
-            ],
-          },
-          'center': {
-            'blocks':['result-img']
-          },
-          'right':{
-            'options':[
-              {
-                'material':'selectbox'
-              },
-              {
-                'stone':'selectbox'
-              }
-            ],
-            'blocks':['thumb-img']
-          },
-          'template':'base'
-        },
-        {
-          'left':{
-            'options':[
-              {
-                'shape':'imagebox'
-              },
-              {
-                'weight':'range'
-              },
-              {
-                'size':'range'
-              },
-              {
-                'color':'range'
-              },
-              {
-                'purity':'range'
-              }
-            ]
-          },
-          'center':{
-            'blocks':['result-img']
-          },
-          'right':{
-            'blocks':['result-table']
-          },
-          'template':'stone'
+        'steps':steps
 
-        },
-        {
-          'center':{
-            'blocks':['result-img','thumb-img']
-          },
-          'right':{
-            'blocks':['result-table'],
-            'options':[{'fsize':'range'}]
-          },
-          'template':'result'
-        }
 
-        ]
 
     },
     methods: {
@@ -194,8 +131,9 @@ window.RingApp = new Vue({
           session[key]=1;
           str+=key+1;
         });
+        session['base']=parseInt(ringBase);
+        session['material']=parseInt(ringMaterial);
 
-        
 
         store.state.resultImg='/resultimage/'+md5(str);
         store.commit('init',session);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\RingImage;
+use App\RingOption;
 use Illuminate\Http\Request;
 
 class RingImageController extends Controller
@@ -86,5 +87,40 @@ class RingImageController extends Controller
     public function getResultImg($hash){
 
        return \Image::make('images/rings/'.$hash.'.jpg')->response('jpg');
+    }
+    public function getBaseImg($base,$material,$size='medium'){
+
+      $options=RingOption::all()->toArray();
+      $params=array();
+        $str='';
+
+      foreach ($options as $option){
+
+        $params[$option['key']]=($option['key']=="base")?$base:1;
+
+        if ($option['key']=="material") $params['material']=$material;
+
+
+        $str.=$option['key'].$params[$option['key']];
+
+      }
+
+
+
+      $hash=md5($str);
+      $img=\Image::make('images/rings/'.$hash.'.jpg');
+
+      if ($size=='medium') {
+          $img->resizeCanvas(298, 250, 'center', true);
+      }else{
+
+          $img->resize(140,null, function ($constraint) {
+              $constraint->aspectRatio();
+            });
+
+          $img->crop(140,70);
+        }
+
+       return $img->response('jpg');
     }
 }

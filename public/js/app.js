@@ -12381,10 +12381,10 @@ Vue.component('steps', __webpack_require__(57));
 window.store = new Vuex.Store({
   state: {
     value: 0,
-    totalPrice: 0,
+    totalPrice: 22000,
     session: {},
     resultImg: '',
-    step: 1
+    step: 'base'
 
   },
   mutations: {
@@ -12437,56 +12437,7 @@ window.RingApp = new Vue({
     'excludeParams': ['fsize', 'purity', 'stone', 'color'],
     'ringOptions': {},
     'ringOptionValues': {},
-    'steps': [{
-      'left': {
-        'options': [{
-          'base': 'imageslider'
-        }]
-      },
-      'center': {
-        'blocks': ['result-img']
-      },
-      'right': {
-        'options': [{
-          'material': 'selectbox'
-        }, {
-          'stone': 'selectbox'
-        }],
-        'blocks': ['thumb-img']
-      },
-      'template': 'base'
-    }, {
-      'left': {
-        'options': [{
-          'shape': 'imagebox'
-        }, {
-          'weight': 'range'
-        }, {
-          'size': 'range'
-        }, {
-          'color': 'range'
-        }, {
-          'purity': 'range'
-        }]
-      },
-      'center': {
-        'blocks': ['result-img']
-      },
-      'right': {
-        'blocks': ['result-table']
-      },
-      'template': 'stone'
-
-    }, {
-      'center': {
-        'blocks': ['result-img', 'thumb-img']
-      },
-      'right': {
-        'blocks': ['result-table'],
-        'options': [{ 'fsize': 'range' }]
-      },
-      'template': 'result'
-    }]
+    'steps': steps
 
   },
   methods: {
@@ -12504,6 +12455,8 @@ window.RingApp = new Vue({
         session[key] = 1;
         str += key + 1;
       });
+      session['base'] = parseInt(ringBase);
+      session['material'] = parseInt(ringMaterial);
 
       store.state.resultImg = '/resultimage/' + md5(str);
       store.commit('init', session);
@@ -53395,25 +53348,32 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 module.exports = {
   methods: {
     test: function test() {
       store.commit('setImage', { 'value': '12.jpg' });
     },
-    storeValue: function storeValue(optionKey) {
+    storeValue: function storeValue(optionKey, column) {
       var optionvalue = store.state.session[optionKey];
 
       var ringOptionValues = RingApp.$data.ringOptionValues;
 
-      var title = '';
+      var returnValue = '';
       for (var i = 0; i < ringOptionValues[optionKey].length; i++) {
         if (ringOptionValues[optionKey][i].value == optionvalue) {
-          title = ringOptionValues[optionKey][i].title;
+          returnValue = ringOptionValues[optionKey][i][column];
           break;
         }
       }
-      return title;
+      return returnValue;
     }
 
   },
@@ -53458,14 +53418,43 @@ var render = function() {
       return _c("div", { staticClass: "blocks__item", attrs: { id: value } }, [
         value === "result-img"
           ? _c("div", [_c("img", { attrs: { src: _vm.resultImg } })])
+          : _vm._e(),
+        _vm._v(" "),
+        value === "info"
+          ? _c("div", { staticClass: "ring-info" }, [
+              _c("h3", {
+                domProps: {
+                  textContent: _vm._s(_vm.storeValue("base", "title"))
+                }
+              }),
+              _vm._v(" "),
+              _c("div", {
+                staticClass: "ring-info__desc",
+                domProps: {
+                  textContent: _vm._s(_vm.storeValue("base", "desc"))
+                }
+              })
+            ])
           : value === "result-table"
             ? _c("div", [
+                _c("h3", [_vm._v("Бриллиант")]),
+                _vm._v(" "),
+                _c("p", [
+                  _c("span", {
+                    domProps: { textContent: _vm._s(_vm.totalPrice) }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "currency" }, [_vm._v("руб")])
+                ]),
+                _vm._v(" "),
                 _c("table", [
                   _c("tr", [
                     _c("td", [_vm._v("Форма огранки")]),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(_vm.storeValue("shape")) }
+                      domProps: {
+                        textContent: _vm._s(_vm.storeValue("shape", "title"))
+                      }
                     })
                   ]),
                   _vm._v(" "),
@@ -53474,7 +53463,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", {
                       domProps: {
-                        textContent: _vm._s(_vm.storeValue("weight"))
+                        textContent: _vm._s(_vm.storeValue("weight", "title"))
                       }
                     })
                   ]),
@@ -53483,7 +53472,9 @@ var render = function() {
                     _c("td", [_vm._v("Цвет")]),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(_vm.storeValue("color")) }
+                      domProps: {
+                        textContent: _vm._s(_vm.storeValue("color", "title"))
+                      }
                     })
                   ]),
                   _vm._v(" "),
@@ -53492,7 +53483,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", {
                       domProps: {
-                        textContent: _vm._s(_vm.storeValue("purity"))
+                        textContent: _vm._s(_vm.storeValue("purity", "title"))
                       }
                     })
                   ]),
@@ -53501,9 +53492,21 @@ var render = function() {
                     _c("td", [_vm._v("Размер")]),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(_vm.storeValue("size")) }
+                      domProps: {
+                        textContent: _vm._s(_vm.storeValue("size", "title"))
+                      }
                     })
                   ])
+                ]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Итоговая цена:")]),
+                _vm._v(" "),
+                _c("p", [
+                  _c("span", {
+                    domProps: { textContent: _vm._s(_vm.totalPrice) }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "currency" }, [_vm._v("руб")])
                 ])
               ])
             : _vm._e()
@@ -53571,6 +53574,27 @@ module.exports = Component.exports
 /* 52 */
 /***/ (function(module, exports) {
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -53719,62 +53743,33 @@ var render = function() {
           })
         )
       ])
-    : _vm.optionTemplate === "selectbox"
+    : _vm.optionTemplate === "card"
       ? _c("div", { staticClass: "options__item", class: _vm.optionKey }, [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.value,
-                  expression: "value"
-                }
-              ],
-              staticClass: "uk-select",
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.value = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
+          _c("div", { staticClass: "cards-container" }, [
+            _c(
+              "div",
+              { staticClass: "row" },
+              _vm._l(_vm.ringOptionValues[_vm.optionKey], function(
+                ringOptionValue
+              ) {
+                return _c("ringoptionvalue", {
+                  key: _vm.optionKey,
+                  attrs: {
+                    "ring-option-value": ringOptionValue,
+                    "option-template-value": _vm.optionTemplate,
+                    "option-key": _vm.optionKey
                   },
-                  function($event) {
-                    _vm.update(_vm.value)
-                  }
-                ]
-              }
-            },
-            _vm._l(_vm.ringOptionValues[_vm.optionKey], function(
-              ringOptionValue
-            ) {
-              return _c("ringoptionvalue", {
-                key: _vm.optionKey,
-                attrs: {
-                  "ring-option-value": ringOptionValue,
-                  "option-template-value": _vm.optionTemplate
-                }
+                  on: { choose: _vm.update }
+                })
               })
-            })
-          )
+            )
+          ])
         ])
-      : _vm.optionTemplate === "range"
-        ? _c("div", { staticClass: "options__item" }, [
-            _c("h3", { staticClass: "options__item__title" }, [
-              _vm._v(_vm._s(_vm.ringOption.title))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "range-slider" }, [
-              _c("input", {
+      : _vm.optionTemplate === "selectbox"
+        ? _c("div", { staticClass: "options__item", class: _vm.optionKey }, [
+            _c(
+              "select",
+              {
                 directives: [
                   {
                     name: "model",
@@ -53783,33 +53778,86 @@ var render = function() {
                     expression: "value"
                   }
                 ],
-                staticClass: "uk-range",
-                attrs: {
-                  type: "range",
-                  step: "1",
-                  min: "1",
-                  max: _vm.ringOptionValues[_vm.optionKey].length,
-                  value: "1"
-                },
-                domProps: { value: _vm.value },
+                staticClass: "uk-select",
                 on: {
-                  change: function($event) {
-                    _vm.update(_vm.value)
-                  },
-                  __r: function($event) {
-                    _vm.value = $event.target.value
-                  }
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.value = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.update(_vm.value)
+                    }
+                  ]
                 }
-              }),
-              _vm._v(" "),
-              _c("p", {
-                staticClass: "option-range-label",
-                style: { left: _vm.getLabelLeft + "%" },
-                domProps: { textContent: _vm._s(_vm.getOptionValueTitle.title) }
+              },
+              _vm._l(_vm.ringOptionValues[_vm.optionKey], function(
+                ringOptionValue
+              ) {
+                return _c("ringoptionvalue", {
+                  key: _vm.optionKey,
+                  attrs: {
+                    "ring-option-value": ringOptionValue,
+                    "option-template-value": _vm.optionTemplate
+                  }
+                })
               })
-            ])
+            )
           ])
-        : _vm._e()
+        : _vm.optionTemplate === "range"
+          ? _c("div", { staticClass: "options__item" }, [
+              _c("h3", { staticClass: "options__item__title" }, [
+                _vm._v(_vm._s(_vm.ringOption.title))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "range-slider" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.value,
+                      expression: "value"
+                    }
+                  ],
+                  staticClass: "uk-range",
+                  attrs: {
+                    type: "range",
+                    step: "1",
+                    min: "1",
+                    max: _vm.ringOptionValues[_vm.optionKey].length,
+                    value: "1"
+                  },
+                  domProps: { value: _vm.value },
+                  on: {
+                    change: function($event) {
+                      _vm.update(_vm.value)
+                    },
+                    __r: function($event) {
+                      _vm.value = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("p", {
+                  staticClass: "option-range-label",
+                  style: { left: _vm.getLabelLeft + "%" },
+                  domProps: {
+                    textContent: _vm._s(_vm.getOptionValueTitle.title)
+                  }
+                })
+              ])
+            ])
+          : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -53890,9 +53938,32 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 module.exports = {
   methods: {
+    storeValue: function storeValue(optionKey, column) {
+
+      var optionvalue = store.state.session[optionKey];
+
+      var ringOptionValues = RingApp.$data.ringOptionValues;
+
+      var returnValue = '';
+      for (var i = 0; i < ringOptionValues[optionKey].length; i++) {
+        if (ringOptionValues[optionKey][i].value == optionvalue) {
+          returnValue = ringOptionValues[optionKey][i][column];
+          break;
+        }
+      }
+      return returnValue;
+    },
     chooseOption: function chooseOption() {
 
       this.$emit('choose', this.value);
@@ -53909,7 +53980,7 @@ module.exports = {
     };
   },
 
-  props: ['ringOptionValue', 'optionTemplateValue', 'optionCount', 'optionKey'],
+  props: ['ringOptionValue', 'optionTemplateValue', 'optionCount', 'optionKey', 'ringOptionValues'],
 
   ready: function ready() {},
   mounted: function mounted() {},
@@ -53923,7 +53994,8 @@ module.exports = {
     },
     isSelected: function isSelected() {
       return true;
-    }
+    },
+    imgHash: function imgHash() {}
 
   }
 };
@@ -53952,7 +54024,12 @@ var render = function() {
           [
             _c("img", {
               attrs: {
-                src: "/resultimage/12421412.jpg",
+                src:
+                  "/baseimages/" +
+                  _vm.ringOptionValue.value +
+                  "/" +
+                  _vm.storeValue("material", "value") +
+                  "/small",
                 width: "140",
                 height: "70",
                 title: _vm.ringOptionValue.title
@@ -53963,15 +54040,19 @@ var render = function() {
       ])
     : _vm.optionTemplate == "imagebox"
       ? _c("li", { class: { active: _vm.isActive } }, [
-          _c("a", {
-            attrs: { href: "#" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                _vm.chooseOption($event)
+          _c(
+            "a",
+            {
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.chooseOption($event)
+                }
               }
-            }
-          })
+            },
+            [_vm._v(_vm._s(_vm.ringOptionValue.title))]
+          )
         ])
       : _vm.optionTemplate === "selectbox"
         ? _c("option", { domProps: { value: _vm.ringOptionValue.value } }, [
@@ -53979,13 +54060,67 @@ var render = function() {
           ])
         : _vm.optionTemplate === "text"
           ? _c("input", { attrs: { value: "text" } })
-          : _vm.optionTemplate === "card"
-            ? _c("div")
+          : _vm.optionTemplate == "card"
+            ? _c("div", { staticClass: "col-md-4 card__item" }, [
+                _c("div", { staticClass: "card__item__wrapper" }, [
+                  _c("div", { staticClass: "card__img" }, [
+                    _c("img", {
+                      attrs: {
+                        src:
+                          /baseimages/ +
+                          _vm.ringOptionValue.value +
+                          "/" +
+                          _vm.storeValue("material", "value") +
+                          "/medium",
+                        alt: _vm.ringOptionValue.title
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card__title" }, [
+                    _vm._v(_vm._s(_vm.ringOptionValue.title))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "card__material",
+                    domProps: {
+                      textContent: _vm._s(_vm.storeValue("material", "title"))
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: {
+                        href:
+                          "/constructor/base/" +
+                          _vm.ringOptionValue.value +
+                          "/" +
+                          _vm.storeValue("material", "value")
+                      }
+                    },
+                    [_vm._v("Выбрать")]
+                  )
+                ])
+              ])
             : _vm.optionTemplate === "switch"
               ? _c("div", [_vm._v(_vm._s(_vm.ringOptionValue.title))])
               : _vm._e()
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card__price" }, [
+      _vm._v("22175 "),
+      _c("span", { staticClass: "currency" }, [_vm._v("руб.")])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -54093,15 +54228,29 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 module.exports = {
   methods: {
-    update: function update() {}
+    update: function update() {},
+    isActive: function isActive(key) {
+
+      if (key === store.state.step) {
+        return true;
+      }
+    }
   },
 
   data: function data() {
     return {
-      'active': 1
+      'active': 'base'
 
     };
   },
@@ -54114,12 +54263,8 @@ module.exports = {
   computed: {
     getTotalPrice: function getTotalPrice() {
       return store.state.totalPrice;
-    },
-    isActive: function isActive() {
-      if (this.active === store.state.step) {
-        return true;
-      }
     }
+
   }
 };
 
@@ -54133,133 +54278,22 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "steps" },
     _vm._l(_vm.stepsList, function(step, key, index) {
-      return _c("div", { staticClass: "steps__item" }, [
-        _vm._v("\n\n    " + _vm._s(index) + "\n          "),
-        step.template === "base"
-          ? _c("div", { staticClass: "container" }, [
-              _c("div", { staticClass: "row" }, [
-                _c(
-                  "div",
-                  { staticClass: "col-md-2 left-col" },
-                  [
-                    _c("ringoptions", {
-                      attrs: {
-                        options: step.left.options,
-                        "ring-options": _vm.SRingOptions,
-                        "ring-option-values": _vm.SRingOptionValues
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-md-8 center-col" },
-                  [
-                    _c("ringblocks", {
-                      ref: "blocks",
-                      refInFor: true,
-                      attrs: { blocks: step.center.blocks }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-md-2 center-col" },
-                  [
-                    _c("ringoptions", {
-                      attrs: {
-                        options: step.right.options,
-                        "ring-options": _vm.SRingOptions,
-                        "ring-option-values": _vm.SRingOptionValues
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("p", {
-                      domProps: { textContent: _vm._s(_vm.getTotalPrice) },
-                      model: {
-                        value: _vm.getTotalPrice,
-                        callback: function($$v) {
-                          _vm.getTotalPrice = $$v
-                        },
-                        expression: "getTotalPrice"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ])
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        step.template === "stone"
-          ? _c("div", { staticClass: "container" }, [
-              _c("div", { staticClass: "row" }, [
-                _c(
-                  "div",
-                  { staticClass: "col-md-4 left-col" },
-                  [
-                    _c("ringoptions", {
-                      attrs: {
-                        options: step.left.options,
-                        "ring-options": _vm.SRingOptions,
-                        "ring-option-values": _vm.SRingOptionValues
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-md-5 center-col" },
-                  [
-                    _c("ringblocks", {
-                      ref: "blocks",
-                      refInFor: true,
-                      attrs: { blocks: step.center.blocks }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-md-3 " },
-                  [
-                    _c("ringblocks", {
-                      ref: "blocks",
-                      refInFor: true,
-                      attrs: {
-                        blocks: step.right.blocks,
-                        "ring-option-values": _vm.SRingOptionValues
-                      }
-                    })
-                  ],
-                  1
-                )
-              ])
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        step.template === "result"
-          ? _c("div", { staticClass: "container" }, [
-              _c("div", { staticClass: "col-md-8 center-col" }, [
-                _vm._v("\n                center\n              ")
-              ]),
-              _vm._v(" "),
-              _c(
+      return _c(
+        "div",
+        {
+          staticClass: "steps__item ",
+          class: { active: _vm.isActive(step.template) }
+        },
+        [
+          step.template === "start"
+            ? _c(
                 "div",
-                { staticClass: "col-md-4 right-col" },
+                { staticClass: "container", class: step.template },
                 [
                   _c("ringoptions", {
                     attrs: {
-                      options: step.right.options,
+                      options: step.center.options,
                       "ring-options": _vm.SRingOptions,
                       "ring-option-values": _vm.SRingOptionValues
                     }
@@ -54267,9 +54301,148 @@ var render = function() {
                 ],
                 1
               )
-            ])
-          : _vm._e()
-      ])
+            : _vm._e(),
+          _vm._v(" "),
+          step.template === "base"
+            ? _c("div", { staticClass: "container", class: step.template }, [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "div",
+                    { staticClass: "col-md-2 left-col" },
+                    [
+                      _c("ringoptions", {
+                        attrs: {
+                          options: step.left.options,
+                          "ring-options": _vm.SRingOptions,
+                          "ring-option-values": _vm.SRingOptionValues
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-5 center-col" },
+                    [
+                      _c("ringblocks", {
+                        ref: "blocks",
+                        refInFor: true,
+                        attrs: { blocks: step.center.blocks }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-5 right-col" },
+                    [
+                      _c("ringblocks", {
+                        ref: "blocks",
+                        refInFor: true,
+                        attrs: {
+                          blocks: step.right.blocks,
+                          "ring-option-values": _vm.SRingOptionValues
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("ringoptions", {
+                        attrs: {
+                          options: step.right.options,
+                          "ring-options": _vm.SRingOptions,
+                          "ring-option-values": _vm.SRingOptionValues
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "price" }, [
+                        _c("span", {
+                          domProps: { textContent: _vm._s(_vm.getTotalPrice) }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "currency" }, [_vm._v("руб")])
+                      ])
+                    ],
+                    1
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          step.template === "stone"
+            ? _c("div", { staticClass: "container", class: step.template }, [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "div",
+                    { staticClass: "col-md-4 left-col" },
+                    [
+                      _c("ringoptions", {
+                        attrs: {
+                          options: step.left.options,
+                          "ring-options": _vm.SRingOptions,
+                          "ring-option-values": _vm.SRingOptionValues
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-5 center-col" },
+                    [
+                      _c("ringblocks", {
+                        ref: "blocks",
+                        refInFor: true,
+                        attrs: { blocks: step.center.blocks }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-3 right-col" },
+                    [
+                      _c("ringblocks", {
+                        ref: "blocks",
+                        refInFor: true,
+                        attrs: {
+                          blocks: step.right.blocks,
+                          "ring-option-values": _vm.SRingOptionValues
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          step.template === "result"
+            ? _c("div", { staticClass: "container", class: step.template }, [
+                _c("div", { staticClass: "col-md-8 center-col" }, [
+                  _vm._v("\n                    center\n                  ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-4 right-col" },
+                  [
+                    _c("ringoptions", {
+                      attrs: {
+                        options: step.right.options,
+                        "ring-options": _vm.SRingOptions,
+                        "ring-option-values": _vm.SRingOptionValues
+                      }
+                    })
+                  ],
+                  1
+                )
+              ])
+            : _vm._e()
+        ]
+      )
     })
   )
 }

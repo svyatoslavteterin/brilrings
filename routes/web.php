@@ -20,6 +20,8 @@ Route::get('/ring_options','RingOptionController@get');
 Route::get('/ring_options/{ring_option}/values','RingOptionController@getValues');
 
 Route::get('/resultimage/{hash}/','RingImageController@getResultImg');
+Route::get('/baseimages/{base}/{material}/{size}','RingImageController@getBaseImg');
+
 
 
 
@@ -41,7 +43,7 @@ Route::get('/import',function(){
       'w'=>'weight'
     );
 
-    
+
 
 
     $Files=array();
@@ -61,6 +63,8 @@ Route::get('/import',function(){
     foreach ($list as $key=>$value){
 
       $base=str_replace(array($import_dir,'/'),'',$value);
+
+      init($params);
       $params['base']=$base;
 
       $imgs=File::directories($value);
@@ -133,6 +137,21 @@ Route::get('/', function () {
 
 
     return view('constructor/index');
+});
+Route::get('/constructor/base/{base}/{material}','ConstructorController@index');
+
+Route::get('/constructor/base', function () {
+
+
+    return view('constructor/base');
+});
+
+
+
+Route::get('/constructor/stone', function () {
+
+
+    return view('constructor/stone');
 });
 
 

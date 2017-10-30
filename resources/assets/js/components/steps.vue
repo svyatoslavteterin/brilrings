@@ -1,24 +1,33 @@
 <template>
-    <div class="steps">
-        <div v-for="(step,key,index) in stepsList" class="steps__item" >
 
-        {{index}}
-              <div v-if="step.template==='base'" class="container" >
+
+  <div>
+
+        <div v-for="(step,key,index) in stepsList" class="steps__item " :class="{active:isActive(step.template)}" >
+
+
+                <div v-if="step.template==='start'" class="container" :class="step.template" >
+                      <ringoptions :options="step.center.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+                </div>
+
+              <div v-if="step.template==='base'" class="container" :class="step.template" >
                   <div class="row">
                     <div class="col-md-2 left-col">
                         <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
 
                     </div>
-                    <div class="col-md-8 center-col" >
+                    <div class="col-md-5 center-col" >
                       <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                     </div>
-                    <div class="col-md-2 center-col">
+                    <div class="col-md-5 right-col">
+                          <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
-                        <p v-model="getTotalPrice" v-text="getTotalPrice" > </p>
+
+                        <p class="price"><span v-text="getTotalPrice"></span> <span class="currency">руб</span></p>
                     </div>
                   </div>
               </div>
-              <div v-if="step.template==='stone'" class="container">
+              <div v-if="step.template==='stone'" class="container" :class="step.template">
                 <div class="row">
                   <div class="col-md-4 left-col">
                       <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
@@ -26,12 +35,12 @@
                   <div class="col-md-5 center-col">
                         <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                   </div>
-                  <div class="col-md-3 ">
+                  <div class="col-md-3 right-col">
                         <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                   </div>
                 </div>
               </div>
-              <div v-if="step.template==='result'" class="container">
+              <div v-if="step.template==='result'" class="container" :class="step.template">
                   <div class="col-md-8 center-col">
                     center
                   </div>
@@ -42,8 +51,7 @@
               </div>
         </div>
 
-    </div>
-
+</div>
 </template>
 
 <script>
@@ -52,12 +60,18 @@
         update:function(){
 
 
+        },
+        isActive:function(key){
+
+          if (key===store.state.step){
+            return true;
+          }
         }
       },
 
         data:function(){
             return  {
-              'active':1
+              'active':'base'
 
             };
           },
@@ -78,12 +92,8 @@
         computed: {
           getTotalPrice:function(){
             return store.state.totalPrice;
-          },
-          isActive:function(){
-            if (this.active===store.state.step){
-              return true;
-            }
           }
+
         }
     }
 </script>
