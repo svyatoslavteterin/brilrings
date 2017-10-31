@@ -12332,7 +12332,7 @@ var index_esm = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
-module.exports = __webpack_require__(60);
+module.exports = __webpack_require__(69);
 
 
 /***/ }),
@@ -12351,9 +12351,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 __webpack_require__(16);
 
-var md5 = __webpack_require__(40);
+window.jcarousel = __webpack_require__(40);
+window.jcarouselSwipe = __webpack_require__(41);
 
-window.Vue = __webpack_require__(42);
+var md5 = __webpack_require__(42);
+
+window.currencyFormatter = __webpack_require__(44);
+
+window.Vue = __webpack_require__(51);
 
 window.Vuex = __webpack_require__(13);
 
@@ -12369,14 +12374,14 @@ Vue.prototype.$http = axios;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('ringoptions', __webpack_require__(45));
-Vue.component('ringblocks', __webpack_require__(48));
+Vue.component('ringoptions', __webpack_require__(54));
+Vue.component('ringblocks', __webpack_require__(57));
 
-Vue.component('ringoption', __webpack_require__(51));
+Vue.component('ringoption', __webpack_require__(60));
 
-Vue.component('ringoptionvalue', __webpack_require__(54));
+Vue.component('ringoptionvalue', __webpack_require__(63));
 
-Vue.component('steps', __webpack_require__(57));
+Vue.component('steps', __webpack_require__(66));
 
 window.store = new Vuex.Store({
   state: {
@@ -42039,10 +42044,1827 @@ return plugin;
 
 /***/ }),
 /* 40 */
+/***/ (function(module, exports) {
+
+/*! jCarousel - v0.3.5 - 2017-03-15
+* http://sorgalla.com/jcarousel/
+* Copyright (c) 2006-2017 Jan Sorgalla; Licensed MIT */
+(function($) {
+    'use strict';
+
+    var jCarousel = $.jCarousel = {};
+
+    jCarousel.version = '0.3.5';
+
+    var rRelativeTarget = /^([+\-]=)?(.+)$/;
+
+    jCarousel.parseTarget = function(target) {
+        var relative = false,
+            parts    = typeof target !== 'object' ?
+                           rRelativeTarget.exec(target) :
+                           null;
+
+        if (parts) {
+            target = parseInt(parts[2], 10) || 0;
+
+            if (parts[1]) {
+                relative = true;
+                if (parts[1] === '-=') {
+                    target *= -1;
+                }
+            }
+        } else if (typeof target !== 'object') {
+            target = parseInt(target, 10) || 0;
+        }
+
+        return {
+            target: target,
+            relative: relative
+        };
+    };
+
+    jCarousel.detectCarousel = function(element) {
+        var carousel;
+
+        while (element.length > 0) {
+            carousel = element.filter('[data-jcarousel]');
+
+            if (carousel.length > 0) {
+                return carousel;
+            }
+
+            carousel = element.find('[data-jcarousel]');
+
+            if (carousel.length > 0) {
+                return carousel;
+            }
+
+            element = element.parent();
+        }
+
+        return null;
+    };
+
+    jCarousel.base = function(pluginName) {
+        return {
+            version:  jCarousel.version,
+            _options:  {},
+            _element:  null,
+            _carousel: null,
+            _init:     $.noop,
+            _create:   $.noop,
+            _destroy:  $.noop,
+            _reload:   $.noop,
+            create: function() {
+                this._element
+                    .attr('data-' + pluginName.toLowerCase(), true)
+                    .data(pluginName, this);
+
+                if (false === this._trigger('create')) {
+                    return this;
+                }
+
+                this._create();
+
+                this._trigger('createend');
+
+                return this;
+            },
+            destroy: function() {
+                if (false === this._trigger('destroy')) {
+                    return this;
+                }
+
+                this._destroy();
+
+                this._trigger('destroyend');
+
+                this._element
+                    .removeData(pluginName)
+                    .removeAttr('data-' + pluginName.toLowerCase());
+
+                return this;
+            },
+            reload: function(options) {
+                if (false === this._trigger('reload')) {
+                    return this;
+                }
+
+                if (options) {
+                    this.options(options);
+                }
+
+                this._reload();
+
+                this._trigger('reloadend');
+
+                return this;
+            },
+            element: function() {
+                return this._element;
+            },
+            options: function(key, value) {
+                if (arguments.length === 0) {
+                    return $.extend({}, this._options);
+                }
+
+                if (typeof key === 'string') {
+                    if (typeof value === 'undefined') {
+                        return typeof this._options[key] === 'undefined' ?
+                                null :
+                                this._options[key];
+                    }
+
+                    this._options[key] = value;
+                } else {
+                    this._options = $.extend({}, this._options, key);
+                }
+
+                return this;
+            },
+            carousel: function() {
+                if (!this._carousel) {
+                    this._carousel = jCarousel.detectCarousel(this.options('carousel') || this._element);
+
+                    if (!this._carousel) {
+                        $.error('Could not detect carousel for plugin "' + pluginName + '"');
+                    }
+                }
+
+                return this._carousel;
+            },
+            _trigger: function(type, element, data) {
+                var event,
+                    defaultPrevented = false;
+
+                data = [this].concat(data || []);
+
+                (element || this._element).each(function() {
+                    event = $.Event((pluginName + ':' + type).toLowerCase());
+
+                    $(this).trigger(event, data);
+
+                    if (event.isDefaultPrevented()) {
+                        defaultPrevented = true;
+                    }
+                });
+
+                return !defaultPrevented;
+            }
+        };
+    };
+
+    jCarousel.plugin = function(pluginName, pluginPrototype) {
+        var Plugin = $[pluginName] = function(element, options) {
+            this._element = $(element);
+            this.options(options);
+
+            this._init();
+            this.create();
+        };
+
+        Plugin.fn = Plugin.prototype = $.extend(
+            {},
+            jCarousel.base(pluginName),
+            pluginPrototype
+        );
+
+        $.fn[pluginName] = function(options) {
+            var args        = Array.prototype.slice.call(arguments, 1),
+                returnValue = this;
+
+            if (typeof options === 'string') {
+                this.each(function() {
+                    var instance = $(this).data(pluginName);
+
+                    if (!instance) {
+                        return $.error(
+                            'Cannot call methods on ' + pluginName + ' prior to initialization; ' +
+                            'attempted to call method "' + options + '"'
+                        );
+                    }
+
+                    if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
+                        return $.error(
+                            'No such method "' + options + '" for ' + pluginName + ' instance'
+                        );
+                    }
+
+                    var methodValue = instance[options].apply(instance, args);
+
+                    if (methodValue !== instance && typeof methodValue !== 'undefined') {
+                        returnValue = methodValue;
+                        return false;
+                    }
+                });
+            } else {
+                this.each(function() {
+                    var instance = $(this).data(pluginName);
+
+                    if (instance instanceof Plugin) {
+                        instance.reload(options);
+                    } else {
+                        new Plugin(this, options);
+                    }
+                });
+            }
+
+            return returnValue;
+        };
+
+        return Plugin;
+    };
+}(jQuery));
+
+(function($, window) {
+    'use strict';
+
+    var $window = $(window);
+
+    var toFloat = function(val) {
+        return parseFloat(val) || 0;
+    };
+
+    $.jCarousel.plugin('jcarousel', {
+        animating:   false,
+        tail:        0,
+        inTail:      false,
+        resizeState: null,
+        resizeTimer: null,
+        lt:          null,
+        vertical:    false,
+        rtl:         false,
+        circular:    false,
+        underflow:   false,
+        relative:    false,
+
+        _options: {
+            list: function() {
+                return this.element().children().eq(0);
+            },
+            items: function() {
+                return this.list().children();
+            },
+            animation:   400,
+            transitions: false,
+            wrap:        null,
+            vertical:    null,
+            rtl:         null,
+            center:      false
+        },
+
+        // Protected, don't access directly
+        _list:         null,
+        _items:        null,
+        _target:       $(),
+        _first:        $(),
+        _last:         $(),
+        _visible:      $(),
+        _fullyvisible: $(),
+        _init: function() {
+            var self = this;
+
+            self.resizeState = $window.width() + 'x' + $window.height();
+
+            this.onWindowResize = function() {
+                if (self.resizeTimer) {
+                    clearTimeout(self.resizeTimer);
+                }
+
+                self.resizeTimer = setTimeout(function() {
+                    var currentResizeState = $window.width() + 'x' + $window.height();
+
+                    // Check if the window size actually changed.
+                    // iOS might trigger resize events on page scroll.
+                    if (currentResizeState === self.resizeState) {
+                        return;
+                    }
+
+                    self.resizeState = currentResizeState;
+                    self.reload();
+                }, 100);
+            };
+
+            return this;
+        },
+        _create: function() {
+            this._reload();
+
+            $window.on('resize.jcarousel', this.onWindowResize);
+        },
+        _destroy: function() {
+            $window.off('resize.jcarousel', this.onWindowResize);
+        },
+        _reload: function() {
+            this.vertical = this.options('vertical');
+
+            if (this.vertical == null) {
+                this.vertical = this.list().height() > this.list().width();
+            }
+
+            this.rtl = this.options('rtl');
+
+            if (this.rtl == null) {
+                this.rtl = (function(element) {
+                    if (('' + element.attr('dir')).toLowerCase() === 'rtl') {
+                        return true;
+                    }
+
+                    var found = false;
+
+                    element.parents('[dir]').each(function() {
+                        if ((/rtl/i).test($(this).attr('dir'))) {
+                            found = true;
+                            return false;
+                        }
+                    });
+
+                    return found;
+                }(this._element));
+            }
+
+            this.lt = this.vertical ? 'top' : 'left';
+
+            // Ensure before closest() call
+            this.relative = this.list().css('position') === 'relative';
+
+            // Force list and items reload
+            this._list  = null;
+            this._items = null;
+
+            var item = this.index(this._target) >= 0 ?
+                           this._target :
+                           this.closest();
+
+            // _prepare() needs this here
+            this.circular  = this.options('wrap') === 'circular';
+            this.underflow = false;
+
+            var props = {'left': 0, 'top': 0};
+
+            if (item.length > 0) {
+                this._prepare(item);
+                this.list().find('[data-jcarousel-clone]').remove();
+
+                // Force items reload
+                this._items = null;
+
+                this.underflow = this._fullyvisible.length >= this.items().length;
+                this.circular  = this.circular && !this.underflow;
+
+                props[this.lt] = this._position(item) + 'px';
+            }
+
+            this.move(props);
+
+            return this;
+        },
+        list: function() {
+            if (this._list === null) {
+                var option = this.options('list');
+                this._list = $.isFunction(option) ? option.call(this) : this._element.find(option);
+            }
+
+            return this._list;
+        },
+        items: function() {
+            if (this._items === null) {
+                var option = this.options('items');
+                this._items = ($.isFunction(option) ? option.call(this) : this.list().find(option)).not('[data-jcarousel-clone]');
+            }
+
+            return this._items;
+        },
+        index: function(item) {
+            return this.items().index(item);
+        },
+        closest: function() {
+            var self    = this,
+                pos     = this.list().position()[this.lt],
+                closest = $(), // Ensure we're returning a jQuery instance
+                stop    = false,
+                lrb     = this.vertical ? 'bottom' : (this.rtl && !this.relative ? 'left' : 'right'),
+                width;
+
+            if (this.rtl && this.relative && !this.vertical) {
+                pos += this.list().width() - this.clipping();
+            }
+
+            this.items().each(function() {
+                closest = $(this);
+
+                if (stop) {
+                    return false;
+                }
+
+                var dim = self.dimension(closest);
+
+                pos += dim;
+
+                if (pos >= 0) {
+                    width = dim - toFloat(closest.css('margin-' + lrb));
+
+                    if ((Math.abs(pos) - dim + (width / 2)) <= 0) {
+                        stop = true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+
+
+            return closest;
+        },
+        target: function() {
+            return this._target;
+        },
+        first: function() {
+            return this._first;
+        },
+        last: function() {
+            return this._last;
+        },
+        visible: function() {
+            return this._visible;
+        },
+        fullyvisible: function() {
+            return this._fullyvisible;
+        },
+        hasNext: function() {
+            if (false === this._trigger('hasnext')) {
+                return true;
+            }
+
+            var wrap = this.options('wrap'),
+                end = this.items().length - 1,
+                check = this.options('center') ? this._target : this._last;
+
+            return end >= 0 && !this.underflow &&
+                ((wrap && wrap !== 'first') ||
+                    (this.index(check) < end) ||
+                    (this.tail && !this.inTail)) ? true : false;
+        },
+        hasPrev: function() {
+            if (false === this._trigger('hasprev')) {
+                return true;
+            }
+
+            var wrap = this.options('wrap');
+
+            return this.items().length > 0 && !this.underflow &&
+                ((wrap && wrap !== 'last') ||
+                    (this.index(this._first) > 0) ||
+                    (this.tail && this.inTail)) ? true : false;
+        },
+        clipping: function() {
+            return this._element['inner' + (this.vertical ? 'Height' : 'Width')]();
+        },
+        dimension: function(element) {
+            return element['outer' + (this.vertical ? 'Height' : 'Width')](true);
+        },
+        scroll: function(target, animate, callback) {
+            if (this.animating) {
+                return this;
+            }
+
+            if (false === this._trigger('scroll', null, [target, animate])) {
+                return this;
+            }
+
+            if ($.isFunction(animate)) {
+                callback = animate;
+                animate  = true;
+            }
+
+            var parsed = $.jCarousel.parseTarget(target);
+
+            if (parsed.relative) {
+                var end    = this.items().length - 1,
+                    scroll = Math.abs(parsed.target),
+                    wrap   = this.options('wrap'),
+                    current,
+                    first,
+                    index,
+                    start,
+                    curr,
+                    isVisible,
+                    props,
+                    i;
+
+                if (parsed.target > 0) {
+                    var last = this.index(this._last);
+
+                    if (last >= end && this.tail) {
+                        if (!this.inTail) {
+                            this._scrollTail(animate, callback);
+                        } else {
+                            if (wrap === 'both' || wrap === 'last') {
+                                this._scroll(0, animate, callback);
+                            } else {
+                                if ($.isFunction(callback)) {
+                                    callback.call(this, false);
+                                }
+                            }
+                        }
+                    } else {
+                        current = this.index(this._target);
+
+                        if ((this.underflow && current === end && (wrap === 'circular' || wrap === 'both' || wrap === 'last')) ||
+                            (!this.underflow && last === end && (wrap === 'both' || wrap === 'last'))) {
+                            this._scroll(0, animate, callback);
+                        } else {
+                            index = current + scroll;
+
+                            if (this.circular && index > end) {
+                                i = end;
+                                curr = this.items().get(-1);
+
+                                while (i++ < index) {
+                                    curr = this.items().eq(0);
+                                    isVisible = this._visible.index(curr) >= 0;
+
+                                    if (isVisible) {
+                                        curr.after(curr.clone(true).attr('data-jcarousel-clone', true));
+                                    }
+
+                                    this.list().append(curr);
+
+                                    if (!isVisible) {
+                                        props = {};
+                                        props[this.lt] = this.dimension(curr);
+                                        this.moveBy(props);
+                                    }
+
+                                    // Force items reload
+                                    this._items = null;
+                                }
+
+                                this._scroll(curr, animate, callback);
+                            } else {
+                                this._scroll(Math.min(index, end), animate, callback);
+                            }
+                        }
+                    }
+                } else {
+                    if (this.inTail) {
+                        this._scroll(Math.max((this.index(this._first) - scroll) + 1, 0), animate, callback);
+                    } else {
+                        first  = this.index(this._first);
+                        current = this.index(this._target);
+                        start  = this.underflow ? current : first;
+                        index  = start - scroll;
+
+                        if (start <= 0 && ((this.underflow && wrap === 'circular') || wrap === 'both' || wrap === 'first')) {
+                            this._scroll(end, animate, callback);
+                        } else {
+                            if (this.circular && index < 0) {
+                                i    = index;
+                                curr = this.items().get(0);
+
+                                while (i++ < 0) {
+                                    curr = this.items().eq(-1);
+                                    isVisible = this._visible.index(curr) >= 0;
+
+                                    if (isVisible) {
+                                        curr.after(curr.clone(true).attr('data-jcarousel-clone', true));
+                                    }
+
+                                    this.list().prepend(curr);
+
+                                    // Force items reload
+                                    this._items = null;
+
+                                    var dim = this.dimension(curr);
+
+                                    props = {};
+                                    props[this.lt] = -dim;
+                                    this.moveBy(props);
+
+                                }
+
+                                this._scroll(curr, animate, callback);
+                            } else {
+                                this._scroll(Math.max(index, 0), animate, callback);
+                            }
+                        }
+                    }
+                }
+            } else {
+                this._scroll(parsed.target, animate, callback);
+            }
+
+            this._trigger('scrollend');
+
+            return this;
+        },
+        moveBy: function(properties, opts) {
+            var position = this.list().position(),
+                multiplier = 1,
+                correction = 0;
+
+            if (this.rtl && !this.vertical) {
+                multiplier = -1;
+
+                if (this.relative) {
+                    correction = this.list().width() - this.clipping();
+                }
+            }
+
+            if (properties.left) {
+                properties.left = (position.left + correction + toFloat(properties.left) * multiplier) + 'px';
+            }
+
+            if (properties.top) {
+                properties.top = (position.top + correction + toFloat(properties.top) * multiplier) + 'px';
+            }
+
+            return this.move(properties, opts);
+        },
+        move: function(properties, opts) {
+            opts = opts || {};
+
+            var option       = this.options('transitions'),
+                transitions  = !!option,
+                transforms   = !!option.transforms,
+                transforms3d = !!option.transforms3d,
+                duration     = opts.duration || 0,
+                list         = this.list();
+
+            if (!transitions && duration > 0) {
+                list.animate(properties, opts);
+                return;
+            }
+
+            var complete = opts.complete || $.noop,
+                css = {};
+
+            if (transitions) {
+                var backup = {
+                        transitionDuration: list.css('transitionDuration'),
+                        transitionTimingFunction: list.css('transitionTimingFunction'),
+                        transitionProperty: list.css('transitionProperty')
+                    },
+                    oldComplete = complete;
+
+                complete = function() {
+                    $(this).css(backup);
+                    oldComplete.call(this);
+                };
+                css = {
+                    transitionDuration: (duration > 0 ? duration / 1000 : 0) + 's',
+                    transitionTimingFunction: option.easing || opts.easing,
+                    transitionProperty: duration > 0 ? (function() {
+                        if (transforms || transforms3d) {
+                            // We have to use 'all' because jQuery doesn't prefix
+                            // css values, like transition-property: transform;
+                            return 'all';
+                        }
+
+                        return properties.left ? 'left' : 'top';
+                    })() : 'none',
+                    transform: 'none'
+                };
+            }
+
+            if (transforms3d) {
+                css.transform = 'translate3d(' + (properties.left || 0) + ',' + (properties.top || 0) + ',0)';
+            } else if (transforms) {
+                css.transform = 'translate(' + (properties.left || 0) + ',' + (properties.top || 0) + ')';
+            } else {
+                $.extend(css, properties);
+            }
+
+            if (transitions && duration > 0) {
+                list.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', complete);
+            }
+
+            list.css(css);
+
+            if (duration <= 0) {
+                list.each(function() {
+                    complete.call(this);
+                });
+            }
+        },
+        _scroll: function(item, animate, callback) {
+            if (this.animating) {
+                if ($.isFunction(callback)) {
+                    callback.call(this, false);
+                }
+
+                return this;
+            }
+
+            if (typeof item !== 'object') {
+                item = this.items().eq(item);
+            } else if (typeof item.jquery === 'undefined') {
+                item = $(item);
+            }
+
+            if (item.length === 0) {
+                if ($.isFunction(callback)) {
+                    callback.call(this, false);
+                }
+
+                return this;
+            }
+
+            this.inTail = false;
+
+            this._prepare(item);
+
+            var pos     = this._position(item),
+                currPos = this.list().position()[this.lt];
+
+            if (pos === currPos) {
+                if ($.isFunction(callback)) {
+                    callback.call(this, false);
+                }
+
+                return this;
+            }
+
+            var properties = {};
+            properties[this.lt] = pos + 'px';
+
+            this._animate(properties, animate, callback);
+
+            return this;
+        },
+        _scrollTail: function(animate, callback) {
+            if (this.animating || !this.tail) {
+                if ($.isFunction(callback)) {
+                    callback.call(this, false);
+                }
+
+                return this;
+            }
+
+            var pos = this.list().position()[this.lt];
+
+            if (this.rtl && this.relative && !this.vertical) {
+                pos += this.list().width() - this.clipping();
+            }
+
+            if (this.rtl && !this.vertical) {
+                pos += this.tail;
+            } else {
+                pos -= this.tail;
+            }
+
+            this.inTail = true;
+
+            var properties = {};
+            properties[this.lt] = pos + 'px';
+
+            this._update({
+                target:       this._target.next(),
+                fullyvisible: this._fullyvisible.slice(1).add(this._visible.last())
+            });
+
+            this._animate(properties, animate, callback);
+
+            return this;
+        },
+        _animate: function(properties, animate, callback) {
+            callback = callback || $.noop;
+
+            if (false === this._trigger('animate')) {
+                callback.call(this, false);
+                return this;
+            }
+
+            this.animating = true;
+
+            var animation = this.options('animation'),
+                complete  = $.proxy(function() {
+                    this.animating = false;
+
+                    var c = this.list().find('[data-jcarousel-clone]');
+
+                    if (c.length > 0) {
+                        c.remove();
+                        this._reload();
+                    }
+
+                    this._trigger('animateend');
+
+                    callback.call(this, true);
+                }, this);
+
+            var opts = typeof animation === 'object' ?
+                           $.extend({}, animation) :
+                           {duration: animation},
+                oldComplete = opts.complete || $.noop;
+
+            if (animate === false) {
+                opts.duration = 0;
+            } else if (typeof $.fx.speeds[opts.duration] !== 'undefined') {
+                opts.duration = $.fx.speeds[opts.duration];
+            }
+
+            opts.complete = function() {
+                complete();
+                oldComplete.call(this);
+            };
+
+            this.move(properties, opts);
+
+            return this;
+        },
+        _prepare: function(item) {
+            var index  = this.index(item),
+                idx    = index,
+                wh     = this.dimension(item),
+                clip   = this.clipping(),
+                lrb    = this.vertical ? 'bottom' : (this.rtl ? 'left'  : 'right'),
+                center = this.options('center'),
+                update = {
+                    target:       item,
+                    first:        item,
+                    last:         item,
+                    visible:      item,
+                    fullyvisible: wh <= clip ? item : $()
+                },
+                curr,
+                isVisible,
+                margin,
+                dim;
+
+            if (center) {
+                wh /= 2;
+                clip /= 2;
+            }
+
+            if (wh < clip) {
+                while (true) {
+                    curr = this.items().eq(++idx);
+
+                    if (curr.length === 0) {
+                        if (!this.circular) {
+                            break;
+                        }
+
+                        curr = this.items().eq(0);
+
+                        if (item.get(0) === curr.get(0)) {
+                            break;
+                        }
+
+                        isVisible = this._visible.index(curr) >= 0;
+
+                        if (isVisible) {
+                            curr.after(curr.clone(true).attr('data-jcarousel-clone', true));
+                        }
+
+                        this.list().append(curr);
+
+                        if (!isVisible) {
+                            var props = {};
+                            props[this.lt] = this.dimension(curr);
+                            this.moveBy(props);
+                        }
+
+                        // Force items reload
+                        this._items = null;
+                    }
+
+                    dim = this.dimension(curr);
+
+                    if (dim === 0) {
+                        break;
+                    }
+
+                    wh += dim;
+
+                    update.last    = curr;
+                    update.visible = update.visible.add(curr);
+
+                    // Remove right/bottom margin from total width
+                    margin = toFloat(curr.css('margin-' + lrb));
+
+                    if ((wh - margin) <= clip) {
+                        update.fullyvisible = update.fullyvisible.add(curr);
+                    }
+
+                    if (wh >= clip) {
+                        break;
+                    }
+                }
+            }
+
+            if (!this.circular && !center && wh < clip) {
+                idx = index;
+
+                while (true) {
+                    if (--idx < 0) {
+                        break;
+                    }
+
+                    curr = this.items().eq(idx);
+
+                    if (curr.length === 0) {
+                        break;
+                    }
+
+                    dim = this.dimension(curr);
+
+                    if (dim === 0) {
+                        break;
+                    }
+
+                    wh += dim;
+
+                    update.first   = curr;
+                    update.visible = update.visible.add(curr);
+
+                    // Remove right/bottom margin from total width
+                    margin = toFloat(curr.css('margin-' + lrb));
+
+                    if ((wh - margin) <= clip) {
+                        update.fullyvisible = update.fullyvisible.add(curr);
+                    }
+
+                    if (wh >= clip) {
+                        break;
+                    }
+                }
+            }
+
+            this._update(update);
+
+            this.tail = 0;
+
+            if (!center &&
+                this.options('wrap') !== 'circular' &&
+                this.options('wrap') !== 'custom' &&
+                this.index(update.last) === (this.items().length - 1)) {
+
+                // Remove right/bottom margin from total width
+                wh -= toFloat(update.last.css('margin-' + lrb));
+
+                if (wh > clip) {
+                    this.tail = wh - clip;
+                }
+            }
+
+            return this;
+        },
+        _position: function(item) {
+            var first  = this._first,
+                pos    = first.position()[this.lt],
+                center = this.options('center'),
+                centerOffset = center ? (this.clipping() / 2) - (this.dimension(first) / 2) : 0;
+
+            if (this.rtl && !this.vertical) {
+                if (this.relative) {
+                    pos -= this.list().width() - this.dimension(first);
+                } else {
+                    pos -= this.clipping() - this.dimension(first);
+                }
+
+                pos += centerOffset;
+            } else {
+                pos -= centerOffset;
+            }
+
+            if (!center &&
+                (this.index(item) > this.index(first) || this.inTail) &&
+                this.tail) {
+                pos = this.rtl && !this.vertical ? pos - this.tail : pos + this.tail;
+                this.inTail = true;
+            } else {
+                this.inTail = false;
+            }
+
+            return -pos;
+        },
+        _update: function(update) {
+            var self = this,
+                current = {
+                    target:       this._target,
+                    first:        this._first,
+                    last:         this._last,
+                    visible:      this._visible,
+                    fullyvisible: this._fullyvisible
+                },
+                back = this.index(update.first || current.first) < this.index(current.first),
+                key,
+                doUpdate = function(key) {
+                    var elIn  = [],
+                        elOut = [];
+
+                    update[key].each(function() {
+                        if (current[key].index(this) < 0) {
+                            elIn.push(this);
+                        }
+                    });
+
+                    current[key].each(function() {
+                        if (update[key].index(this) < 0) {
+                            elOut.push(this);
+                        }
+                    });
+
+                    if (back) {
+                        elIn = elIn.reverse();
+                    } else {
+                        elOut = elOut.reverse();
+                    }
+
+                    self._trigger(key + 'in', $(elIn));
+                    self._trigger(key + 'out', $(elOut));
+
+                    self['_' + key] = update[key];
+                };
+
+            for (key in update) {
+                doUpdate(key);
+            }
+
+            return this;
+        }
+    });
+}(jQuery, window));
+
+(function($) {
+    'use strict';
+
+    $.jcarousel.fn.scrollIntoView = function(target, animate, callback) {
+        var parsed = $.jCarousel.parseTarget(target),
+            first  = this.index(this._fullyvisible.first()),
+            last   = this.index(this._fullyvisible.last()),
+            index;
+
+        if (parsed.relative) {
+            index = parsed.target < 0 ? Math.max(0, first + parsed.target) : last + parsed.target;
+        } else {
+            index = typeof parsed.target !== 'object' ? parsed.target : this.index(parsed.target);
+        }
+
+        if (index < first) {
+            return this.scroll(index, animate, callback);
+        }
+
+        if (index >= first && index <= last) {
+            if ($.isFunction(callback)) {
+                callback.call(this, false);
+            }
+
+            return this;
+        }
+
+        var items = this.items(),
+            clip = this.clipping(),
+            lrb  = this.vertical ? 'bottom' : (this.rtl ? 'left'  : 'right'),
+            wh   = 0,
+            curr;
+
+        while (true) {
+            curr = items.eq(index);
+
+            if (curr.length === 0) {
+                break;
+            }
+
+            wh += this.dimension(curr);
+
+            if (wh >= clip) {
+                var margin = parseFloat(curr.css('margin-' + lrb)) || 0;
+                if ((wh - margin) !== clip) {
+                    index++;
+                }
+                break;
+            }
+
+            if (index <= 0) {
+                break;
+            }
+
+            index--;
+        }
+
+        return this.scroll(index, animate, callback);
+    };
+}(jQuery));
+
+(function($) {
+    'use strict';
+
+    $.jCarousel.plugin('jcarouselControl', {
+        _options: {
+            target: '+=1',
+            event:  'click',
+            method: 'scroll'
+        },
+        _active: null,
+        _init: function() {
+            this.onDestroy = $.proxy(function() {
+                this._destroy();
+                this.carousel()
+                    .one('jcarousel:createend', $.proxy(this._create, this));
+            }, this);
+            this.onReload = $.proxy(this._reload, this);
+            this.onEvent = $.proxy(function(e) {
+                e.preventDefault();
+
+                var method = this.options('method');
+
+                if ($.isFunction(method)) {
+                    method.call(this);
+                } else {
+                    this.carousel()
+                        .jcarousel(this.options('method'), this.options('target'));
+                }
+            }, this);
+        },
+        _create: function() {
+            this.carousel()
+                .one('jcarousel:destroy', this.onDestroy)
+                .on('jcarousel:reloadend jcarousel:scrollend', this.onReload);
+
+            this._element
+                .on(this.options('event') + '.jcarouselcontrol', this.onEvent);
+
+            this._reload();
+        },
+        _destroy: function() {
+            this._element
+                .off('.jcarouselcontrol', this.onEvent);
+
+            this.carousel()
+                .off('jcarousel:destroy', this.onDestroy)
+                .off('jcarousel:reloadend jcarousel:scrollend', this.onReload);
+        },
+        _reload: function() {
+            var parsed   = $.jCarousel.parseTarget(this.options('target')),
+                carousel = this.carousel(),
+                active;
+
+            if (parsed.relative) {
+                active = carousel
+                    .jcarousel(parsed.target > 0 ? 'hasNext' : 'hasPrev');
+            } else {
+                var target = typeof parsed.target !== 'object' ?
+                                carousel.jcarousel('items').eq(parsed.target) :
+                                parsed.target;
+
+                active = carousel.jcarousel('target').index(target) >= 0;
+            }
+
+            if (this._active !== active) {
+                this._trigger(active ? 'active' : 'inactive');
+                this._active = active;
+            }
+
+            return this;
+        }
+    });
+}(jQuery));
+
+(function($) {
+    'use strict';
+
+    $.jCarousel.plugin('jcarouselPagination', {
+        _options: {
+            perPage: null,
+            item: function(page) {
+                return '<a href="#' + page + '">' + page + '</a>';
+            },
+            event:  'click',
+            method: 'scroll'
+        },
+        _carouselItems: null,
+        _pages: {},
+        _items: {},
+        _currentPage: null,
+        _init: function() {
+            this.onDestroy = $.proxy(function() {
+                this._destroy();
+                this.carousel()
+                    .one('jcarousel:createend', $.proxy(this._create, this));
+            }, this);
+            this.onReload = $.proxy(this._reload, this);
+            this.onScroll = $.proxy(this._update, this);
+        },
+        _create: function() {
+            this.carousel()
+                .one('jcarousel:destroy', this.onDestroy)
+                .on('jcarousel:reloadend', this.onReload)
+                .on('jcarousel:scrollend', this.onScroll);
+
+            this._reload();
+        },
+        _destroy: function() {
+            this._clear();
+
+            this.carousel()
+                .off('jcarousel:destroy', this.onDestroy)
+                .off('jcarousel:reloadend', this.onReload)
+                .off('jcarousel:scrollend', this.onScroll);
+
+            this._carouselItems = null;
+        },
+        _reload: function() {
+            var perPage = this.options('perPage');
+
+            this._pages = {};
+            this._items = {};
+
+            // Calculate pages
+            if ($.isFunction(perPage)) {
+                perPage = perPage.call(this);
+            }
+
+            if (perPage == null) {
+                this._pages = this._calculatePages();
+            } else {
+                var pp    = parseInt(perPage, 10) || 0,
+                    items = this._getCarouselItems(),
+                    page  = 1,
+                    i     = 0,
+                    curr;
+
+                while (true) {
+                    curr = items.eq(i++);
+
+                    if (curr.length === 0) {
+                        break;
+                    }
+
+                    if (!this._pages[page]) {
+                        this._pages[page] = curr;
+                    } else {
+                        this._pages[page] = this._pages[page].add(curr);
+                    }
+
+                    if (i % pp === 0) {
+                        page++;
+                    }
+                }
+            }
+
+            this._clear();
+
+            var self     = this,
+                carousel = this.carousel().data('jcarousel'),
+                element  = this._element,
+                item     = this.options('item'),
+                numCarouselItems = this._getCarouselItems().length;
+
+            $.each(this._pages, function(page, carouselItems) {
+                var currItem = self._items[page] = $(item.call(self, page, carouselItems));
+
+                currItem.on(self.options('event') + '.jcarouselpagination', $.proxy(function() {
+                    var target = carouselItems.eq(0);
+
+                    // If circular wrapping enabled, ensure correct scrolling direction
+                    if (carousel.circular) {
+                        var currentIndex = carousel.index(carousel.target()),
+                            newIndex     = carousel.index(target);
+
+                        if (parseFloat(page) > parseFloat(self._currentPage)) {
+                            if (newIndex < currentIndex) {
+                                target = '+=' + (numCarouselItems - currentIndex + newIndex);
+                            }
+                        } else {
+                            if (newIndex > currentIndex) {
+                                target = '-=' + (currentIndex + (numCarouselItems - newIndex));
+                            }
+                        }
+                    }
+
+                    carousel[this.options('method')](target);
+                }, self));
+
+                element.append(currItem);
+            });
+
+            this._update();
+        },
+        _update: function() {
+            var target = this.carousel().jcarousel('target'),
+                currentPage;
+
+            $.each(this._pages, function(page, carouselItems) {
+                carouselItems.each(function() {
+                    if (target.is(this)) {
+                        currentPage = page;
+                        return false;
+                    }
+                });
+
+                if (currentPage) {
+                    return false;
+                }
+            });
+
+            if (this._currentPage !== currentPage) {
+                this._trigger('inactive', this._items[this._currentPage]);
+                this._trigger('active', this._items[currentPage]);
+            }
+
+            this._currentPage = currentPage;
+        },
+        items: function() {
+            return this._items;
+        },
+        reloadCarouselItems: function() {
+            this._carouselItems = null;
+            return this;
+        },
+        _clear: function() {
+            this._element.empty();
+            this._currentPage = null;
+        },
+        _calculatePages: function() {
+            var carousel = this.carousel().data('jcarousel'),
+                items    = this._getCarouselItems(),
+                clip     = carousel.clipping(),
+                wh       = 0,
+                idx      = 0,
+                page     = 1,
+                pages    = {},
+                curr,
+                dim;
+
+            while (true) {
+                curr = items.eq(idx++);
+
+                if (curr.length === 0) {
+                    break;
+                }
+
+                dim = carousel.dimension(curr);
+
+                if ((wh + dim) > clip) {
+                    page++;
+                    wh = 0;
+                }
+
+                wh += dim;
+
+                if (!pages[page]) {
+                    pages[page] = curr;
+                } else {
+                    pages[page] = pages[page].add(curr);
+                }
+            }
+
+            return pages;
+        },
+        _getCarouselItems: function() {
+            if (!this._carouselItems) {
+                this._carouselItems = this.carousel().jcarousel('items');
+            }
+
+            return this._carouselItems;
+        }
+    });
+}(jQuery));
+
+(function($, document) {
+    'use strict';
+
+    var hiddenProp,
+        visibilityChangeEvent,
+        visibilityChangeEventNames = {
+            hidden: 'visibilitychange',
+            mozHidden: 'mozvisibilitychange',
+            msHidden: 'msvisibilitychange',
+            webkitHidden: 'webkitvisibilitychange'
+        }
+    ;
+
+    $.each(visibilityChangeEventNames, function(key, val) {
+        if (typeof document[key] !== 'undefined') {
+            hiddenProp = key;
+            visibilityChangeEvent = val;
+            return false;
+        }
+    });
+
+    $.jCarousel.plugin('jcarouselAutoscroll', {
+        _options: {
+            target:    '+=1',
+            interval:  3000,
+            autostart: true
+        },
+        _timer: null,
+        _started: false,
+        _init: function () {
+            this.onDestroy = $.proxy(function() {
+                this._destroy();
+                this.carousel()
+                    .one('jcarousel:createend', $.proxy(this._create, this));
+            }, this);
+
+            this.onAnimateEnd = $.proxy(this._start, this);
+
+            this.onVisibilityChange = $.proxy(function() {
+                if (document[hiddenProp]) {
+                    this._stop();
+                } else {
+                    this._start();
+                }
+            }, this);
+        },
+        _create: function() {
+            this.carousel()
+                .one('jcarousel:destroy', this.onDestroy);
+
+            $(document)
+                .on(visibilityChangeEvent, this.onVisibilityChange);
+
+            if (this.options('autostart')) {
+                this.start();
+            }
+        },
+        _destroy: function() {
+            this._stop();
+
+            this.carousel()
+                .off('jcarousel:destroy', this.onDestroy);
+
+            $(document)
+                .off(visibilityChangeEvent, this.onVisibilityChange);
+        },
+        _start: function() {
+            this._stop();
+
+            if (!this._started) {
+                return;
+            }
+
+            this.carousel()
+                .one('jcarousel:animateend', this.onAnimateEnd);
+
+            this._timer = setTimeout($.proxy(function() {
+                this.carousel().jcarousel('scroll', this.options('target'));
+            }, this), this.options('interval'));
+
+            return this;
+        },
+        _stop: function() {
+            if (this._timer) {
+                this._timer = clearTimeout(this._timer);
+            }
+
+            this.carousel()
+                .off('jcarousel:animateend', this.onAnimateEnd);
+
+            return this;
+        },
+        start: function() {
+            this._started = true;
+            this._start();
+
+            return this;
+        },
+        stop: function() {
+            this._started = false;
+            this._stop();
+
+            return this;
+        }
+    });
+}(jQuery, document));
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports) {
+
+/*! jсarouselSwipe - v0.3.4 - 2016-02-18
+* Copyright (c) 2015 Evgeniy Pelmenev; Licensed MIT */
+(function($) {
+    'use strict';
+
+    $.jCarousel.plugin('jcarouselSwipe', {
+        _options: {
+            perSwipe: 1,
+            draggable: true,
+            method: 'scroll'
+        },
+        _init: function() {
+            var self = this;
+            this.carousel().on('jcarousel:reloadend', function() {
+                self._reload();
+            });
+        },
+        _create: function() {
+            this._instance = this.carousel().data('jcarousel');
+            this._instance._element.css('touch-action', (!this._instance.vertical ? 'pan-y' : 'pan-x'));
+            this._carouselOffset = this.carousel().offset()[this._instance.lt] + parseInt(this.carousel().css((!this._instance.vertical ? 'border-left-width' : 'border-top-width'))) + parseInt(this.carousel().css((!this._instance.vertical ? 'padding-left' : 'padding-top')));
+            this._slidesCount = this._instance.items().length;
+            this.carousel().find('img, a')
+                .attr('draggable', false)
+                .css('user-select', 'none')
+                .on('dragstart', function(event) { event.preventDefault() });
+
+            this._destroy();
+
+            if (this._instance.items().length > this._instance.fullyvisible().length) {
+                this._initGestures();
+            }
+        },
+        _initGestures: function() {
+            var self = this;
+            var startTouch = {};
+            var currentTouch = {};
+            var started = false;
+            var animated = false;
+            var xKey = !this._instance.vertical ? 'x' : 'y';
+            var yKey = !this._instance.vertical ? 'y' : 'x';
+            var edgeLT, lastItem;
+            var startTarget;
+
+            this._element.on('touchstart.jcarouselSwipe mousedown.jcarouselSwipe', dragStart);
+
+            function dragStart(event) {
+                event = event.originalEvent || event || window.event;
+                startTouch = getTouches(event);
+                startTarget = event.target || event.srcElement;
+
+                if (self._options.draggable) {
+                    $(document).on('touchmove.jcarouselSwipe mousemove.jcarouselSwipe', dragMove);
+                }
+                $(document).on('touchend.jcarouselSwipe touchcancel.jcarouselSwipe mouseup.jcarouselSwipe', dragEnd);
+            }
+
+            function dragMove(event) {
+                var delta, newLT, itemsOption;
+                event = event.originalEvent || event || window.event;
+                currentTouch = getTouches(event);
+
+                if (started) {
+                    event.preventDefault();
+                }
+
+                if (Math.abs(startTouch[yKey] - currentTouch[yKey]) > 10 && !started) {
+                    $(document).off('touchmove.jcarouselSwipe mousemove.jcarouselSwipe');
+                    return;
+                }
+
+                if (!animated && Math.abs(startTouch[xKey] - currentTouch[xKey]) > 10) {
+                    delta = startTouch[xKey] - currentTouch[xKey];
+
+                    if (!started) {
+                        started = true;
+                        self._addClones();
+                        self._currentLT = self._getListPosition();
+                        itemsOption = self._instance.options('items');
+                        lastItem = ($.isFunction(itemsOption) ? itemsOption.call(self._instance) : self._instance.list().find(itemsOption)).last();
+                        edgeLT = self._instance.rtl && !self._instance.vertical ?
+                            (self._instance.dimension(self._instance.list()) - lastItem.position()[self._instance.lt] - self._instance.clipping()) :
+                            (lastItem.position()[self._instance.lt] + self._instance.dimension(lastItem) - self._instance.clipping()) * -1;
+                    }
+
+                    if (self._instance._options.wrap === 'circular') {
+                        newLT = self._currentLT - delta;
+                    } else if (self._instance.rtl && !self._instance.vertical) {
+                        newLT = Math.max(0, Math.min(self._currentLT - delta, edgeLT));
+                    } else {
+                        newLT = Math.min(0, Math.max(self._currentLT - delta, edgeLT));
+                    }
+
+
+                    self._setListPosition(newLT + 'px');
+                }
+            }
+
+            function dragEnd(event) {
+                event = event.originalEvent || event || window.event;
+                currentTouch = getTouches(event);
+                if (started || (!self._options.draggable && Math.abs(startTouch[xKey] - currentTouch[xKey]) > 10)) {
+                    var newTarget = self._getNewTarget(startTouch[xKey] - currentTouch[xKey] > 0);
+                    newTarget = self._instance._options.wrap === 'circular' ? newTarget.relative : newTarget.static;
+
+                    if (startTarget === event.target) {
+                        $(event.target).on("click.disable", function (event) {
+                            event.stopImmediatePropagation();
+                            event.stopPropagation();
+                            event.preventDefault();
+                            $(event.target).off("click.disable");
+                        });
+                    }
+
+                    if (self._instance._options.wrap === 'circular') {
+                        self._removeClones();
+                        self._instance._items = null;
+                    }
+                    animated = true;
+                    self._instance[self._options.method](newTarget, function() {
+                        started = false;
+                        animated = false;
+                        if (self._instance._options.wrap !== 'circular') {
+                            self._removeClones();
+                            self._instance._items = null;
+                        }
+                    });
+
+                }
+
+                $(document).off('touchmove.jcarouselSwipe mousemove.jcarouselSwipe');
+                $(document).off('touchend.jcarouselSwipe touchcancel.jcarouselSwipe mouseup.jcarouselSwipe');
+            }
+
+            function getTouches(event) {
+                if (event.touches !== undefined && event.touches.length > 0) {
+                    return {
+                        x: event.touches[0].pageX,
+                        y: event.touches[0].pageY
+                    }
+                } else if (event.changedTouches !== undefined && event.changedTouches.length > 0) {
+                    return {
+                        x: event.changedTouches[0].pageX,
+                        y: event.changedTouches[0].pageY
+                    }
+                } else {
+                    if (event.pageX !== undefined) {
+                        return {
+                            x: event.pageX,
+                            y: event.pageY
+                        }
+                    } else {
+                        return {
+                            x: event.clientX,
+                            y: event.clientY
+                        }
+                    }
+                }
+            }
+        },
+        _getNewTarget: function(isSwipeToLT) {
+            var target = this._instance.target();
+            var staticTarget = this._instance.index(target);
+            var relativeTarget = 0;
+            var isToNext = this._instance.rtl && !this._instance.vertical ? !isSwipeToLT : isSwipeToLT;
+            var offsetDiff;
+
+            if (this._options.draggable) {
+                while(true) {
+                    if (this._instance.rtl && !this._instance.vertical) {
+                        offsetDiff = (target.offset()[this._instance.lt] + this._instance.dimension(target)) - (this._carouselOffset + this._instance.clipping());
+                    } else {
+                        offsetDiff = target.offset()[this._instance.lt] - this._carouselOffset;
+                    }
+
+                    if (!target.length ||
+                        isSwipeToLT && offsetDiff >= 0 ||
+                        !isSwipeToLT && offsetDiff <= 0) {
+                        break;
+                    }
+
+                    if (isToNext) {
+                        target = target.next();
+                        if (!target.length) break;
+                        staticTarget = staticTarget + 1;
+                    } else {
+                        target = target.prev();
+                        if (!target.length) break;
+                        staticTarget = staticTarget - 1;
+                    }
+
+                    relativeTarget++;
+                }
+            } else {
+                staticTarget = isToNext ? staticTarget + 1 : staticTarget - 1;
+                relativeTarget = 1;
+            }
+
+            if (isToNext) {
+                staticTarget = staticTarget + Math.abs(relativeTarget - this._options.perSwipe * Math.ceil(relativeTarget / this._options.perSwipe));
+            } else {
+                staticTarget = staticTarget - Math.abs(relativeTarget - this._options.perSwipe * Math.ceil(relativeTarget / this._options.perSwipe));
+            }
+
+            if (this._instance._options.wrap === 'first') {
+                staticTarget = Math.min(this._slidesCount - 1, staticTarget);
+            } else if (this._instance._options.wrap === 'last') {
+                staticTarget = Math.max(0, staticTarget);
+            } else if (!this._instance._options.wrap) {
+                staticTarget = Math.max(0, Math.min(this._slidesCount - 1, staticTarget));
+            }
+
+            staticTarget = staticTarget % this._slidesCount;
+            relativeTarget = this._options.perSwipe * Math.ceil(relativeTarget / this._options.perSwipe);
+
+            return {
+                static: staticTarget,
+                relative: (isToNext ? '+' : '-') + '=' + relativeTarget
+            };
+        },
+        _getListPosition: function() {
+            var list = this._instance.list();
+            var position = list.position();
+
+            if (this._instance.rtl) {
+                position.left = list.width() + position.left - this._carousel.width();
+            }
+
+            return position[this._instance.lt];
+        },
+        _setListPosition: function(position) {
+            var option       = this._instance.options('transitions');
+            var transforms   = !!option.transforms;
+            var transforms3d = !!option.transforms3d;
+            var css = {};
+            var isLeft = this._instance.lt === 'left';
+            position = position || 0;
+
+            if (transforms3d) {
+                css.transform = 'translate3d(' + (isLeft ? position : 0) + ',' + (isLeft ? 0 : position) + ',0)';
+            } else if (transforms) {
+                css.transform = 'translate(' + (isLeft ? position : 0) + ',' + (isLeft ? 0 : position) + ')';
+            } else {
+                css[this._instance.lt] = position;
+            }
+
+            this._instance.list().css(css);
+        },
+        _addClones: function() {
+            var self = this;
+            var inst = this._instance;
+            var items = inst.items();
+            var first = inst.first();
+            var last = inst.last();
+            var clip = inst.dimension($(window));
+            var curr;
+            var wh;
+            var index;
+            var clonesBefore = [];
+            var clonesAfter = [];
+            var lt = self._getListPosition();
+            var moveObj = {};
+
+            if (!inst._options.wrap) {
+                return false;
+            }
+
+            if (inst._options.wrap !== 'last') {
+                for (wh = 0, index = 0, curr = first; wh < clip;) {
+                    curr = curr.prev();
+
+                    if (curr.length === 0) {
+                        index = --index < -items.length ? -1 : index;
+                        wh += inst.dimension(items.eq(index));
+                        clonesBefore.push(items.eq(index).clone().attr('data-jcarousel-clone', true));
+                    } else {
+                        wh += inst.dimension(curr);
+                    }
+                }
+
+                lt = (inst.rtl ? Math.max(lt, wh) : Math.min(lt, - wh)) + 'px';
+                inst._items.first().before(clonesBefore.reverse());
+                moveObj[inst.lt] = lt;
+                inst.move(moveObj);
+            }
+
+            if (inst._options.wrap !== 'first') {
+                for (wh = 0, index = -1, curr = last; wh < clip;) {
+                    curr = curr.next();
+
+                    if (curr.length === 0) {
+                        index = ++index > items.length - 1 ? 0 : index;
+                        wh += inst.dimension(items.eq(index));
+                        clonesAfter.push(items.eq(index).clone().attr('data-jcarousel-clone', true));
+                    } else {
+                        wh += inst.dimension(curr);
+                    }
+                }
+
+                inst._items.last().after(clonesAfter);
+            }
+        },
+        _removeClones: function() {
+            var startPosition = this._instance.first().position()[this._instance.lt];
+            var removeCLonesWidth;
+            var moveObj = {};
+            this._instance.list().find('[data-jcarousel-clone]').remove();
+            removeCLonesWidth = startPosition - this._instance.first().position()[this._instance.lt];
+            if (removeCLonesWidth) {
+                moveObj[this._instance.lt] = this._getListPosition() + removeCLonesWidth + 'px';
+                this._instance.move(moveObj);
+            }
+        },
+        _destroy: function() {
+            this._element.off('touchstart.jcarouselSwipe mousedown.jcarouselSwipe');
+            $(document).off('touchmove.jcarouselSwipe mousemove.jcarouselSwipe touchend.jcarouselSwipe touchcancel.jcarouselSwipe mouseup.jcarouselSwipe');
+        },
+        _reload: function() {
+            this._create();
+        }
+    });
+}(jQuery));
+
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(41),
+  var crypt = __webpack_require__(43),
       utf8 = __webpack_require__(12).utf8,
       isBuffer = __webpack_require__(6),
       bin = __webpack_require__(12).bin,
@@ -42204,7 +44026,7 @@ return plugin;
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -42306,7 +44128,954 @@ return plugin;
 
 
 /***/ }),
-/* 42 */
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var accounting = __webpack_require__(45)
+var assign = __webpack_require__(46)
+var localeCurrency = __webpack_require__(47)
+var currencies = __webpack_require__(49)
+var localeFormats = __webpack_require__(50)
+
+var defaultCurrency = {
+  symbol: '',
+  thousandsSeparator: ',',
+  decimalSeparator: '.',
+  symbolOnLeft: true,
+  spaceBetweenAmountAndSymbol: false,
+  decimalDigits: 2
+}
+
+var defaultLocaleFormat = {}
+
+var formatMapping = [
+  {
+    symbolOnLeft: true,
+    spaceBetweenAmountAndSymbol: false,
+    format: {
+      pos: '%s%v',
+      neg: '-%s%v',
+      zero: '%s%v'
+    }
+  },
+  {
+    symbolOnLeft: true,
+    spaceBetweenAmountAndSymbol: true,
+    format: {
+      pos: '%s %v',
+      neg: '-%s %v',
+      zero: '%s %v'
+    }
+  },
+  {
+    symbolOnLeft: false,
+    spaceBetweenAmountAndSymbol: false,
+    format: {
+      pos: '%v%s',
+      neg: '-%v%s',
+      zero: '%v%s'
+    }
+  },
+  {
+    symbolOnLeft: false,
+    spaceBetweenAmountAndSymbol: true,
+    format: {
+      pos: '%v %s',
+      neg: '-%v %s',
+      zero: '%v %s'
+    }
+  }
+]
+
+function format(value, options) {
+  var code = options.code || (options.locale && localeCurrency.getCurrency(options.locale))
+  var localeFormat = localeFormats[options.locale] || defaultLocaleFormat
+  var currency = assign({}, defaultCurrency, findCurrency(code), localeFormat)
+  
+  var symbolOnLeft = currency.symbolOnLeft
+  var spaceBetweenAmountAndSymbol = currency.spaceBetweenAmountAndSymbol
+
+  var format = formatMapping.filter(function(f) {
+    return f.symbolOnLeft == symbolOnLeft && f.spaceBetweenAmountAndSymbol == spaceBetweenAmountAndSymbol
+  })[0].format
+
+  return accounting.formatMoney(value, {
+    symbol: isUndefined(options.symbol)
+              ? currency.symbol
+              : options.symbol,
+
+    decimal: isUndefined(options.decimal)
+              ? currency.decimalSeparator
+              : options.decimal,
+
+    thousand: isUndefined(options.thousand)
+              ? currency.thousandsSeparator
+              : options.thousand,
+
+    precision: typeof options.precision === 'number'
+              ? options.precision
+              : currency.decimalDigits,
+
+    format: ['string', 'object'].indexOf(typeof options.format) > -1
+              ? options.format
+              : format
+  })
+}
+
+function findCurrency (currencyCode) {
+  return currencies[currencyCode]
+}
+
+function isUndefined (val) {
+  return typeof val === 'undefined'
+}
+
+function unformat(value, options) {
+  var code = options.code || (options.locale && localeCurrency.getCurrency(options.locale))
+  var localeFormat = localeFormats[options.locale] || defaultLocaleFormat
+  var currency = assign({}, defaultCurrency, findCurrency(code), localeFormat)
+  var decimal = isUndefined(options.decimal) ? currency.decimalSeparator : options.decimal
+  return accounting.unformat(value, decimal)
+}
+
+module.exports = {
+  defaultCurrency: defaultCurrency,
+  get currencies() {
+    // In favor of backwards compatibility, the currencies map is converted to an array here
+    return Object.keys(currencies).map(function(key) {
+      return currencies[key]
+    })
+  },
+  findCurrency: findCurrency,
+  format: format,
+  unformat: unformat
+}
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * accounting.js v0.4.1
+ * Copyright 2014 Open Exchange Rates
+ *
+ * Freely distributable under the MIT license.
+ * Portions of accounting.js are inspired or borrowed from underscore.js
+ *
+ * Full details and documentation:
+ * http://openexchangerates.github.io/accounting.js/
+ */
+
+(function(root, undefined) {
+
+	/* --- Setup --- */
+
+	// Create the local library object, to be exported or referenced globally later
+	var lib = {};
+
+	// Current version
+	lib.version = '0.4.1';
+
+
+	/* --- Exposed settings --- */
+
+	// The library's settings configuration object. Contains default parameters for
+	// currency and number formatting
+	lib.settings = {
+		currency: {
+			symbol : "$",		// default currency symbol is '$'
+			format : "%s%v",	// controls output: %s = symbol, %v = value (can be object, see docs)
+			decimal : ".",		// decimal point separator
+			thousand : ",",		// thousands separator
+			precision : 2,		// decimal places
+			grouping : 3		// digit grouping (not implemented yet)
+		},
+		number: {
+			precision : 0,		// default precision on numbers is 0
+			grouping : 3,		// digit grouping (not implemented yet)
+			thousand : ",",
+			decimal : "."
+		}
+	};
+
+
+	/* --- Internal Helper Methods --- */
+
+	// Store reference to possibly-available ECMAScript 5 methods for later
+	var nativeMap = Array.prototype.map,
+		nativeIsArray = Array.isArray,
+		toString = Object.prototype.toString;
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js
+	 */
+	function isString(obj) {
+		return !!(obj === '' || (obj && obj.charCodeAt && obj.substr));
+	}
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js, delegates to ECMA5's native Array.isArray
+	 */
+	function isArray(obj) {
+		return nativeIsArray ? nativeIsArray(obj) : toString.call(obj) === '[object Array]';
+	}
+
+	/**
+	 * Tests whether supplied parameter is a true object
+	 */
+	function isObject(obj) {
+		return obj && toString.call(obj) === '[object Object]';
+	}
+
+	/**
+	 * Extends an object with a defaults object, similar to underscore's _.defaults
+	 *
+	 * Used for abstracting parameter handling from API methods
+	 */
+	function defaults(object, defs) {
+		var key;
+		object = object || {};
+		defs = defs || {};
+		// Iterate over object non-prototype properties:
+		for (key in defs) {
+			if (defs.hasOwnProperty(key)) {
+				// Replace values with defaults only if undefined (allow empty/zero values):
+				if (object[key] == null) object[key] = defs[key];
+			}
+		}
+		return object;
+	}
+
+	/**
+	 * Implementation of `Array.map()` for iteration loops
+	 *
+	 * Returns a new Array as a result of calling `iterator` on each array value.
+	 * Defers to native Array.map if available
+	 */
+	function map(obj, iterator, context) {
+		var results = [], i, j;
+
+		if (!obj) return results;
+
+		// Use native .map method if it exists:
+		if (nativeMap && obj.map === nativeMap) return obj.map(iterator, context);
+
+		// Fallback for native .map:
+		for (i = 0, j = obj.length; i < j; i++ ) {
+			results[i] = iterator.call(context, obj[i], i, obj);
+		}
+		return results;
+	}
+
+	/**
+	 * Check and normalise the value of precision (must be positive integer)
+	 */
+	function checkPrecision(val, base) {
+		val = Math.round(Math.abs(val));
+		return isNaN(val)? base : val;
+	}
+
+
+	/**
+	 * Parses a format string or object and returns format obj for use in rendering
+	 *
+	 * `format` is either a string with the default (positive) format, or object
+	 * containing `pos` (required), `neg` and `zero` values (or a function returning
+	 * either a string or object)
+	 *
+	 * Either string or format.pos must contain "%v" (value) to be valid
+	 */
+	function checkCurrencyFormat(format) {
+		var defaults = lib.settings.currency.format;
+
+		// Allow function as format parameter (should return string or object):
+		if ( typeof format === "function" ) format = format();
+
+		// Format can be a string, in which case `value` ("%v") must be present:
+		if ( isString( format ) && format.match("%v") ) {
+
+			// Create and return positive, negative and zero formats:
+			return {
+				pos : format,
+				neg : format.replace("-", "").replace("%v", "-%v"),
+				zero : format
+			};
+
+		// If no format, or object is missing valid positive value, use defaults:
+		} else if ( !format || !format.pos || !format.pos.match("%v") ) {
+
+			// If defaults is a string, casts it to an object for faster checking next time:
+			return ( !isString( defaults ) ) ? defaults : lib.settings.currency.format = {
+				pos : defaults,
+				neg : defaults.replace("%v", "-%v"),
+				zero : defaults
+			};
+
+		}
+		// Otherwise, assume format was fine:
+		return format;
+	}
+
+
+	/* --- API Methods --- */
+
+	/**
+	 * Takes a string/array of strings, removes all formatting/cruft and returns the raw float value
+	 * Alias: `accounting.parse(string)`
+	 *
+	 * Decimal must be included in the regular expression to match floats (defaults to
+	 * accounting.settings.number.decimal), so if the number uses a non-standard decimal 
+	 * separator, provide it as the second argument.
+	 *
+	 * Also matches bracketed negatives (eg. "$ (1.99)" => -1.99)
+	 *
+	 * Doesn't throw any errors (`NaN`s become 0) but this may change in future
+	 */
+	var unformat = lib.unformat = lib.parse = function(value, decimal) {
+		// Recursively unformat arrays:
+		if (isArray(value)) {
+			return map(value, function(val) {
+				return unformat(val, decimal);
+			});
+		}
+
+		// Fails silently (need decent errors):
+		value = value || 0;
+
+		// Return the value as-is if it's already a number:
+		if (typeof value === "number") return value;
+
+		// Default decimal point comes from settings, but could be set to eg. "," in opts:
+		decimal = decimal || lib.settings.number.decimal;
+
+		 // Build regex to strip out everything except digits, decimal point and minus sign:
+		var regex = new RegExp("[^0-9-" + decimal + "]", ["g"]),
+			unformatted = parseFloat(
+				("" + value)
+				.replace(/\((.*)\)/, "-$1") // replace bracketed values with negatives
+				.replace(regex, '')         // strip out any cruft
+				.replace(decimal, '.')      // make sure decimal point is standard
+			);
+
+		// This will fail silently which may cause trouble, let's wait and see:
+		return !isNaN(unformatted) ? unformatted : 0;
+	};
+
+
+	/**
+	 * Implementation of toFixed() that treats floats more like decimals
+	 *
+	 * Fixes binary rounding issues (eg. (0.615).toFixed(2) === "0.61") that present
+	 * problems for accounting- and finance-related software.
+	 */
+	var toFixed = lib.toFixed = function(value, precision) {
+		precision = checkPrecision(precision, lib.settings.number.precision);
+		var power = Math.pow(10, precision);
+
+		// Multiply up by precision, round accurately, then divide and use native toFixed():
+		return (Math.round(lib.unformat(value) * power) / power).toFixed(precision);
+	};
+
+
+	/**
+	 * Format a number, with comma-separated thousands and custom precision/decimal places
+	 * Alias: `accounting.format()`
+	 *
+	 * Localise by overriding the precision and thousand / decimal separators
+	 * 2nd parameter `precision` can be an object matching `settings.number`
+	 */
+	var formatNumber = lib.formatNumber = lib.format = function(number, precision, thousand, decimal) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val) {
+				return formatNumber(val, precision, thousand, decimal);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(precision) ? precision : {
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal
+				}),
+				lib.settings.number
+			),
+
+			// Clean up precision
+			usePrecision = checkPrecision(opts.precision),
+
+			// Do some calc:
+			negative = number < 0 ? "-" : "",
+			base = parseInt(toFixed(Math.abs(number || 0), usePrecision), 10) + "",
+			mod = base.length > 3 ? base.length % 3 : 0;
+
+		// Format the number:
+		return negative + (mod ? base.substr(0, mod) + opts.thousand : "") + base.substr(mod).replace(/(\d{3})(?=\d)/g, "$1" + opts.thousand) + (usePrecision ? opts.decimal + toFixed(Math.abs(number), usePrecision).split('.')[1] : "");
+	};
+
+
+	/**
+	 * Format a number into currency
+	 *
+	 * Usage: accounting.formatMoney(number, symbol, precision, thousandsSep, decimalSep, format)
+	 * defaults: (0, "$", 2, ",", ".", "%s%v")
+	 *
+	 * Localise by overriding the symbol, precision, thousand / decimal separators and format
+	 * Second param can be an object matching `settings.currency` which is the easiest way.
+	 *
+	 * To do: tidy up the parameters
+	 */
+	var formatMoney = lib.formatMoney = function(number, symbol, precision, thousand, decimal, format) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val){
+				return formatMoney(val, symbol, precision, thousand, decimal, format);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero):
+			formats = checkCurrencyFormat(opts.format),
+
+			// Choose which format to use for this value:
+			useFormat = number > 0 ? formats.pos : number < 0 ? formats.neg : formats.zero;
+
+		// Return with currency symbol added:
+		return useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(number), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+	};
+
+
+	/**
+	 * Format a list of numbers into an accounting column, padding with whitespace
+	 * to line up currency symbols, thousand separators and decimals places
+	 *
+	 * List should be an array of numbers
+	 * Second parameter can be an object containing keys that match the params
+	 *
+	 * Returns array of accouting-formatted number strings of same length
+	 *
+	 * NB: `white-space:pre` CSS rule is required on the list container to prevent
+	 * browsers from collapsing the whitespace in the output strings.
+	 */
+	lib.formatColumn = function(list, symbol, precision, thousand, decimal, format) {
+		if (!list) return [];
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero), only need pos for now:
+			formats = checkCurrencyFormat(opts.format),
+
+			// Whether to pad at start of string or after currency symbol:
+			padAfterSymbol = formats.pos.indexOf("%s") < formats.pos.indexOf("%v") ? true : false,
+
+			// Store value for the length of the longest string in the column:
+			maxLength = 0,
+
+			// Format the list according to options, store the length of the longest string:
+			formatted = map(list, function(val, i) {
+				if (isArray(val)) {
+					// Recursively format columns if list is a multi-dimensional array:
+					return lib.formatColumn(val, opts);
+				} else {
+					// Clean up the value
+					val = unformat(val);
+
+					// Choose which format to use for this value (pos, neg or zero):
+					var useFormat = val > 0 ? formats.pos : val < 0 ? formats.neg : formats.zero,
+
+						// Format this value, push into formatted list and save the length:
+						fVal = useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(val), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+
+					if (fVal.length > maxLength) maxLength = fVal.length;
+					return fVal;
+				}
+			});
+
+		// Pad each number in the list and send back the column of numbers:
+		return map(formatted, function(val, i) {
+			// Only if this is a string (not a nested array, which would have already been padded):
+			if (isString(val) && val.length < maxLength) {
+				// Depending on symbol position, pad after symbol or at index 0:
+				return padAfterSymbol ? val.replace(opts.symbol, opts.symbol+(new Array(maxLength - val.length + 1).join(" "))) : (new Array(maxLength - val.length + 1).join(" ")) + val;
+			}
+			return val;
+		});
+	};
+
+
+	/* --- Module Definition --- */
+
+	// Export accounting for CommonJS. If being loaded as an AMD module, define it as such.
+	// Otherwise, just add `accounting` to the global object
+	if (true) {
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports = lib;
+		}
+		exports.accounting = lib;
+	} else if (typeof define === 'function' && define.amd) {
+		// Return the library as an AMD module:
+		define([], function() {
+			return lib;
+		});
+	} else {
+		// Use accounting.noConflict to restore `accounting` back to its original value.
+		// Returns a reference to the library's `accounting` object;
+		// e.g. `var numbers = accounting.noConflict();`
+		lib.noConflict = (function(oldAccounting) {
+			return function() {
+				// Reset the value of the root's `accounting` variable:
+				root.accounting = oldAccounting;
+				// Delete the noConflict method:
+				lib.noConflict = undefined;
+				// Return reference to the library to re-assign it:
+				return lib;
+			};
+		})(root.accounting);
+
+		// Declare `fx` on the root (global/window) object:
+		root['accounting'] = lib;
+	}
+
+	// Root will be `window` in browser or `global` on the server:
+}(this));
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = __webpack_require__(48);
+
+var getCountryCode = function(localeString) {
+    var components = localeString.split("_");
+    if (components.length == 2) {
+        return components.pop();
+    }
+    components = localeString.split("-");
+    if (components.length == 2) {
+        return components.pop();
+    }
+    return localeString;
+}
+
+exports.getCurrency = function(locale) {
+    var countryCode = getCountryCode(locale).toUpperCase();
+    if (countryCode in map) {
+        return map[countryCode];
+    }
+    return null;
+}
+
+exports.getLocales = function(currencyCode) {
+    currencyCode = currencyCode.toUpperCase();
+    var locales = [];
+    for (countryCode in map) {
+        if (map[countryCode] === currencyCode) {
+            locales.push(countryCode);
+        }
+    }
+    return locales;
+}
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports) {
+
+// Generated using ShowCurrencies.java
+var map = {
+AD: 'EUR',
+AE: 'AED',
+AF: 'AFN',
+AG: 'XCD',
+AI: 'XCD',
+AL: 'ALL',
+AM: 'AMD',
+AN: 'ANG',
+AO: 'AOA',
+AR: 'ARS',
+AS: 'USD',
+AT: 'EUR',
+AU: 'AUD',
+AW: 'AWG',
+AX: 'EUR',
+AZ: 'AZN',
+BA: 'BAM',
+BB: 'BBD',
+BD: 'BDT',
+BE: 'EUR',
+BF: 'XOF',
+BG: 'BGN',
+BH: 'BHD',
+BI: 'BIF',
+BJ: 'XOF',
+BL: 'EUR',
+BM: 'BMD',
+BN: 'BND',
+BO: 'BOB',
+BQ: 'USD',
+BR: 'BRL',
+BS: 'BSD',
+BT: 'BTN',
+BV: 'NOK',
+BW: 'BWP',
+BY: 'BYR',
+BZ: 'BZD',
+CA: 'CAD',
+CC: 'AUD',
+CD: 'CDF',
+CF: 'XAF',
+CG: 'XAF',
+CH: 'CHF',
+CI: 'XOF',
+CK: 'NZD',
+CL: 'CLP',
+CM: 'XAF',
+CN: 'CNY',
+CO: 'COP',
+CR: 'CRC',
+CU: 'CUP',
+CV: 'CVE',
+CW: 'ANG',
+CX: 'AUD',
+CY: 'EUR',
+CZ: 'CZK',
+DE: 'EUR',
+DJ: 'DJF',
+DK: 'DKK',
+DM: 'XCD',
+DO: 'DOP',
+DZ: 'DZD',
+EC: 'USD',
+EE: 'EUR',
+EG: 'EGP',
+EH: 'MAD',
+ER: 'ERN',
+ES: 'EUR',
+ET: 'ETB',
+FI: 'EUR',
+FJ: 'FJD',
+FK: 'FKP',
+FM: 'USD',
+FO: 'DKK',
+FR: 'EUR',
+GA: 'XAF',
+GB: 'GBP',
+GD: 'XCD',
+GE: 'GEL',
+GF: 'EUR',
+GG: 'GBP',
+GH: 'GHS',
+GI: 'GIP',
+GL: 'DKK',
+GM: 'GMD',
+GN: 'GNF',
+GP: 'EUR',
+GQ: 'XAF',
+GR: 'EUR',
+GS: 'GBP',
+GT: 'GTQ',
+GU: 'USD',
+GW: 'XOF',
+GY: 'GYD',
+HK: 'HKD',
+HM: 'AUD',
+HN: 'HNL',
+HR: 'HRK',
+HT: 'HTG',
+HU: 'HUF',
+ID: 'IDR',
+IE: 'EUR',
+IL: 'ILS',
+IM: 'GBP',
+IN: 'INR',
+IO: 'USD',
+IQ: 'IQD',
+IR: 'IRR',
+IS: 'ISK',
+IT: 'EUR',
+JE: 'GBP',
+JM: 'JMD',
+JO: 'JOD',
+JP: 'JPY',
+KE: 'KES',
+KG: 'KGS',
+KH: 'KHR',
+KI: 'AUD',
+KM: 'KMF',
+KN: 'XCD',
+KP: 'KPW',
+KR: 'KRW',
+KW: 'KWD',
+KY: 'KYD',
+KZ: 'KZT',
+LA: 'LAK',
+LB: 'LBP',
+LC: 'XCD',
+LI: 'CHF',
+LK: 'LKR',
+LR: 'LRD',
+LS: 'LSL',
+LT: 'LTL',
+LU: 'EUR',
+LV: 'LVL',
+LY: 'LYD',
+MA: 'MAD',
+MC: 'EUR',
+MD: 'MDL',
+ME: 'EUR',
+MF: 'EUR',
+MG: 'MGA',
+MH: 'USD',
+MK: 'MKD',
+ML: 'XOF',
+MM: 'MMK',
+MN: 'MNT',
+MO: 'MOP',
+MP: 'USD',
+MQ: 'EUR',
+MR: 'MRO',
+MS: 'XCD',
+MT: 'EUR',
+MU: 'MUR',
+MV: 'MVR',
+MW: 'MWK',
+MX: 'MXN',
+MY: 'MYR',
+MZ: 'MZN',
+NA: 'NAD',
+NC: 'XPF',
+NE: 'XOF',
+NF: 'AUD',
+NG: 'NGN',
+NI: 'NIO',
+NL: 'EUR',
+NO: 'NOK',
+NP: 'NPR',
+NR: 'AUD',
+NU: 'NZD',
+NZ: 'NZD',
+OM: 'OMR',
+PA: 'PAB',
+PE: 'PEN',
+PF: 'XPF',
+PG: 'PGK',
+PH: 'PHP',
+PK: 'PKR',
+PL: 'PLN',
+PM: 'EUR',
+PN: 'NZD',
+PR: 'USD',
+PS: 'ILS',
+PT: 'EUR',
+PW: 'USD',
+PY: 'PYG',
+QA: 'QAR',
+RE: 'EUR',
+RO: 'RON',
+RS: 'RSD',
+RU: 'RUB',
+RW: 'RWF',
+SA: 'SAR',
+SB: 'SBD',
+SC: 'SCR',
+SD: 'SDG',
+SE: 'SEK',
+SG: 'SGD',
+SH: 'SHP',
+SI: 'EUR',
+SJ: 'NOK',
+SK: 'EUR',
+SL: 'SLL',
+SM: 'EUR',
+SN: 'XOF',
+SO: 'SOS',
+SR: 'SRD',
+ST: 'STD',
+SV: 'SVC',
+SX: 'ANG',
+SY: 'SYP',
+SZ: 'SZL',
+TC: 'USD',
+TD: 'XAF',
+TF: 'EUR',
+TG: 'XOF',
+TH: 'THB',
+TJ: 'TJS',
+TK: 'NZD',
+TL: 'USD',
+TM: 'TMT',
+TN: 'TND',
+TO: 'TOP',
+TR: 'TRY',
+TT: 'TTD',
+TV: 'AUD',
+TW: 'TWD',
+TZ: 'TZS',
+UA: 'UAH',
+UG: 'UGX',
+UM: 'USD',
+US: 'USD',
+UY: 'UYU',
+UZ: 'UZS',
+VA: 'EUR',
+VC: 'XCD',
+VE: 'VEF',
+VG: 'USD',
+VI: 'USD',
+VN: 'VND',
+VU: 'VUV',
+WF: 'XPF',
+WS: 'WST',
+YE: 'YER',
+YT: 'EUR',
+ZA: 'ZAR',
+ZM: 'ZMK',
+ZW: 'ZWL'
+};
+
+module.exports = map;
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports) {
+
+module.exports = {"AED":{"code":"AED","symbol":"د.إ.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"AFN":{"code":"AFN","symbol":"؋","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ALL":{"code":"ALL","symbol":"Lek","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AMD":{"code":"AMD","symbol":"֏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ANG":{"code":"ANG","symbol":"ƒ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AOA":{"code":"AOA","symbol":"Kz","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ARS":{"code":"ARS","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"AUD":{"code":"AUD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AWG":{"code":"AWG","symbol":"ƒ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AZN":{"code":"AZN","symbol":"₼","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BAM":{"code":"BAM","symbol":"КМ","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BBD":{"code":"BBD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BDT":{"code":"BDT","symbol":"৳","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":0},"BGN":{"code":"BGN","symbol":"лв.","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BHD":{"code":"BHD","symbol":"د.ب.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"BIF":{"code":"BIF","symbol":"FBu","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"BMD":{"code":"BMD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BND":{"code":"BND","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"BOB":{"code":"BOB","symbol":"Bs","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BRL":{"code":"BRL","symbol":"R$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BSD":{"code":"BSD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BTC":{"code":"BTC","symbol":"Ƀ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BTN":{"code":"BTN","symbol":"Nu.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":1},"BWP":{"code":"BWP","symbol":"P","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BYR":{"code":"BYR","symbol":"р.","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BZD":{"code":"BZD","symbol":"BZ$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CAD":{"code":"CAD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CDF":{"code":"CDF","symbol":"FC","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CHF":{"code":"CHF","symbol":"CHF","thousandsSeparator":"'","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"CLP":{"code":"CLP","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"CNY":{"code":"CNY","symbol":"¥","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"COP":{"code":"COP","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"CRC":{"code":"CRC","symbol":"₡","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CUC":{"code":"CUC","symbol":"CUC","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CUP":{"code":"CUP","symbol":"$MN","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CVE":{"code":"CVE","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CZK":{"code":"CZK","symbol":"Kč","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"DJF":{"code":"DJF","symbol":"Fdj","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"DKK":{"code":"DKK","symbol":"kr.","thousandsSeparator":"","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"DOP":{"code":"DOP","symbol":"RD$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"DZD":{"code":"DZD","symbol":"د.ج.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"EGP":{"code":"EGP","symbol":"ج.م.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ERN":{"code":"ERN","symbol":"Nfk","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ETB":{"code":"ETB","symbol":"ETB","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"EUR":{"code":"EUR","symbol":"€","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"FJD":{"code":"FJD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"FKP":{"code":"FKP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GBP":{"code":"GBP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GEL":{"code":"GEL","symbol":"Lari","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"GHS":{"code":"GHS","symbol":"₵","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GIP":{"code":"GIP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GMD":{"code":"GMD","symbol":"D","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GNF":{"code":"GNF","symbol":"FG","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"GTQ":{"code":"GTQ","symbol":"Q","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GYD":{"code":"GYD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"HKD":{"code":"HKD","symbol":"HK$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"HNL":{"code":"HNL","symbol":"L.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"HRK":{"code":"HRK","symbol":"kn","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"HTG":{"code":"HTG","symbol":"G","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"HUF":{"code":"HUF","symbol":"Ft","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"IDR":{"code":"IDR","symbol":"Rp","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"ILS":{"code":"ILS","symbol":"₪","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"INR":{"code":"INR","symbol":"₹","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"IQD":{"code":"IQD","symbol":"د.ع.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"IRR":{"code":"IRR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":"/","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ISK":{"code":"ISK","symbol":"kr.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":0},"JMD":{"code":"JMD","symbol":"J$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"JOD":{"code":"JOD","symbol":"د.ا.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"JPY":{"code":"JPY","symbol":"¥","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KES":{"code":"KES","symbol":"S","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"KGS":{"code":"KGS","symbol":"сом","thousandsSeparator":" ","decimalSeparator":"-","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"KHR":{"code":"KHR","symbol":"៛","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KMF":{"code":"KMF","symbol":"CF","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"KPW":{"code":"KPW","symbol":"₩","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KRW":{"code":"KRW","symbol":"₩","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KWD":{"code":"KWD","symbol":"د.ك.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"KYD":{"code":"KYD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"KZT":{"code":"KZT","symbol":"₸","thousandsSeparator":" ","decimalSeparator":"-","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"LAK":{"code":"LAK","symbol":"₭","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"LBP":{"code":"LBP","symbol":"ل.ل.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"LKR":{"code":"LKR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":0},"LRD":{"code":"LRD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"LSL":{"code":"LSL","symbol":"M","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"LYD":{"code":"LYD","symbol":"د.ل.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":3},"MAD":{"code":"MAD","symbol":"د.م.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"MDL":{"code":"MDL","symbol":"lei","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"MGA":{"code":"MGA","symbol":"Ar","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"MKD":{"code":"MKD","symbol":"ден.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"MMK":{"code":"MMK","symbol":"K","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MNT":{"code":"MNT","symbol":"₮","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MOP":{"code":"MOP","symbol":"MOP$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MRO":{"code":"MRO","symbol":"UM","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MTL":{"code":"MTL","symbol":"₤","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MUR":{"code":"MUR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MVR":{"code":"MVR","symbol":"MVR","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":1},"MWK":{"code":"MWK","symbol":"MK","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MXN":{"code":"MXN","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MYR":{"code":"MYR","symbol":"RM","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MZN":{"code":"MZN","symbol":"MT","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"NAD":{"code":"NAD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"NGN":{"code":"NGN","symbol":"₦","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"NIO":{"code":"NIO","symbol":"C$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"NOK":{"code":"NOK","symbol":"kr","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"NPR":{"code":"NPR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"NZD":{"code":"NZD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"OMR":{"code":"OMR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"PAB":{"code":"PAB","symbol":"B/.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"PEN":{"code":"PEN","symbol":"S/.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"PGK":{"code":"PGK","symbol":"K","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"PHP":{"code":"PHP","symbol":"₱","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"PKR":{"code":"PKR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"PLN":{"code":"PLN","symbol":"zł","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"PYG":{"code":"PYG","symbol":"₲","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"QAR":{"code":"QAR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RON":{"code":"RON","symbol":"lei","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RSD":{"code":"RSD","symbol":"Дин.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RUB":{"code":"RUB","symbol":"₽","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RWF":{"code":"RWF","symbol":"RWF","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SAR":{"code":"SAR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SBD":{"code":"SBD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SCR":{"code":"SCR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SDD":{"code":"SDD","symbol":"LSd","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SDG":{"code":"SDG","symbol":"£‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SEK":{"code":"SEK","symbol":"kr","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SGD":{"code":"SGD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SHP":{"code":"SHP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SLL":{"code":"SLL","symbol":"Le","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SOS":{"code":"SOS","symbol":"S","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SRD":{"code":"SRD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"STD":{"code":"STD","symbol":"Db","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SVC":{"code":"SVC","symbol":"₡","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SYP":{"code":"SYP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SZL":{"code":"SZL","symbol":"E","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"THB":{"code":"THB","symbol":"฿","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TJS":{"code":"TJS","symbol":"TJS","thousandsSeparator":" ","decimalSeparator":";","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"TMT":{"code":"TMT","symbol":"m","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"TND":{"code":"TND","symbol":"د.ت.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"TOP":{"code":"TOP","symbol":"T$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TRY":{"code":"TRY","symbol":"TL","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"TTD":{"code":"TTD","symbol":"TT$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TVD":{"code":"TVD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TWD":{"code":"TWD","symbol":"NT$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TZS":{"code":"TZS","symbol":"TSh","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"UAH":{"code":"UAH","symbol":"₴","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"UGX":{"code":"UGX","symbol":"USh","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"USD":{"code":"USD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"UYU":{"code":"UYU","symbol":"$U","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"UZS":{"code":"UZS","symbol":"сўм","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"VEB":{"code":"VEB","symbol":"Bs.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"VEF":{"code":"VEF","symbol":"Bs. F.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"VND":{"code":"VND","symbol":"₫","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":1},"VUV":{"code":"VUV","symbol":"VT","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"WST":{"code":"WST","symbol":"WS$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XAF":{"code":"XAF","symbol":"F","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XCD":{"code":"XCD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XOF":{"code":"XOF","symbol":"F","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XPF":{"code":"XPF","symbol":"F","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"YER":{"code":"YER","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ZAR":{"code":"ZAR","symbol":"R","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ZMW":{"code":"ZMW","symbol":"ZK","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"WON":{"code":"WON","symbol":"₩","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2}}
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports) {
+
+module.exports = {"de-AT":{"thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"el-GR":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2},"en-IE":{"symbolOnLeft":true,"thousandsSeparator":",","decimalSeparator":".","spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"es-ES":{"thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"it-IT":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2},"nl-NL":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2},"nl-BE":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2}}
+
+/***/ }),
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52872,10 +55641,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(43).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(52).setImmediate))
 
 /***/ }),
-/* 43 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -52928,13 +55697,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(44);
+__webpack_require__(53);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 44 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -53127,15 +55896,15 @@ exports.clearImmediate = clearImmediate;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(7)))
 
 /***/ }),
-/* 45 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(46)
+var __vue_script__ = __webpack_require__(55)
 /* template */
-var __vue_template__ = __webpack_require__(47)
+var __vue_template__ = __webpack_require__(56)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -53173,7 +55942,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 46 */
+/* 55 */
 /***/ (function(module, exports) {
 
 //
@@ -53219,7 +55988,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 47 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -53253,15 +56022,15 @@ if (false) {
 }
 
 /***/ }),
-/* 48 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(49)
+var __vue_script__ = __webpack_require__(58)
 /* template */
-var __vue_template__ = __webpack_require__(50)
+var __vue_template__ = __webpack_require__(59)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -53299,7 +56068,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 49 */
+/* 58 */
 /***/ (function(module, exports) {
 
 //
@@ -53404,7 +56173,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 50 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -53525,15 +56294,15 @@ if (false) {
 }
 
 /***/ }),
-/* 51 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(52)
+var __vue_script__ = __webpack_require__(61)
 /* template */
-var __vue_template__ = __webpack_require__(53)
+var __vue_template__ = __webpack_require__(62)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -53571,9 +56340,42 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 52 */
+/* 61 */
 /***/ (function(module, exports) {
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -53649,10 +56451,17 @@ module.exports = Component.exports
 module.exports = {
   methods: {
 
+    nextImg: function nextImg() {
+      $('.jcarousel').jcarousel('scroll', '+=1');
+    },
+    prevImg: function prevImg() {
+      $('.jcarousel').jcarousel('scroll', '-=1');
+    },
+
     add: function add() {},
     update: function update(newValue) {
 
-      this.value = newValue;
+      this.value = parseInt(newValue);
       store.commit('setOption', { 'value': newValue, 'optionKey': this.optionKey });
     }
   },
@@ -53664,13 +56473,13 @@ module.exports = {
     };
   },
 
-  props: ['ringOptions', 'active', 'ringOptionValues', 'option'],
+  props: ['ringOptions', 'active', 'ringOptionValues', 'option', 'optionKey'],
 
   ready: function ready() {},
   mounted: function mounted() {},
   created: function created() {
-
-    var optionValue = {};
+    if (this.optionKey == "material") this.value = ringMaterial;
+    if (this.optionKey == "base") this.value = ringBase;
 
     //   var optionId=this.ringOptions[this.option].id;
 
@@ -53708,19 +56517,19 @@ module.exports = {
       left = (this.value - 1) / (this.countValues - 1) * 100;
       return left;
     }
+
   }
 };
 
 /***/ }),
-/* 53 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.optionTemplate === "imagebox" ||
-    _vm.optionTemplate === "imageslider"
+  return _vm.optionTemplate === "imagebox"
     ? _c("div", { staticClass: "options__item", class: _vm.optionKey }, [
         _c("h3", { staticClass: "options__item__title" }, [
           _vm._v(_vm._s(_vm.ringOption.title))
@@ -53743,84 +56552,82 @@ var render = function() {
           })
         )
       ])
-    : _vm.optionTemplate === "card"
+    : _vm.optionTemplate === "imageslider"
       ? _c("div", { staticClass: "options__item", class: _vm.optionKey }, [
-          _c("div", { staticClass: "cards-container" }, [
-            _c(
-              "div",
-              { staticClass: "row" },
-              _vm._l(_vm.ringOptionValues[_vm.optionKey], function(
-                ringOptionValue
-              ) {
-                return _c("ringoptionvalue", {
-                  key: _vm.optionKey,
-                  attrs: {
-                    "ring-option-value": ringOptionValue,
-                    "option-template-value": _vm.optionTemplate,
-                    "option-key": _vm.optionKey
-                  },
-                  on: { choose: _vm.update }
+          _c("h3", { staticClass: "options__item__title" }, [
+            _vm._v(_vm._s(_vm.ringOption.title))
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "jcarousel-wrapper" }, [
+            _c("a", {
+              staticClass: "jcarousel-prev",
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.prevImg($event)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "jcarousel" }, [
+              _c(
+                "ul",
+                _vm._l(_vm.ringOptionValues[_vm.optionKey], function(
+                  ringOptionValue
+                ) {
+                  return _c("ringoptionvalue", {
+                    key: _vm.optionKey,
+                    attrs: {
+                      "ring-option-value": ringOptionValue,
+                      "option-template-value": _vm.optionTemplate,
+                      "option-key": _vm.optionKey
+                    },
+                    on: { choose: _vm.update }
+                  })
                 })
-              })
-            )
+              )
+            ]),
+            _vm._v(" "),
+            _c("a", {
+              staticClass: "jcarousel-next",
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.nextImg($event)
+                }
+              }
+            })
           ])
         ])
-      : _vm.optionTemplate === "selectbox"
+      : _vm.optionTemplate === "card"
         ? _c("div", { staticClass: "options__item", class: _vm.optionKey }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.value,
-                    expression: "value"
-                  }
-                ],
-                staticClass: "uk-select",
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.value = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
+            _c("div", { staticClass: "cards-container" }, [
+              _c(
+                "div",
+                { staticClass: "row" },
+                _vm._l(_vm.ringOptionValues[_vm.optionKey], function(
+                  ringOptionValue
+                ) {
+                  return _c("ringoptionvalue", {
+                    key: _vm.optionKey,
+                    attrs: {
+                      "ring-option-value": ringOptionValue,
+                      "option-template-value": _vm.optionTemplate,
+                      "option-key": _vm.optionKey
                     },
-                    function($event) {
-                      _vm.update(_vm.value)
-                    }
-                  ]
-                }
-              },
-              _vm._l(_vm.ringOptionValues[_vm.optionKey], function(
-                ringOptionValue
-              ) {
-                return _c("ringoptionvalue", {
-                  key: _vm.optionKey,
-                  attrs: {
-                    "ring-option-value": ringOptionValue,
-                    "option-template-value": _vm.optionTemplate
-                  }
+                    on: { choose: _vm.update }
+                  })
                 })
-              })
-            )
+              )
+            ])
           ])
-        : _vm.optionTemplate === "range"
-          ? _c("div", { staticClass: "options__item" }, [
-              _c("h3", { staticClass: "options__item__title" }, [
-                _vm._v(_vm._s(_vm.ringOption.title))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "range-slider" }, [
-                _c("input", {
+        : _vm.optionTemplate === "selectbox"
+          ? _c("div", { staticClass: "options__item", class: _vm.optionKey }, [
+              _c(
+                "select",
+                {
                   directives: [
                     {
                       name: "model",
@@ -53829,35 +56636,87 @@ var render = function() {
                       expression: "value"
                     }
                   ],
-                  staticClass: "uk-range",
-                  attrs: {
-                    type: "range",
-                    step: "1",
-                    min: "1",
-                    max: _vm.ringOptionValues[_vm.optionKey].length,
-                    value: "1"
-                  },
-                  domProps: { value: _vm.value },
+                  staticClass: "uk-select",
                   on: {
-                    change: function($event) {
-                      _vm.update(_vm.value)
-                    },
-                    __r: function($event) {
-                      _vm.value = $event.target.value
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.value = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.update(_vm.value)
+                      }
+                    ]
+                  }
+                },
+                _vm._l(_vm.ringOptionValues[_vm.optionKey], function(
+                  ringOptionValue
+                ) {
+                  return _c("ringoptionvalue", {
+                    key: _vm.optionKey,
+                    attrs: {
+                      "ring-option-value": ringOptionValue,
+                      "option-template-value": _vm.optionTemplate,
+                      "option-key": _vm.optionKey
                     }
-                  }
-                }),
-                _vm._v(" "),
-                _c("p", {
-                  staticClass: "option-range-label",
-                  style: { left: _vm.getLabelLeft + "%" },
-                  domProps: {
-                    textContent: _vm._s(_vm.getOptionValueTitle.title)
-                  }
+                  })
                 })
-              ])
+              )
             ])
-          : _vm._e()
+          : _vm.optionTemplate === "range"
+            ? _c("div", { staticClass: "options__item" }, [
+                _c("h3", { staticClass: "options__item__title" }, [
+                  _vm._v(_vm._s(_vm.ringOption.title))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "range-slider" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.value,
+                        expression: "value"
+                      }
+                    ],
+                    staticClass: "uk-range",
+                    attrs: {
+                      type: "range",
+                      step: "1",
+                      min: "1",
+                      max: _vm.ringOptionValues[_vm.optionKey].length,
+                      value: "1"
+                    },
+                    domProps: { value: _vm.value },
+                    on: {
+                      change: function($event) {
+                        _vm.update(_vm.value)
+                      },
+                      __r: function($event) {
+                        _vm.value = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("p", {
+                    staticClass: "option-range-label",
+                    style: { left: _vm.getLabelLeft + "%" },
+                    domProps: {
+                      textContent: _vm._s(_vm.getOptionValueTitle.title)
+                    }
+                  })
+                ])
+              ])
+            : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -53870,15 +56729,15 @@ if (false) {
 }
 
 /***/ }),
-/* 54 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(55)
+var __vue_script__ = __webpack_require__(64)
 /* template */
-var __vue_template__ = __webpack_require__(56)
+var __vue_template__ = __webpack_require__(65)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -53916,7 +56775,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 55 */
+/* 64 */
 /***/ (function(module, exports) {
 
 //
@@ -53983,7 +56842,16 @@ module.exports = {
   props: ['ringOptionValue', 'optionTemplateValue', 'optionCount', 'optionKey', 'ringOptionValues'],
 
   ready: function ready() {},
-  mounted: function mounted() {},
+  mounted: function mounted() {
+
+    $('.jcarousel').jcarousel({
+      vertical: true
+    });
+
+    $('.jcarousel').jcarouselSwipe({
+      perSwipe: 2 // by default 1
+    });
+  },
 
   computed: {
 
@@ -53993,7 +56861,9 @@ module.exports = {
       }
     },
     isSelected: function isSelected() {
-      return true;
+      if (this.value === store.state.session[this.optionKey]) {
+        return 'selected';
+      }
     },
     imgHash: function imgHash() {}
 
@@ -54001,7 +56871,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 56 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -54131,15 +57001,15 @@ if (false) {
 }
 
 /***/ }),
-/* 57 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(58)
+var __vue_script__ = __webpack_require__(67)
 /* template */
-var __vue_template__ = __webpack_require__(59)
+var __vue_template__ = __webpack_require__(68)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -54177,9 +57047,11 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
+/* 67 */
 /***/ (function(module, exports) {
 
+//
+//
 //
 //
 //
@@ -54240,6 +57112,9 @@ module.exports = Component.exports
 module.exports = {
   methods: {
     update: function update() {},
+    nextStep: function nextStep() {
+      console.log('next');
+    },
     isActive: function isActive(key) {
 
       if (key === store.state.step) {
@@ -54262,14 +57137,14 @@ module.exports = {
 
   computed: {
     getTotalPrice: function getTotalPrice() {
-      return store.state.totalPrice;
+      return currencyFormatter.format(store.state.totalPrice, { code: 'RUB', precision: 0 });
     }
 
   }
 };
 
 /***/ }),
-/* 59 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -54323,7 +57198,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-5 center-col" },
+                    { staticClass: "col-md-6 center-col" },
                     [
                       _c("ringblocks", {
                         ref: "blocks",
@@ -54336,7 +57211,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-5 right-col" },
+                    { staticClass: "col-md-4 right-col" },
                     [
                       _c("ringblocks", {
                         ref: "blocks",
@@ -54358,9 +57233,20 @@ var render = function() {
                       _c("p", { staticClass: "price" }, [
                         _c("span", {
                           domProps: { textContent: _vm._s(_vm.getTotalPrice) }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "currency" }, [_vm._v("руб")])
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          on: { click: _vm.nextStep }
+                        },
+                        [_vm._v("Выбрать")]
+                      ),
+                      _vm._v(" "),
+                      _c("button", { staticClass: "btn btn-default" }, [
+                        _vm._v("Помощь специалиста")
                       ])
                     ],
                     1
@@ -54457,7 +57343,7 @@ if (false) {
 }
 
 /***/ }),
-/* 60 */
+/* 69 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

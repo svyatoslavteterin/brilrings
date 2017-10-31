@@ -8,7 +8,7 @@
         @include('layouts.mainnav')
 
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 text-right">
             <span class="phone">+7 (495) 888-88-88</span>
             <a href="#" class="order-call-btn">ЗАКАЗАТЬ ЗВОНОК</a>
         </div>

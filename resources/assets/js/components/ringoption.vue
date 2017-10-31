@@ -1,10 +1,10 @@
 <template>
 
 
-      <div class="options__item" :class="optionKey" v-if="optionTemplate==='imagebox'||optionTemplate==='imageslider'">
+      <div class="options__item" :class="optionKey" v-if="optionTemplate==='imagebox'">
 
           <h3 class="options__item__title">{{ringOption.title}}</h3>
-        <ul >
+        <ul>
 
 
             <ringoptionvalue v-for="ringOptionValue in ringOptionValues[optionKey]"
@@ -23,6 +23,38 @@
         </ul>
 
         </div>
+          <div class="options__item" :class="optionKey" v-else-if="optionTemplate==='imageslider'">
+          <h3 class="options__item__title">{{ringOption.title}}</h3>
+
+            <div class="jcarousel-wrapper">
+              <a href="#" class="jcarousel-prev" @click.prevent="prevImg"></a>
+            <div class="jcarousel">
+
+
+
+                <ul>
+
+
+                    <ringoptionvalue v-for="ringOptionValue in ringOptionValues[optionKey]"
+                                    :ring-option-value="ringOptionValue"
+                                    :option-template-value="optionTemplate"
+                                    :key="optionKey"
+                                    :option-key="optionKey"
+                                    v-on:choose="update"
+
+
+                                    >
+                    </ringoptionvalue>
+
+
+
+                </ul>
+                </div>
+                  <a href="#" class="jcarousel-next" @click.prevent="nextImg"></a>
+                </div>
+
+
+          </div>
         <div class="options__item" :class="optionKey" v-else-if="optionTemplate==='card'">
 
 
@@ -52,6 +84,7 @@
               <ringoptionvalue v-for="ringOptionValue in ringOptionValues[optionKey]"
                               :ring-option-value="ringOptionValue"
                               :option-template-value="optionTemplate"
+                              :option-key="optionKey"
                               :key="optionKey"
                               >
               </ringoptionvalue>
@@ -73,6 +106,12 @@
     module.exports = {
     methods: {
 
+      nextImg:function(){
+          $('.jcarousel').jcarousel('scroll', '+=1');
+      },
+      prevImg:function(){
+            $('.jcarousel').jcarousel('scroll', '-=1');
+      },
 
       add:function(){
 
@@ -80,7 +119,7 @@
       },
       update:function(newValue){
 
-          this.value=newValue;
+          this.value=parseInt(newValue);
           store.commit('setOption',{'value':newValue,'optionKey':this.optionKey});
         }
       },
@@ -93,10 +132,9 @@
             };
           },
 
-        props:['ringOptions','active','ringOptionValues','option'],
+        props:['ringOptions','active','ringOptionValues','option','optionKey'],
 
         ready: function () {
-
 
 
         },
@@ -104,10 +142,11 @@
 
 
 
+
         },
         created:function(){
-
-          var optionValue={};
+          if (this.optionKey=="material") this.value=ringMaterial;
+          if (this.optionKey=="base") this.value=ringBase;
 
 
         //   var optionId=this.ringOptions[this.option].id;
@@ -147,6 +186,7 @@
                 left= (this.value-1)/(this.countValues-1)*100;
                 return left;
               }
+
         }
     }
 </script>

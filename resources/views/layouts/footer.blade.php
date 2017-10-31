@@ -12,10 +12,10 @@
           </div>
           <div class="col-md-3">
             <ul class="socials">
-              <li class="socials__item fb"><a href="#"></a></li>
-              <li class="socials__item insta"><a href="#"></a></li>
-              <li class="socials__item vk"><a href="#"></a></li>
-              <li class="socials__item ok"><a href="#"></a></li>
+              <li class="socials__item fb"><a href="#"><i class="icon-facebook"></i></a></li>
+              <li class="socials__item insta"><a href="#"><i class="icon-instagram"></i></a></li>
+              <li class="socials__item vk"><a href="#"><i class="icon-vk"></i></a></li>
+              <li class="socials__item ok"><a href="#"><i class="icon-odnoklassniki"></i></a></li>
             </ul>
 
           </div>

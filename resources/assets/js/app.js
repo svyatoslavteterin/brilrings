@@ -7,7 +7,19 @@
 
 require('./bootstrap');
 
+
+
+window.jcarousel = require('jcarousel');
+window.jcarouselSwipe = require('jcarouselSwipe');
+
+
+
+
+
 var md5 = require('md5');
+
+window.currencyFormatter = require('currency-formatter');
+
 
 
 

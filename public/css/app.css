@@ -4,65 +4,171 @@
 
 @font-face {
   font-family: 'Merriweather';
-  src: url("/css/fonts/hinted-subset-Merriweather-UltraBdIt.eot");
-  src: local("Merriweather UltraBold Italic"), local("Merriweather-UltraBdIt"), url("/css/fonts/hinted-subset-Merriweather-UltraBdIt.eot?#iefix") format("embedded-opentype"), url("/css/fonts/hinted-subset-Merriweather-UltraBdIt.woff2") format("woff2"), url("/css/fonts/hinted-subset-Merriweather-UltraBdIt.woff") format("woff"), url("/css/fonts/hinted-subset-Merriweather-UltraBdIt.ttf") format("truetype");
+  src: url("/fonts/hinted-subset-Merriweather-UltraBdIt.eot");
+  src: local("Merriweather UltraBold Italic"), local("Merriweather-UltraBdIt"), url("/fonts/hinted-subset-Merriweather-UltraBdIt.eot?#iefix") format("embedded-opentype"), url("/fonts/hinted-subset-Merriweather-UltraBdIt.woff2") format("woff2"), url("/fonts/hinted-subset-Merriweather-UltraBdIt.woff") format("woff"), url("/fonts/hinted-subset-Merriweather-UltraBdIt.ttf") format("truetype");
   font-weight: 800;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Merriweather';
-  src: url("/css/fonts/hinted-subset-MerriweatherLight.eot");
-  src: local("Merriweather Light"), local("MerriweatherLight"), url("/css/fonts/hinted-subset-MerriweatherLight.eot?#iefix") format("embedded-opentype"), url("/css/fonts/hinted-subset-MerriweatherLight.woff2") format("woff2"), url("/css/fonts/hinted-subset-MerriweatherLight.woff") format("woff"), url("/css/fonts/hinted-subset-MerriweatherLight.ttf") format("truetype");
+  src: url("/fonts/hinted-subset-MerriweatherLight.eot");
+  src: local("Merriweather Light"), local("MerriweatherLight"), url("/fonts/hinted-subset-MerriweatherLight.eot?#iefix") format("embedded-opentype"), url("/fonts/hinted-subset-MerriweatherLight.woff2") format("woff2"), url("/fonts/hinted-subset-MerriweatherLight.woff") format("woff"), url("/fonts/hinted-subset-MerriweatherLight.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Merriweather';
-  src: url("/css/fonts/hinted-subset-Merriweather-Regular.eot");
-  src: local("Merriweather Regular"), local("Merriweather-Regular"), url("/css/fonts/hinted-subset-Merriweather-Regular.eot?#iefix") format("embedded-opentype"), url("/css/fonts/hinted-subset-Merriweather-Regular.woff2") format("woff2"), url("/css/fonts/hinted-subset-Merriweather-Regular.woff") format("woff"), url("/css/fonts/hinted-subset-Merriweather-Regular.ttf") format("truetype");
+  src: url("/fonts/hinted-subset-Merriweather-Regular.eot");
+  src: local("Merriweather Regular"), local("Merriweather-Regular"), url("/fonts/hinted-subset-Merriweather-Regular.eot?#iefix") format("embedded-opentype"), url("/fonts/hinted-subset-Merriweather-Regular.woff2") format("woff2"), url("/fonts/hinted-subset-Merriweather-Regular.woff") format("woff"), url("/fonts/hinted-subset-Merriweather-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Merriweather';
-  src: url("/css/fonts/hinted-subset-Merriweather-Italic.eot");
-  src: local("Merriweather Italic"), local("Merriweather-Italic"), url("/css/fonts/hinted-subset-Merriweather-Italic.eot?#iefix") format("embedded-opentype"), url("/css/fonts/hinted-subset-Merriweather-Italic.woff2") format("woff2"), url("/css/fonts/hinted-subset-Merriweather-Italic.woff") format("woff"), url("/css/fonts/hinted-subset-Merriweather-Italic.ttf") format("truetype");
+  src: url("/fonts/hinted-subset-Merriweather-Italic.eot");
+  src: local("Merriweather Italic"), local("Merriweather-Italic"), url("/fonts/hinted-subset-Merriweather-Italic.eot?#iefix") format("embedded-opentype"), url("/fonts/hinted-subset-Merriweather-Italic.woff2") format("woff2"), url("/fonts/hinted-subset-Merriweather-Italic.woff") format("woff"), url("/fonts/hinted-subset-Merriweather-Italic.ttf") format("truetype");
   font-weight: normal;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Merriweather';
-  src: url("/css/fonts/hinted-subset-Merriweather-Bold.eot");
-  src: local("Merriweather Bold"), local("Merriweather-Bold"), url("/css/fonts/hinted-subset-Merriweather-Bold.eot?#iefix") format("embedded-opentype"), url("/css/fonts/hinted-subset-Merriweather-Bold.woff2") format("woff2"), url("/css/fonts/hinted-subset-Merriweather-Bold.woff") format("woff"), url("/css/fonts/hinted-subset-Merriweather-Bold.ttf") format("truetype");
+  src: url("/fonts/hinted-subset-Merriweather-Bold.eot");
+  src: local("Merriweather Bold"), local("Merriweather-Bold"), url("/fonts/hinted-subset-Merriweather-Bold.eot?#iefix") format("embedded-opentype"), url("/fonts/hinted-subset-Merriweather-Bold.woff2") format("woff2"), url("/fonts/hinted-subset-Merriweather-Bold.woff") format("woff"), url("/fonts/hinted-subset-Merriweather-Bold.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Merriweather';
-  src: url("/css/fonts/hinted-subset-Merriweather-LightIt.eot");
-  src: local("Merriweather Light Italic"), local("Merriweather-LightIt"), url("/css/fonts/hinted-subset-Merriweather-LightIt.eot?#iefix") format("embedded-opentype"), url("/css/fonts/hinted-subset-Merriweather-LightIt.woff2") format("woff2"), url("/css/fonts/hinted-subset-Merriweather-LightIt.woff") format("woff"), url("/css/fonts/hinted-subset-Merriweather-LightIt.ttf") format("truetype");
+  src: url("/fonts/hinted-subset-Merriweather-LightIt.eot");
+  src: local("Merriweather Light Italic"), local("Merriweather-LightIt"), url("/fonts/hinted-subset-Merriweather-LightIt.eot?#iefix") format("embedded-opentype"), url("/fonts/hinted-subset-Merriweather-LightIt.woff2") format("woff2"), url("/fonts/hinted-subset-Merriweather-LightIt.woff") format("woff"), url("/fonts/hinted-subset-Merriweather-LightIt.ttf") format("truetype");
   font-weight: 300;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Merriweather';
-  src: url("/css/fonts/hinted-subset-Merriweather-BoldItalic.eot");
-  src: local("Merriweather Bold Italic"), local("Merriweather-BoldItalic"), url("/css/fonts/hinted-subset-Merriweather-BoldItalic.eot?#iefix") format("embedded-opentype"), url("/css/fonts/hinted-subset-Merriweather-BoldItalic.woff2") format("woff2"), url("/css/fonts/hinted-subset-Merriweather-BoldItalic.woff") format("woff"), url("/css/fonts/hinted-subset-Merriweather-BoldItalic.ttf") format("truetype");
+  src: url("/fonts/hinted-subset-Merriweather-BoldItalic.eot");
+  src: local("Merriweather Bold Italic"), local("Merriweather-BoldItalic"), url("/fonts/hinted-subset-Merriweather-BoldItalic.eot?#iefix") format("embedded-opentype"), url("/fonts/hinted-subset-Merriweather-BoldItalic.woff2") format("woff2"), url("/fonts/hinted-subset-Merriweather-BoldItalic.woff") format("woff"), url("/fonts/hinted-subset-Merriweather-BoldItalic.ttf") format("truetype");
   font-weight: bold;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Merriweather';
-  src: url("/css/fonts/hinted-subset-MerriweatherUltraBold.eot");
-  src: local("Merriweather UltraBold"), local("MerriweatherUltraBold"), url("/css/fonts/hinted-subset-MerriweatherUltraBold.eot?#iefix") format("embedded-opentype"), url("/css/fonts/hinted-subset-MerriweatherUltraBold.woff2") format("woff2"), url("/css/fonts/hinted-subset-MerriweatherUltraBold.woff") format("woff"), url("/css/fonts/hinted-subset-MerriweatherUltraBold.ttf") format("truetype");
+  src: url("/fonts/hinted-subset-MerriweatherUltraBold.eot");
+  src: local("Merriweather UltraBold"), local("MerriweatherUltraBold"), url("/fonts/hinted-subset-MerriweatherUltraBold.eot?#iefix") format("embedded-opentype"), url("/fonts/hinted-subset-MerriweatherUltraBold.woff2") format("woff2"), url("/fonts/hinted-subset-MerriweatherUltraBold.woff") format("woff"), url("/fonts/hinted-subset-MerriweatherUltraBold.ttf") format("truetype");
   font-weight: 800;
+  font-style: normal;
+}
+
+/* This stylesheet generated by Transfonter (https://transfonter.org) on July 4, 2017 12:06 PM */
+
+@font-face {
+  font-family: '21 Cent';
+  src: url("/fonts/21Cent-Black.eot");
+  src: local("21 Cent Black"), local("21Cent-Black"), url("/fonts/21Cent-Black.eot?#iefix") format("embedded-opentype"), url("/fonts/21Cent-Black.woff") format("woff"), url("/fonts/21Cent-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '21 Cent';
+  src: url("/fonts/21Cent-BoldItalic.eot");
+  src: local("21 Cent Bold Italic"), local("21Cent-BoldItalic"), url("/fonts/21Cent-BoldItalic.eot?#iefix") format("embedded-opentype"), url("/fonts/21Cent-BoldItalic.woff") format("woff"), url("/fonts/21Cent-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: '21 Cent Condensed';
+  src: url("/fonts/21CentCondensed-Italic.eot");
+  src: local("21 Cent Condensed Italic"), local("21CentCondensed-Italic"), url("/fonts/21CentCondensed-Italic.eot?#iefix") format("embedded-opentype"), url("/fonts/21CentCondensed-Italic.woff") format("woff"), url("/fonts/21CentCondensed-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: '21 Cent Condensed';
+  src: url("/fonts/21CentCondensed-UltraLight.eot");
+  src: local("21 Cent Condensed UltraLight"), local("21CentCondensed-UltraLight"), url("/fonts/21CentCondensed-UltraLight.eot?#iefix") format("embedded-opentype"), url("/fonts/21CentCondensed-UltraLight.woff") format("woff"), url("/fonts/21CentCondensed-UltraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '21 Cent';
+  src: url("/fonts/21Cent-Bold.eot");
+  src: local("21 Cent Bold"), local("21Cent-Bold"), url("/fonts/21Cent-Bold.eot?#iefix") format("embedded-opentype"), url("/fonts/21Cent-Bold.woff") format("woff"), url("/fonts/21Cent-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '21 Cent Condensed';
+  src: url("/fonts/21CentCondensed-UltraLightItali.eot");
+  src: local("21 Cent Condensed UltraLight Italic"), local("21CentCondensed-UltraLightItali"), url("/fonts/21CentCondensed-UltraLightItali.eot?#iefix") format("embedded-opentype"), url("/fonts/21CentCondensed-UltraLightItali.woff") format("woff"), url("/fonts/21CentCondensed-UltraLightItali.ttf") format("truetype");
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: '21 Cent';
+  src: url("/fonts/21Cent-Thin.eot");
+  src: local("21 Cent Thin"), local("21Cent-Thin"), url("/fonts/21Cent-Thin.eot?#iefix") format("embedded-opentype"), url("/fonts/21Cent-Thin.woff") format("woff"), url("/fonts/21Cent-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '21 Cent Condensed';
+  src: url("/fonts/21CentCondensed.eot");
+  src: local("21 Cent Condensed"), local("21CentCondensed"), url("/fonts/21CentCondensed.eot?#iefix") format("embedded-opentype"), url("/fonts/21CentCondensed.woff") format("woff"), url("/fonts/21CentCondensed.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '21 Cent';
+  src: url("/fonts/21Cent-Italic.eot");
+  src: local("21 Cent Italic"), local("21Cent-Italic"), url("/fonts/21Cent-Italic.eot?#iefix") format("embedded-opentype"), url("/fonts/21Cent-Italic.woff") format("woff"), url("/fonts/21Cent-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: '21 Cent';
+  src: url("/fonts/21Cent.eot");
+  src: local("21 Cent"), local("21Cent"), url("/fonts/21Cent.eot?#iefix") format("embedded-opentype"), url("/fonts/21Cent.woff") format("woff"), url("/fonts/21Cent.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FuturaPT-Bold';
+  src: url("/fonts/FuturaPT-Bold.eot");
+  src: url("/fonts/FuturaPT-Bold.woff2") format("woff2"), url("/fonts/FuturaPT-Bold.woff") format("woff"), url("/fonts/FuturaPT-Bold.ttf") format("truetype"), url("/fonts/FuturaPT-Bold.svg#FuturaPT-Bold") format("svg"), url("/fonts/FuturaPT-Bold.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FuturaPT-Medium';
+  src: url("/fonts/FuturaPT-Medium.eot");
+  src: url("/fonts/FuturaPT-Medium.woff2") format("woff2"), url("/fonts/FuturaPT-Medium.woff") format("woff"), url("/fonts/FuturaPT-Medium.ttf") format("truetype"), url("/fonts/FuturaPT-Medium.svg#FuturaPT-Medium") format("svg"), url("/fonts/FuturaPT-Medium.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FuturaPT-Bold';
+  src: url("/fonts/FuturaPT-Bold.eot");
+  src: url("/fonts/FuturaPT-Bold.woff2") format("woff2"), url("/fonts/FuturaPT-Bold.woff") format("woff"), url("/fonts/FuturaPT-Bold.ttf") format("truetype"), url("/fonts/FuturaPT-Bold.svg#FuturaPT-Bold") format("svg"), url("/fonts/FuturaPT-Bold.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
   font-style: normal;
 }
 
@@ -23112,6 +23218,7 @@ nav {
 #header .phone {
   font-size: 16px;
   color: #5b5b5b;
+  margin-bottom: 8px;
 }
 
 .logo {
@@ -23435,6 +23542,7 @@ nav ul li {
 .options__item ul {
   margin: 0;
   padding: 0;
+  display: inline-block;
 }
 
 .options__item li:last-child {
@@ -23482,7 +23590,7 @@ nav ul li {
 
 .options__item.base li.active,
 .options__item.base li:hover {
-  border: 4px solid #93D5C4;
+  border: 4px solid #a0d1c3;
   display: inline-block;
 }
 
@@ -23581,10 +23689,6 @@ nav ul li {
   margin-bottom: 40px;
 }
 
-.steps__item .base .left-col {
-  max-width: 170px;
-}
-
 .row {
   margin-left: -10px;
   margin-right: -10px;
@@ -23643,7 +23747,7 @@ nav ul li {
 }
 
 .ring-info h3 {
-  font-size: 42px;
+  font-size: 2.5em;
   color: #5a5a5a;
   font-weight: 300;
 }
@@ -23654,6 +23758,7 @@ nav ul li {
 
 .ring-info__desc {
   margin-bottom: 20px;
+  font-size: 18px;
 }
 
 .price {
@@ -23871,5 +23976,192 @@ nav ul li {
 .steps__item.active .container,
 .steps__item .container.start {
   display: block;
+}
+
+.socials__item {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.socials__item a {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 38px;
+  color: #7B7B7B;
+  border: 1px solid #7B7B7B;
+}
+
+.socials__item:last-child {
+  margin-right: 0;
+}
+
+.socials__item a:hover {
+  color: #241E20;
+  background: #7B7B7B;
+  text-decoration: none;
+}
+
+.socials {
+  float: right;
+}
+
+.copyright p {
+  line-height: 1.4;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.container.base .left-col {
+  border-right: 1px solid #CDEAEF;
+  padding-right: 20px;
+}
+
+.container.base .center-col {
+  border-right: 1px solid #CDEAEF;
+}
+
+.container.base .right-col {
+  padding-left: 20px;
+}
+
+.btn + .btn {
+  margin-left: 20px;
+}
+
+.btn {
+  font-family: 'FuturaPT-Bold',sans-serif;
+}
+
+.btn-primary {
+  background: #CDEAEF;
+  border: none;
+  color: #5a5a5a;
+  text-transform: uppercase;
+  font-size: 1em;
+  border-radius: 0;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.btn-primary:hover {
+  background: #93D5C4;
+}
+
+.btn-default {
+  font-size: 1em;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+
+.price {
+  margin-top: 0;
+  margin-bottom: 44px;
+}
+
+.container.base .options__item.base {
+  text-align: center;
+}
+
+.container.base .options__item.base ul li {
+  display: inline-block;
+}
+
+.jcarousel-wrapper {
+  position: relative;
+  width: 100%;
+  height: 576px;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+.jcarousel-wrapper .photo-credits {
+  position: absolute;
+  right: 15px;
+  bottom: 0;
+  font-size: 13px;
+  color: #fff;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.85);
+  opacity: .66;
+}
+
+.jcarousel-wrapper .photo-credits a {
+  color: #fff;
+}
+
+/** Carousel **/
+
+.jcarousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 576px;
+}
+
+.jcarousel img {
+  display: block;
+}
+
+.jcarousel ul {
+  width: 100%;
+  height: 20000em;
+  display: inline-block;
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/** Carousel Controls **/
+
+.jcarousel-control-prev,
+.jcarousel-control-next {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  background: #4E443C;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 0 1px #000;
+  font: 24px/27px Arial, sans-serif;
+  border-radius: 30px;
+  -webkit-box-shadow: 0 0 2px #999;
+  box-shadow: 0 0 2px #999;
+}
+
+.jcarousel-prev,
+.jcarousel-next {
+  width: 9px;
+  height: 6px;
+  color: transparent;
+  display: inline-block;
+}
+
+.jcarousel-prev:hover,
+.jcarousel-next:hover {
+  color: transparent;
+}
+
+.jcarousel-prev {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAGCAIAAACepSOSAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjM5Q0E5Q0ZEQjY3ODExRTdBNzlDREY2RUUxODQ5M0Q4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjM5Q0E5Q0ZFQjY3ODExRTdBNzlDREY2RUUxODQ5M0Q4Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MzlDQTlDRkJCNjc4MTFFN0E3OUNERjZFRTE4NDkzRDgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MzlDQTlDRkNCNjc4MTFFN0E3OUNERjZFRTE4NDkzRDgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6Uga4DAAAAVElEQVR42kyL0QkAMQhD5QbsAG7gIN3CdhRdwB+/HeZOThADSpJH4B1y9xmhnYgg4jmnmwd+qSozr7XM7N5bJfQif/qIIKJawwSlxpA3QeO99yfAANN7ef7vKEJoAAAAAElFTkSuQmCC");
+}
+
+.jcarousel-next {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAGCAIAAACepSOSAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjM5Q0E5Q0Y5QjY3ODExRTdBNzlDREY2RUUxODQ5M0Q4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjM5Q0E5Q0ZBQjY3ODExRTdBNzlDREY2RUUxODQ5M0Q4Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MzlDQTlDRjdCNjc4MTFFN0E3OUNERjZFRTE4NDkzRDgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MzlDQTlDRjhCNjc4MTFFN0E3OUNERjZFRTE4NDkzRDgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5gArw7AAAAbUlEQVR42mKYO3fuvn37/qOC27dvt7a2MikqKs6ZM2f//v0MMHDnzp2+vj4JCQkGoCqgvqioKIhuoI7MzEygYUA2C1Cho6MjkATqfvXq1cGDB01MTJKSkkAmwO2A6IbogAAGZCdcvHgRmQsQYADQFW8B0JD1xwAAAABJRU5ErkJggg==") no-repeat left top;
+  margin-top: 20px;
+}
+
+.jcarousel-control-prev:hover span,
+.jcarousel-control-next:hover span {
+  display: block;
+}
+
+.jcarousel-control-prev.inactive,
+.jcarousel-control-next.inactive {
+  opacity: .5;
+  cursor: default;
 }
 

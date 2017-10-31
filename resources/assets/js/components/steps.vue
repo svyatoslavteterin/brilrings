@@ -16,14 +16,16 @@
                         <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
 
                     </div>
-                    <div class="col-md-5 center-col" >
+                    <div class="col-md-6 center-col" >
                       <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                     </div>
-                    <div class="col-md-5 right-col">
+                    <div class="col-md-4 right-col">
                           <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
 
-                        <p class="price"><span v-text="getTotalPrice"></span> <span class="currency">руб</span></p>
+                        <p class="price"><span v-text="getTotalPrice"></span></p>
+
+                        <button @click="nextStep" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
                     </div>
                   </div>
               </div>
@@ -61,6 +63,9 @@
 
 
         },
+        nextStep:function(){
+            console.log('next');
+        },
         isActive:function(key){
 
           if (key===store.state.step){
@@ -91,7 +96,8 @@
 
         computed: {
           getTotalPrice:function(){
-            return store.state.totalPrice;
+            return currencyFormatter.format(store.state.totalPrice, { code: 'RUB',precision:0});
+
           }
 
         }

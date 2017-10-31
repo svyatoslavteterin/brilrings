@@ -32,7 +32,6 @@
 
         @yield('content')
 
-      @include('layouts.guests')
 
 
       @include ('layouts.footer')

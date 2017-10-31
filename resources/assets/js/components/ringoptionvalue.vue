@@ -7,7 +7,7 @@
             </a></li>
 
             <li v-else-if="optionTemplate=='imagebox'" :class="{ active: isActive }"><a href="#" @click.prevent="chooseOption">{{ringOptionValue.title}}</a></li>
-            <option v-else-if="optionTemplate==='selectbox'" :value="ringOptionValue.value">{{ringOptionValue.title}}</option>
+            <option v-else-if="optionTemplate==='selectbox'" :value="ringOptionValue.value" >{{ringOptionValue.title}}</option>
             <input v-else-if="optionTemplate==='text'" value="text">
             <div v-else-if="optionTemplate=='card'" class="col-md-4 card__item">
                 <div class="card__item__wrapper">
@@ -73,6 +73,17 @@
         },
         mounted:function(){
 
+          
+
+          $('.jcarousel').jcarousel({
+              vertical: true
+          });
+
+
+
+          $('.jcarousel').jcarouselSwipe({
+              perSwipe: 2 // by default 1
+          });
         },
 
 
@@ -85,7 +96,9 @@
             }
           },
           isSelected:function(){
-            return true;
+            if (this.value===store.state.session[this.optionKey]){
+              return 'selected';
+            }
           },
           imgHash:function(){
 
