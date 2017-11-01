@@ -16,32 +16,32 @@
 
               <div v-else-if="value==='result-table'">
                   <h3>Бриллиант</h3>
-                  <p><span v-text="totalPrice"></span> <span class="currency">руб</span></p>
+                  <p class="price"><span v-text="totalPrice"></span> </p>
                   <table>
                     <tr>
-                      <td>Форма огранки</td>
+                      <th>Форма огранки</th>
                       <td v-text="storeValue('shape','title')"></td>
                     </tr>
                     <tr>
-                      <td>Вес камня</td>
+                      <th>Вес камня</th>
                       <td v-text="storeValue('weight','title')"></td>
                     </tr>
                     <tr>
-                      <td>Цвет</td>
+                      <th>Цвет</th>
                       <td v-text="storeValue('color','title')"></td>
                     </tr>
                     <tr>
-                      <td>Чистота</td>
+                      <th>Чистота</th>
                       <td v-text="storeValue('purity','title')"></td>
                     </tr>
                     <tr>
-                      <td>Размер</td>
+                      <th>Размер</th>
                       <td v-text="storeValue('size','title')"></td>
                     </tr>
 
                   </table>
                   <p>Итоговая цена:</p>
-                  <p><span v-text="totalPrice"></span> <span class="currency">руб</span></p>
+                  <p><span v-text="totalPrice" class="price"></span> </p>
               </div>
 
           </div>
@@ -101,7 +101,7 @@
             return store.state.resultImg;
           },
           totalPrice:function(){
-            return store.state.totalPrice;
+            return currencyFormatter.format(store.state.totalPrice, { code: 'RUB',precision:0});
           },
           getOptionValue:function(){
 

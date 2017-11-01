@@ -60,7 +60,7 @@ window.store = new Vuex.Store({
     totalPrice: 22000,
     session: {},
     resultImg:'',
-    step:'base'
+    step:activeStep
 
   },
   mutations: {
@@ -141,11 +141,17 @@ window.RingApp = new Vue({
 
         _.forOwn(this.ringOptions, function(value, key) {
           session[key]=1;
-          str+=key+1;
-        });
-        session['base']=parseInt(ringBase);
-        session['material']=parseInt(ringMaterial);
 
+        });
+
+        if (typeof(ringBase)!="undefined") session['base']=parseInt(ringBase);
+        if (typeof(ringMaterial)!="undefined") session['material']=parseInt(ringMaterial);
+
+
+
+          _.forOwn(this.ringOptions, function(value, key) {
+              str+=key+session[key];
+        });
 
         store.state.resultImg='/resultimage/'+md5(str);
         store.commit('init',session);

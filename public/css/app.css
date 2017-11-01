@@ -23459,25 +23459,25 @@ nav ul li {
 
 .uk-range::-webkit-slider-runnable-track {
   height: 8px !important;
-  background: #93D5C4;
+  background: #a0d1c3;
   border-radius: 500px;
 }
 
 .uk-range:focus::-webkit-slider-runnable-track,
 .uk-range:active::-webkit-slider-runnable-track {
-  background: #93D5C4;
+  background: #a0d1c3;
 }
 
 /* Firefox */
 
 .uk-range::-moz-range-track {
   height: 8px !important;
-  background: #93D5C4;
+  background: #a0d1c3;
   border-radius: 500px;
 }
 
 .uk-range:focus::-moz-range-track {
-  background: #93D5C4;
+  background: #a0d1c3;
 }
 
 /* Edge */
@@ -23485,13 +23485,13 @@ nav ul li {
 .uk-range::-ms-fill-lower,
 .uk-range::-ms-fill-upper {
   height: 8px !important;
-  background: #93D5C4;
+  background: #a0d1c3;
   border-radius: 500px;
 }
 
 .uk-range:focus::-ms-fill-lower,
 .uk-range:focus::-ms-fill-upper {
-  background: #93D5C4;
+  background: #a0d1c3;
 }
 
 .options__item.shape li a {
@@ -23624,6 +23624,7 @@ nav ul li {
   margin-right: -4px;
   width: 100%;
   padding-bottom: 40px;
+  text-decoration: none;
 }
 
 .steps nav ul {
@@ -24146,6 +24147,7 @@ nav ul li {
 }
 
 .jcarousel-prev {
+  margin-bottom: 20px;
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAGCAIAAACepSOSAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjM5Q0E5Q0ZEQjY3ODExRTdBNzlDREY2RUUxODQ5M0Q4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjM5Q0E5Q0ZFQjY3ODExRTdBNzlDREY2RUUxODQ5M0Q4Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MzlDQTlDRkJCNjc4MTFFN0E3OUNERjZFRTE4NDkzRDgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MzlDQTlDRkNCNjc4MTFFN0E3OUNERjZFRTE4NDkzRDgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6Uga4DAAAAVElEQVR42kyL0QkAMQhD5QbsAG7gIN3CdhRdwB+/HeZOThADSpJH4B1y9xmhnYgg4jmnmwd+qSozr7XM7N5bJfQif/qIIKJawwSlxpA3QeO99yfAANN7ef7vKEJoAAAAAElFTkSuQmCC");
 }
 
@@ -24163,5 +24165,95 @@ nav ul li {
 .jcarousel-control-next.inactive {
   opacity: .5;
   cursor: default;
+}
+
+.options__item.shape {
+  text-align: center;
+}
+
+.options__item.shape ul li {
+  padding-left: 0;
+}
+
+.options__item.shape li {
+  margin-right: 13px;
+}
+
+.container.stone .left-col .options__item {
+  padding-top: 25px;
+  padding-bottom: 28px;
+}
+
+.container.stone .left-col .options__item .options__item__title {
+  color: #5a5a5a;
+  margin-bottom: 35px;
+  font-size: 18px;
+  font-family: 'Merriweather';
+  font-weight: bold;
+}
+
+.container.stone .left-col .options__item {
+  border-top: 1px solid #CDEAEF;
+}
+
+.container.stone .left-col {
+  border-right: 1px solid #CDEAEF;
+  padding-right: 20px;
+}
+
+#result-table {
+  font-size: 18px;
+  color: #5a5a5a;
+}
+
+#result-table h3 {
+  font-size: 42px;
+  font-family: '21 Cent',sans-serif;
+  color: #5a5a5a;
+  font-weight: normal;
+  margin-bottom: 18px;
+}
+
+#result-table h3 + .price {
+  font-size: 18px;
+}
+
+#result-table td {
+  text-align: right;
+}
+
+#result-table td {
+  border-bottom: 1px solid #d8ecf0;
+  padding-bottom: 5px;
+  padding-top: 14px;
+}
+
+#result-table tr:last-child td,
+#result-table tr:last-child th {
+  border-bottom: 0;
+}
+
+#result-table table {
+  width: 100%;
+  font-size: 18px;
+}
+
+#result-table th {
+  font-weight: normal;
+  padding-bottom: 5px;
+  padding-top: 14px;
+  border-bottom: 1px solid #d8ecf0;
+}
+
+#result-table table {
+  margin-bottom: 110px;
+}
+
+.container.stone .right-col {
+  padding-left: 20px;
+}
+
+.container.stone .right-col .blocks {
+  margin-bottom: 40px;
 }
 

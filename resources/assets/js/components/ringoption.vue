@@ -184,6 +184,9 @@
               },
               getLabelLeft:function(){
                 left= (this.value-1)/(this.countValues-1)*100;
+                if (left==0) left=3;
+                if (left>50 && left<100) left-=3;
+                if (left==100) left-=6;
                 return left;
               }
 

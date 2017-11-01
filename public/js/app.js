@@ -12389,7 +12389,7 @@ window.store = new Vuex.Store({
     totalPrice: 22000,
     session: {},
     resultImg: '',
-    step: 'base'
+    step: activeStep
 
   },
   mutations: {
@@ -12458,10 +12458,14 @@ window.RingApp = new Vue({
 
       _.forOwn(_this.ringOptions, function (value, key) {
         session[key] = 1;
-        str += key + 1;
       });
-      session['base'] = parseInt(ringBase);
-      session['material'] = parseInt(ringMaterial);
+
+      if (typeof ringBase != "undefined") session['base'] = parseInt(ringBase);
+      if (typeof ringMaterial != "undefined") session['material'] = parseInt(ringMaterial);
+
+      _.forOwn(_this.ringOptions, function (value, key) {
+        str += key + session[key];
+      });
 
       store.state.resultImg = '/resultimage/' + md5(str);
       store.commit('init', session);
@@ -56165,7 +56169,7 @@ module.exports = {
       return store.state.resultImg;
     },
     totalPrice: function totalPrice() {
-      return store.state.totalPrice;
+      return currencyFormatter.format(store.state.totalPrice, { code: 'RUB', precision: 0 });
     },
     getOptionValue: function getOptionValue() {}
 
@@ -56208,17 +56212,15 @@ var render = function() {
             ? _c("div", [
                 _c("h3", [_vm._v("Бриллиант")]),
                 _vm._v(" "),
-                _c("p", [
+                _c("p", { staticClass: "price" }, [
                   _c("span", {
                     domProps: { textContent: _vm._s(_vm.totalPrice) }
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "currency" }, [_vm._v("руб")])
+                  })
                 ]),
                 _vm._v(" "),
                 _c("table", [
                   _c("tr", [
-                    _c("td", [_vm._v("Форма огранки")]),
+                    _c("th", [_vm._v("Форма огранки")]),
                     _vm._v(" "),
                     _c("td", {
                       domProps: {
@@ -56228,7 +56230,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("tr", [
-                    _c("td", [_vm._v("Вес камня")]),
+                    _c("th", [_vm._v("Вес камня")]),
                     _vm._v(" "),
                     _c("td", {
                       domProps: {
@@ -56238,7 +56240,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("tr", [
-                    _c("td", [_vm._v("Цвет")]),
+                    _c("th", [_vm._v("Цвет")]),
                     _vm._v(" "),
                     _c("td", {
                       domProps: {
@@ -56248,7 +56250,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("tr", [
-                    _c("td", [_vm._v("Чистота")]),
+                    _c("th", [_vm._v("Чистота")]),
                     _vm._v(" "),
                     _c("td", {
                       domProps: {
@@ -56258,7 +56260,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("tr", [
-                    _c("td", [_vm._v("Размер")]),
+                    _c("th", [_vm._v("Размер")]),
                     _vm._v(" "),
                     _c("td", {
                       domProps: {
@@ -56272,10 +56274,9 @@ var render = function() {
                 _vm._v(" "),
                 _c("p", [
                   _c("span", {
+                    staticClass: "price",
                     domProps: { textContent: _vm._s(_vm.totalPrice) }
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "currency" }, [_vm._v("руб")])
+                  })
                 ])
               ])
             : _vm._e()
@@ -56515,6 +56516,9 @@ module.exports = {
     },
     getLabelLeft: function getLabelLeft() {
       left = (this.value - 1) / (this.countValues - 1) * 100;
+      if (left == 0) left = 3;
+      if (left > 50 && left < 100) left -= 3;
+      if (left == 100) left -= 6;
       return left;
     }
 
@@ -57260,7 +57264,7 @@ var render = function() {
                 _c("div", { staticClass: "row" }, [
                   _c(
                     "div",
-                    { staticClass: "col-md-4 left-col" },
+                    { staticClass: "col-md-3 left-col" },
                     [
                       _c("ringoptions", {
                         attrs: {
@@ -57288,7 +57292,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-3 right-col" },
+                    { staticClass: "col-md-4 right-col" },
                     [
                       _c("ringblocks", {
                         ref: "blocks",
@@ -57297,7 +57301,20 @@ var render = function() {
                           blocks: step.right.blocks,
                           "ring-option-values": _vm.SRingOptionValues
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          on: { click: _vm.nextStep }
+                        },
+                        [_vm._v("Выбрать")]
+                      ),
+                      _vm._v(" "),
+                      _c("button", { staticClass: "btn btn-default" }, [
+                        _vm._v("Помощь специалиста")
+                      ])
                     ],
                     1
                   )

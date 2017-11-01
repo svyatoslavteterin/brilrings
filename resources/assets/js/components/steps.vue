@@ -14,7 +14,6 @@
                   <div class="row">
                     <div class="col-md-2 left-col">
                         <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
-
                     </div>
                     <div class="col-md-6 center-col" >
                       <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
@@ -31,14 +30,15 @@
               </div>
               <div v-if="step.template==='stone'" class="container" :class="step.template">
                 <div class="row">
-                  <div class="col-md-4 left-col">
+                  <div class="col-md-3 left-col">
                       <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
                   </div>
                   <div class="col-md-5 center-col">
                         <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                   </div>
-                  <div class="col-md-3 right-col">
+                  <div class="col-md-4 right-col">
                         <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
+                          <button @click="nextStep" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
                   </div>
                 </div>
               </div>

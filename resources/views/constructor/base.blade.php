@@ -8,13 +8,13 @@
   <nav>
     <ul>
       <li class="active">
-        <a href="#"><span>Этап №1 <span>Выбрать оправу</span></span></a>
+        <a href="#" data-step="base"><span>Этап №1 <span>Выбрать оправу</span></span></a>
+      </li>
+      <li >
+        <a href="#" data-step="stone"><span>Этап №2 <span>Выбрать камень</span></span></a>
       </li>
       <li>
-        <a href="#"><span>Этап №2 <span>Выбрать камень</span></span></a>
-      </li>
-      <li>
-        <a href="#"><span>Этап №3 <span>Завершить кольцо</span></span></a>
+        <a href="#" data-step="finish"><span>Этап №3 <span>Завершить кольцо</span></span></a>
       </li>
     </ul>
   </nav>
@@ -109,6 +109,8 @@
 
 window.ringBase={{{ isset($base) ? $base : 1 }}};
 window.ringMaterial={{{ isset($material) ? $material : 1 }}};
+
+activeStep="base";
 
 </script>
 
