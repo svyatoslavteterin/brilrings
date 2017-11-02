@@ -5,6 +5,8 @@
             <p>&copy;2017 Ювелирная студия Brilliant Rings</p>
             <p>г. Москва ул. Московская, дом 3, стр3</p>
             <p>+7 (495) 888-88-88</p>
+            <p>ОГРН 317774600238702 ИП АБРАМОВА ДАРЬЯ АНДРЕЕВНА</p>
+
           </div>
           <div class="col-md-6 text-center">
             <img src="images/logo-small.png" alt="logo" />
