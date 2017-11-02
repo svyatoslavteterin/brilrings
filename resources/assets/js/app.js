@@ -130,6 +130,14 @@ window.RingApp = new Vue({
     methods: {
       getHash:function(){
 
+      },
+      isActive(step){
+        if (store.state.step==step){
+          return true;
+        }
+      },
+      nextStep(step){
+        store.state.step=step;
       }
     },
     created:function(){

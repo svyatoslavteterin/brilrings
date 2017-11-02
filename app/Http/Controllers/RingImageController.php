@@ -111,7 +111,11 @@ class RingImageController extends Controller
       $img=\Image::make('images/rings/'.$hash.'.jpg');
 
       if ($size=='medium') {
-          $img->resizeCanvas(298, 250, 'center', true);
+        $img->resize(298,null, function ($constraint) {
+            $constraint->aspectRatio();
+          });
+            $img->crop(298,250);
+      
       }else{
 
           $img->resize(140,null, function ($constraint) {

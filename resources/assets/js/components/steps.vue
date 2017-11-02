@@ -24,7 +24,7 @@
 
                         <p class="price"><span v-text="getTotalPrice"></span></p>
 
-                        <button @click="nextStep" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
+                        <button @click="nextStep('stone')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
                     </div>
                   </div>
               </div>
@@ -37,17 +37,33 @@
                         <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                   </div>
                   <div class="col-md-4 right-col">
+
+
                         <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
-                          <button @click="nextStep" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
+                        <p>Итоговая цена:</p>
+                        <p><span v-text="getTotalPrice" class="price"></span> </p>
+                          <button @click="nextStep('result')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
                   </div>
                 </div>
               </div>
               <div v-if="step.template==='result'" class="container" :class="step.template">
                   <div class="col-md-8 center-col">
-                    center
+                    <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                   </div>
                   <div class="col-md-4 right-col">
+                        <ringblocks :blocks="step.right.blocks" ref="blocks"></ringblocks>
+
+
+                            <button class="btn btn-default btn-how-to-know">Как узнать размер?</button>
+                        <p>Размер кольца</p>
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+                          <p><span v-text="getTotalPrice" class="price"></span> </p>
+                        <div class="action-btns">
+                          <button class="btn btn-primary btn-order">Заказать</button>
+                          <span>или</span>
+                          <button class="btn btn-primary btn-handmade">Сделать своими руками</button>
+                        </div>
+                        <button class="btn btn-default btn-help">Помощь специалиста</button>
                   </div>
 
               </div>
@@ -63,8 +79,9 @@
 
 
         },
-        nextStep:function(){
-            console.log('next');
+        nextStep:function(step){
+          console.log(step);
+            store.state.step=step;
         },
         isActive:function(key){
 

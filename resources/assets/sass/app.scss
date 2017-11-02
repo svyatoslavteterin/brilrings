@@ -6,6 +6,8 @@
 // Variables
 @import "variables";
 
+@import "full-slider.css";
+
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
@@ -39,24 +41,45 @@ nav {
 
 }
 
+.v-middle {
+  vertical-align: middle;
+  display: inline-block;
+  float: none;
+  margin-right: -4px;
+}
 
 #header {
-  padding-top: 40px;
-  padding-bottom:13px;
+
   font-weight: 300;
+}
+
+#header .logo {
+    padding-top: 42px;
+}
+#header .navbar {
+  margin-top:30px;
+  margin-bottom: 30px;
 }
 
 #header .phone {
   font-size: 16px;
   color: #5b5b5b;
-  margin-bottom:8px;
+  margin-bottom:12px;
 }
+
+#header .btn {display: inline-block;}
 
 .logo {text-align:center;}
 
-.mainnav {display:block;margin-top:25px;text-align:left;margin-bottom: 28px;}
+.mainnav {display:block;margin-top:30px;text-align:left;margin-bottom: 28px;}
 
-.mainnav a {color:#7a7a7a;padding:0 12px;font-size: 14px;font-weight: 300;}
+.mainnav a {
+  color: #7a7a7a;
+    padding: 0 12px;
+    font-size: 1em;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
 
 .mainnav li:after{
   content:'/';
@@ -75,7 +98,7 @@ nav ul li {display: inline-block;list-style: none;}
   background-repeat: no-repeat;
   background-position: left top;
   background-size: cover;
-  min-height:670px;
+
 
 }
 
@@ -494,17 +517,17 @@ $form-range-track-focus-background:              #a0d1c3;
 
 
 
-.ring-info h3 {
+.ring-info h3,.stone-info h3 {
   font-size:2.5em;
   color:#5a5a5a;
   font-weight: 300;
 }
 
-.ring-info {
+.ring-info,.stone-info {
   color: #5a5a5a;
 }
 
-.ring-info__desc {
+.ring-info__desc,.stone-info__desc {
   margin-bottom: 20px;
   font-size: 18px;
 }
@@ -516,12 +539,12 @@ $form-range-track-focus-background:              #a0d1c3;
 }
 
 
-.options__item.material .uk-select,.options__item.stone .uk-select {
-  display: inline-block;
+.options__item  .uk-select {
+  display: inline-block!important;
   width:220px;
   font-size: 18px;
   padding:0;
-  border-bottom:1px solid #d2e9ee;
+  border-bottom:1px solid #d2e9ee!important;
 }
 
 .base .options {margin-bottom: 60px;}
@@ -611,10 +634,13 @@ $form-range-track-focus-background:              #a0d1c3;
   border-color:#a0d1c3;
 }
 
+.card__item {cursor:pointer;}
+
 ////---- TOP ----///
 
   #top {
     border-bottom:5px solid #d0e8ed;
+    border-top:5px solid #d0e8ed;
     margin-bottom: 24px;
   }
 
@@ -623,6 +649,10 @@ $form-range-track-focus-background:              #a0d1c3;
 
 ////// HEADER /////
 
+
+#header address {
+  font-size: 0.9em;
+}
 #header .phone {
     display: inline-block;
 }
@@ -669,6 +699,11 @@ $form-range-track-focus-background:              #a0d1c3;
   color:#a4d3c5;
 }
 
+
+#header .logo {
+  padding-bottom:15px;
+  padding-top:38px;
+}
 ///////  ---- -END HEADER ---///
 
 
@@ -778,7 +813,7 @@ $form-range-track-focus-background:              #a0d1c3;
 }
 
 
-.container.base .center-col {
+.container.base .center-col,.container.stone .center-col {
   border-right: 1px solid #CDEAEF;
 }
 
@@ -999,6 +1034,12 @@ $form-range-track-focus-background:              #a0d1c3;
   margin-bottom: 110px;
 }
 
+
+.totalprice__title {
+    font-size: 1.28em;
+    font-weight: bold;
+}
+
 .container.stone .right-col {
   padding-left:20px;
 }
@@ -1006,3 +1047,70 @@ $form-range-track-focus-background:              #a0d1c3;
 .container.stone .right-col .blocks{
   margin-bottom: 40px;
 }
+
+.carousel-caption h2 {
+  font-size:1.28em;
+  font-weight: 300;
+    color:$primary-text-color;
+}
+
+.carousel-caption h2 span {
+  font-size: 2.57em;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-family: '21 Cent',sans-serif;
+  display: block;
+}
+.carousel-caption {
+  left: 35%;
+  right:5%;
+  text-shadow: none;
+  color:$primary-text-color;
+  bottom: 220px;
+}
+.carousel {height: 80%!important;}
+
+.btn-create-ring {
+  border:1px solid #565454;
+  position: relative;
+  background: transparent;
+  min-width: 158px;
+}
+
+.btn-create-ring:before{
+  content:'';
+  display: block;
+  width: 1px;
+  height: 100%;
+  background: #565454;
+  position: absolute;
+  left:3px;
+  top:0;
+}
+
+.btn-create-ring:after{
+  content:'';
+  display: block;
+  width: 1px;
+  height: 100%;
+  background: #565454;
+  position: absolute;
+  right:3px;
+  top:0;
+}
+
+
+
+
+///// RESULT  STEP////
+
+.btn-how-to-know {width: 100%;}
+
+.action-btns {margin-bottom:10px;}
+.action-btns .btn {display: inline-block;}
+.action-btns  span {display: inline-block;}
+
+.action-btns .btn-primary {padding-left:25px;padding-right:25px;}
+.action-btns+.btn-help {width:100%;}
+
+//// END RESULT ///

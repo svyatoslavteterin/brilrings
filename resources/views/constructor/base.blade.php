@@ -3,25 +3,25 @@
 
 
 @section('content')
-<div class="steps">
-<div class="container">
-  <nav>
-    <ul>
-      <li class="active">
-        <a href="#" data-step="base"><span>Этап №1 <span>Выбрать оправу</span></span></a>
-      </li>
-      <li >
-        <a href="#" data-step="stone"><span>Этап №2 <span>Выбрать камень</span></span></a>
-      </li>
-      <li>
-        <a href="#" data-step="finish"><span>Этап №3 <span>Завершить кольцо</span></span></a>
-      </li>
-    </ul>
-  </nav>
-</div>
-</div>
-<div id="app">
 
+<div id="app">
+  <div class="steps">
+  <div class="container">
+    <nav>
+      <ul>
+        <li :class="{active:isActive('base')}">
+          <a @click.prevent="nextStep('base')"><span>Этап №1 <span>Выбрать оправу</span></span></a>
+        </li>
+        <li :class="{active:isActive('stone')}">
+          <a @click.prevent="nextStep('stone')"><span>Этап №2 <span>Выбрать камень</span></span></a>
+        </li>
+        <li :class="{active:isActive('result')}">
+          <a @click.prevent="nextStep('result')"><span>Этап №3 <span>Завершить кольцо</span></span></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  </div>
   <steps :steps-list="steps"
   :s-ring-options="ringOptions"
   :s-ring-option-values="ringOptionValues"
@@ -90,7 +90,7 @@
       'blocks':['result-img']
     },
     'right':{
-      'blocks':['result-table']
+      'blocks':['stone-info','result-table']
     },
     'template':'stone'
 
@@ -100,8 +100,12 @@
       'blocks':['result-img','thumb-img']
     },
     'right':{
-      'blocks':['result-table'],
-      'options':[{'fsize':'range'}]
+      'blocks':['info','result-table'],
+      'options':[
+        {
+          'fsize':'selectbox'
+        }
+      ]
     },
     'template':'result'
   }

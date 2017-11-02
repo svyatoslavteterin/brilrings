@@ -8,9 +8,8 @@
 
         <title>Briliant Rings</title>
 
-        <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-      <link href="https://file.myfontastic.com/uJGzALvzUvuwHW9GWF4MB3/icons.css" rel="stylesheet">
+
+        <link href="https://file.myfontastic.com/uJGzALvzUvuwHW9GWF4MB3/icons.css" rel="stylesheet">
 
         <link  type="text/css" rel="stylesheet" href="/css/app.css" />
 
@@ -38,6 +37,10 @@
       <script type="text/javascript" src="/js/app.js"></script>
       <script type="text/javascript" src="/js/scripts.js"></script>
 
-
+      <script type="text/javascript">
+        $('.carousel').carousel({
+            interval: 5000 //changes the speed
+        });
+      </script>
     </body>
 </html>

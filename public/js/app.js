@@ -12446,7 +12446,15 @@ window.RingApp = new Vue({
 
   },
   methods: {
-    getHash: function getHash() {}
+    getHash: function getHash() {},
+    isActive: function isActive(step) {
+      if (store.state.step == step) {
+        return true;
+      }
+    },
+    nextStep: function nextStep(step) {
+      store.state.step = step;
+    }
   },
   created: function created() {
     var _this = this;
@@ -56128,6 +56136,8 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
 
 module.exports = {
   methods: {
@@ -56208,16 +56218,25 @@ var render = function() {
                 }
               })
             ])
+          : _vm._e(),
+        _vm._v(" "),
+        value === "stone-info"
+          ? _c("div", { staticClass: "stone-info" }, [
+              _c("h3", {
+                staticClass: "totalprice__title",
+                domProps: {
+                  textContent: _vm._s(_vm.storeValue("stone", "title"))
+                }
+              }),
+              _vm._v(" "),
+              _c("p", { staticClass: "price" }, [
+                _c("span", {
+                  domProps: { textContent: _vm._s(_vm.totalPrice) }
+                })
+              ])
+            ])
           : value === "result-table"
             ? _c("div", [
-                _c("h3", [_vm._v("Бриллиант")]),
-                _vm._v(" "),
-                _c("p", { staticClass: "price" }, [
-                  _c("span", {
-                    domProps: { textContent: _vm._s(_vm.totalPrice) }
-                  })
-                ]),
-                _vm._v(" "),
                 _c("table", [
                   _c("tr", [
                     _c("th", [_vm._v("Форма огранки")]),
@@ -56268,15 +56287,6 @@ var render = function() {
                       }
                     })
                   ])
-                ]),
-                _vm._v(" "),
-                _c("p", [_vm._v("Итоговая цена:")]),
-                _vm._v(" "),
-                _c("p", [
-                  _c("span", {
-                    staticClass: "price",
-                    domProps: { textContent: _vm._s(_vm.totalPrice) }
-                  })
                 ])
               ])
             : _vm._e()
@@ -56812,6 +56822,9 @@ module.exports = Component.exports
 
 module.exports = {
   methods: {
+    gotoConstructor: function gotoConstructor(link) {
+      window.location.href = link;
+    },
     storeValue: function storeValue(optionKey, column) {
 
       var optionvalue = store.state.session[optionKey];
@@ -56935,51 +56948,67 @@ var render = function() {
         : _vm.optionTemplate === "text"
           ? _c("input", { attrs: { value: "text" } })
           : _vm.optionTemplate == "card"
-            ? _c("div", { staticClass: "col-md-4 card__item" }, [
-                _c("div", { staticClass: "card__item__wrapper" }, [
-                  _c("div", { staticClass: "card__img" }, [
-                    _c("img", {
-                      attrs: {
-                        src:
-                          /baseimages/ +
-                          _vm.ringOptionValue.value +
-                          "/" +
-                          _vm.storeValue("material", "value") +
-                          "/medium",
-                        alt: _vm.ringOptionValue.title
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card__title" }, [
-                    _vm._v(_vm._s(_vm.ringOptionValue.title))
-                  ]),
-                  _vm._v(" "),
-                  _c("div", {
-                    staticClass: "card__material",
-                    domProps: {
-                      textContent: _vm._s(_vm.storeValue("material", "title"))
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: {
-                        href:
-                          "/constructor/base/" +
+            ? _c(
+                "div",
+                {
+                  staticClass: "col-md-4 card__item",
+                  on: {
+                    click: function($event) {
+                      _vm.gotoConstructor(
+                        "/constructor/base/" +
                           _vm.ringOptionValue.value +
                           "/" +
                           _vm.storeValue("material", "value")
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "card__item__wrapper" }, [
+                    _c("div", { staticClass: "card__img" }, [
+                      _c("img", {
+                        attrs: {
+                          src:
+                            /baseimages/ +
+                            _vm.ringOptionValue.value +
+                            "/" +
+                            _vm.storeValue("material", "value") +
+                            "/medium",
+                          alt: _vm.ringOptionValue.title
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card__title" }, [
+                      _vm._v(_vm._s(_vm.ringOptionValue.title))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "card__material",
+                      domProps: {
+                        textContent: _vm._s(_vm.storeValue("material", "title"))
                       }
-                    },
-                    [_vm._v("Выбрать")]
-                  )
-                ])
-              ])
+                    }),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: {
+                          href:
+                            "/constructor/base/" +
+                            _vm.ringOptionValue.value +
+                            "/" +
+                            _vm.storeValue("material", "value")
+                        }
+                      },
+                      [_vm._v("Выбрать")]
+                    )
+                  ])
+                ]
+              )
             : _vm.optionTemplate === "switch"
               ? _c("div", [_vm._v(_vm._s(_vm.ringOptionValue.title))])
               : _vm._e()
@@ -57112,12 +57141,29 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 module.exports = {
   methods: {
     update: function update() {},
-    nextStep: function nextStep() {
-      console.log('next');
+    nextStep: function nextStep(step) {
+      console.log(step);
+      store.state.step = step;
     },
     isActive: function isActive(key) {
 
@@ -57244,7 +57290,11 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn btn-primary",
-                          on: { click: _vm.nextStep }
+                          on: {
+                            click: function($event) {
+                              _vm.nextStep("stone")
+                            }
+                          }
                         },
                         [_vm._v("Выбрать")]
                       ),
@@ -57303,11 +57353,24 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
+                      _c("p", [_vm._v("Итоговая цена:")]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _c("span", {
+                          staticClass: "price",
+                          domProps: { textContent: _vm._s(_vm.getTotalPrice) }
+                        })
+                      ]),
+                      _vm._v(" "),
                       _c(
                         "button",
                         {
                           staticClass: "btn btn-primary",
-                          on: { click: _vm.nextStep }
+                          on: {
+                            click: function($event) {
+                              _vm.nextStep("result")
+                            }
+                          }
                         },
                         [_vm._v("Выбрать")]
                       ),
@@ -57324,21 +57387,57 @@ var render = function() {
           _vm._v(" "),
           step.template === "result"
             ? _c("div", { staticClass: "container", class: step.template }, [
-                _c("div", { staticClass: "col-md-8 center-col" }, [
-                  _vm._v("\n                    center\n                  ")
-                ]),
+                _c(
+                  "div",
+                  { staticClass: "col-md-8 center-col" },
+                  [
+                    _c("ringblocks", {
+                      ref: "blocks",
+                      refInFor: true,
+                      attrs: { blocks: step.center.blocks }
+                    })
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c(
                   "div",
                   { staticClass: "col-md-4 right-col" },
                   [
+                    _c("ringblocks", {
+                      ref: "blocks",
+                      refInFor: true,
+                      attrs: { blocks: step.right.blocks }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      { staticClass: "btn btn-default btn-how-to-know" },
+                      [_vm._v("Как узнать размер?")]
+                    ),
+                    _vm._v(" "),
+                    _c("p", [_vm._v("Размер кольца")]),
+                    _vm._v(" "),
                     _c("ringoptions", {
                       attrs: {
                         options: step.right.options,
                         "ring-options": _vm.SRingOptions,
                         "ring-option-values": _vm.SRingOptionValues
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("p", [
+                      _c("span", {
+                        staticClass: "price",
+                        domProps: { textContent: _vm._s(_vm.getTotalPrice) }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0, true),
+                    _vm._v(" "),
+                    _c("button", { staticClass: "btn btn-default btn-help" }, [
+                      _vm._v("Помощь специалиста")
+                    ])
                   ],
                   1
                 )
@@ -57349,7 +57448,24 @@ var render = function() {
     })
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "action-btns" }, [
+      _c("button", { staticClass: "btn btn-primary btn-order" }, [
+        _vm._v("Заказать")
+      ]),
+      _vm._v(" "),
+      _c("span", [_vm._v("или")]),
+      _vm._v(" "),
+      _c("button", { staticClass: "btn btn-primary btn-handmade" }, [
+        _vm._v("Сделать своими руками")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

@@ -12,11 +12,14 @@
                 <h3 v-text="storeValue('base','title')"> </h3>
                 <div class="ring-info__desc" v-text="storeValue('base','desc')"> </div>
               </div>
+              <div v-if="value==='stone-info'" class="stone-info">
+                <h3 class="totalprice__title" v-text="storeValue('stone','title')"> </h3>
+                  <p class="price"><span v-text="totalPrice"></span> </p>
+              </div>
 
 
               <div v-else-if="value==='result-table'">
-                  <h3>Бриллиант</h3>
-                  <p class="price"><span v-text="totalPrice"></span> </p>
+
                   <table>
                     <tr>
                       <th>Форма огранки</th>
@@ -40,8 +43,7 @@
                     </tr>
 
                   </table>
-                  <p>Итоговая цена:</p>
-                  <p><span v-text="totalPrice" class="price"></span> </p>
+
               </div>
 
           </div>
