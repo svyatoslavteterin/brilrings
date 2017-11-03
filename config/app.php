@@ -163,7 +163,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Intervention\Image\ImageServiceProviderLaravel5::class
+        Intervention\Image\ImageServiceProviderLaravel5::class,
+        Joselfonseca\ImageManager\ImageManagerServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -177,6 +178,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class
 
     ],
 
