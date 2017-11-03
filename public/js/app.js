@@ -56198,99 +56198,108 @@ var render = function() {
     "div",
     { staticClass: "blocks" },
     _vm._l(_vm.blocks, function(value, index) {
-      return _c("div", { staticClass: "blocks__item", attrs: { id: value } }, [
-        value === "result-img"
-          ? _c("div", [_c("img", { attrs: { src: _vm.resultImg } })])
-          : _vm._e(),
-        _vm._v(" "),
-        value === "info"
-          ? _c("div", { staticClass: "ring-info" }, [
-              _c("h3", {
-                domProps: {
-                  textContent: _vm._s(_vm.storeValue("base", "title"))
-                }
-              }),
-              _vm._v(" "),
-              _c("div", {
-                staticClass: "ring-info__desc",
-                domProps: {
-                  textContent: _vm._s(_vm.storeValue("base", "desc"))
-                }
-              })
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        value === "stone-info"
-          ? _c("div", { staticClass: "stone-info" }, [
-              _c("h3", {
-                staticClass: "totalprice__title",
-                domProps: {
-                  textContent: _vm._s(_vm.storeValue("stone", "title"))
-                }
-              }),
-              _vm._v(" "),
-              _c("p", { staticClass: "price" }, [
-                _c("span", {
-                  domProps: { textContent: _vm._s(_vm.totalPrice) }
+      return _c(
+        "div",
+        { staticClass: "blocks__item", class: value, attrs: { id: value } },
+        [
+          value === "result-img"
+            ? _c("div", [
+                _c("img", {
+                  staticClass: "img-fluid",
+                  attrs: { src: _vm.resultImg }
                 })
               ])
-            ])
-          : value === "result-table"
-            ? _c("div", [
-                _c("table", [
-                  _c("tr", [
-                    _c("th", [_vm._v("Форма огранки")]),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: {
-                        textContent: _vm._s(_vm.storeValue("shape", "title"))
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("th", [_vm._v("Вес камня")]),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: {
-                        textContent: _vm._s(_vm.storeValue("weight", "title"))
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("th", [_vm._v("Цвет")]),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: {
-                        textContent: _vm._s(_vm.storeValue("color", "title"))
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("th", [_vm._v("Чистота")]),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: {
-                        textContent: _vm._s(_vm.storeValue("purity", "title"))
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("th", [_vm._v("Размер")]),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: {
-                        textContent: _vm._s(_vm.storeValue("size", "title"))
-                      }
-                    })
-                  ])
+            : _vm._e(),
+          _vm._v(" "),
+          value === "info"
+            ? _c("div", { staticClass: "ring-info" }, [
+                _c("h3", {
+                  domProps: {
+                    textContent: _vm._s(_vm.storeValue("base", "title"))
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "ring-info__desc",
+                  domProps: {
+                    textContent: _vm._s(_vm.storeValue("base", "desc"))
+                  }
+                })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          value === "stone-info"
+            ? _c("div", { staticClass: "stone-info" }, [
+                _c("h3", {
+                  staticClass: "totalprice__title",
+                  domProps: {
+                    textContent: _vm._s(_vm.storeValue("stone", "title"))
+                  }
+                }),
+                _vm._v(" "),
+                _c("p", { staticClass: "price" }, [
+                  _c("span", {
+                    domProps: { textContent: _vm._s(_vm.totalPrice) }
+                  })
                 ])
               ])
-            : _vm._e()
-      ])
+            : value === "result-table"
+              ? _c("div", [
+                  _c("table", [
+                    _c("tr", [
+                      _c("th", [_vm._v("Форма огранки")]),
+                      _vm._v(" "),
+                      _c("td", {
+                        domProps: {
+                          textContent: _vm._s(_vm.storeValue("shape", "title"))
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("th", [_vm._v("Вес камня")]),
+                      _vm._v(" "),
+                      _c("td", {
+                        domProps: {
+                          textContent: _vm._s(_vm.storeValue("weight", "title"))
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("th", [_vm._v("Цвет")]),
+                      _vm._v(" "),
+                      _c("td", {
+                        domProps: {
+                          textContent: _vm._s(_vm.storeValue("color", "title"))
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("th", [_vm._v("Чистота")]),
+                      _vm._v(" "),
+                      _c("td", {
+                        domProps: {
+                          textContent: _vm._s(_vm.storeValue("purity", "title"))
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("th", [_vm._v("Размер")]),
+                      _vm._v(" "),
+                      _c("td", {
+                        domProps: {
+                          textContent: _vm._s(_vm.storeValue("size", "title"))
+                        }
+                      })
+                    ])
+                  ])
+                ])
+              : _vm._e()
+        ]
+      )
     })
   )
 }
@@ -56567,7 +56576,7 @@ var render = function() {
         )
       ])
     : _vm.optionTemplate === "imageslider"
-      ? _c("div", { staticClass: "options__item", class: _vm.optionKey }, [
+      ? _c("div", { staticClass: "options__item ", class: _vm.optionKey }, [
           _c("h3", { staticClass: "options__item__title" }, [
             _vm._v(_vm._s(_vm.ringOption.title))
           ]),
@@ -56687,49 +56696,53 @@ var render = function() {
               )
             ])
           : _vm.optionTemplate === "range"
-            ? _c("div", { staticClass: "options__item" }, [
-                _c("h3", { staticClass: "options__item__title" }, [
-                  _vm._v(_vm._s(_vm.ringOption.title))
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "range-slider" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.value,
-                        expression: "value"
-                      }
-                    ],
-                    staticClass: "uk-range",
-                    attrs: {
-                      type: "range",
-                      step: "1",
-                      min: "1",
-                      max: _vm.ringOptionValues[_vm.optionKey].length,
-                      value: "1"
-                    },
-                    domProps: { value: _vm.value },
-                    on: {
-                      change: function($event) {
-                        _vm.update(_vm.value)
-                      },
-                      __r: function($event) {
-                        _vm.value = $event.target.value
-                      }
-                    }
-                  }),
+            ? _c(
+                "div",
+                { staticClass: "options__item col-sm-3 col-xs-3 col-md-12" },
+                [
+                  _c("h3", { staticClass: "options__item__title" }, [
+                    _vm._v(_vm._s(_vm.ringOption.title))
+                  ]),
                   _vm._v(" "),
-                  _c("p", {
-                    staticClass: "option-range-label",
-                    style: { left: _vm.getLabelLeft + "%" },
-                    domProps: {
-                      textContent: _vm._s(_vm.getOptionValueTitle.title)
-                    }
-                  })
-                ])
-              ])
+                  _c("div", { staticClass: "range-slider" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value,
+                          expression: "value"
+                        }
+                      ],
+                      staticClass: "uk-range",
+                      attrs: {
+                        type: "range",
+                        step: "1",
+                        min: "1",
+                        max: _vm.ringOptionValues[_vm.optionKey].length,
+                        value: "1"
+                      },
+                      domProps: { value: _vm.value },
+                      on: {
+                        change: function($event) {
+                          _vm.update(_vm.value)
+                        },
+                        __r: function($event) {
+                          _vm.value = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("p", {
+                      staticClass: "option-range-label",
+                      style: { left: _vm.getLabelLeft + "%" },
+                      domProps: {
+                        textContent: _vm._s(_vm.getOptionValueTitle.title)
+                      }
+                    })
+                  ])
+                ]
+              )
             : _vm._e()
 }
 var staticRenderFns = []
@@ -56861,9 +56874,14 @@ module.exports = {
   ready: function ready() {},
   mounted: function mounted() {
 
-    $('.jcarousel').jcarousel({
-      vertical: true
-    });
+    if ($(window).width() <= 990) {
+
+      $('.jcarousel').jcarousel();
+    } else {
+      $('.jcarousel').jcarousel({
+        vertical: true
+      });
+    }
 
     $('.jcarousel').jcarouselSwipe({
       perSwipe: 2 // by default 1
@@ -56951,7 +56969,7 @@ var render = function() {
             ? _c(
                 "div",
                 {
-                  staticClass: "col-md-4 card__item",
+                  staticClass: "col-sm-4 col-md-4 card__item",
                   on: {
                     click: function($event) {
                       _vm.gotoConstructor(
@@ -57233,7 +57251,7 @@ var render = function() {
                 _c("div", { staticClass: "row" }, [
                   _c(
                     "div",
-                    { staticClass: "col-md-2 left-col" },
+                    { staticClass: "col-sm-12 col-md-2 left-col" },
                     [
                       _c("ringoptions", {
                         attrs: {
@@ -57248,7 +57266,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-6 center-col" },
+                    { staticClass: "col-xs-6 col-sm-6 col-md-6 center-col" },
                     [
                       _c("ringblocks", {
                         ref: "blocks",
@@ -57261,7 +57279,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-4 right-col" },
+                    { staticClass: "col-xs-6 col-sm-6 col-md-4 right-col" },
                     [
                       _c("ringblocks", {
                         ref: "blocks",
@@ -57314,7 +57332,7 @@ var render = function() {
                 _c("div", { staticClass: "row" }, [
                   _c(
                     "div",
-                    { staticClass: "col-md-3 left-col" },
+                    { staticClass: "col-sm-12 col-md-3 left-col" },
                     [
                       _c("ringoptions", {
                         attrs: {
@@ -57329,7 +57347,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-5 center-col" },
+                    { staticClass: "col-xs-6 col-sm-6 col-md-5 center-col" },
                     [
                       _c("ringblocks", {
                         ref: "blocks",
@@ -57342,7 +57360,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-4 right-col" },
+                    { staticClass: "col-xs-6 col-sm-6 col-md-4 right-col" },
                     [
                       _c("ringblocks", {
                         ref: "blocks",
@@ -57389,7 +57407,7 @@ var render = function() {
             ? _c("div", { staticClass: "container", class: step.template }, [
                 _c(
                   "div",
-                  { staticClass: "col-md-8 center-col" },
+                  { staticClass: "col-xs-6 col-sm-6 col-md-8 center-col" },
                   [
                     _c("ringblocks", {
                       ref: "blocks",
@@ -57402,7 +57420,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-md-4 right-col" },
+                  { staticClass: "col-xs-6 col-sm-6 col-md-4 right-col" },
                   [
                     _c("ringblocks", {
                       ref: "blocks",

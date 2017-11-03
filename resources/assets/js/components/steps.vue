@@ -12,13 +12,13 @@
 
               <div v-if="step.template==='base'" class="container" :class="step.template" >
                   <div class="row">
-                    <div class="col-md-2 left-col">
+                    <div class="col-sm-12 col-md-2 left-col">
                         <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
                     </div>
-                    <div class="col-md-6 center-col" >
+                    <div class="col-xs-6 col-sm-6 col-md-6 center-col" >
                       <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                     </div>
-                    <div class="col-md-4 right-col">
+                    <div class="col-xs-6 col-sm-6 col-md-4 right-col">
                           <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
 
@@ -30,13 +30,13 @@
               </div>
               <div v-if="step.template==='stone'" class="container" :class="step.template">
                 <div class="row">
-                  <div class="col-md-3 left-col">
+                  <div class="col-sm-12 col-md-3 left-col">
                       <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
                   </div>
-                  <div class="col-md-5 center-col">
+                  <div class="col-xs-6 col-sm-6 col-md-5 center-col">
                         <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                   </div>
-                  <div class="col-md-4 right-col">
+                  <div class="col-xs-6 col-sm-6 col-md-4 right-col">
 
 
                         <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
@@ -47,10 +47,10 @@
                 </div>
               </div>
               <div v-if="step.template==='result'" class="container" :class="step.template">
-                  <div class="col-md-8 center-col">
+                  <div class="col-xs-6 col-sm-6 col-md-8 center-col">
                     <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                   </div>
-                  <div class="col-md-4 right-col">
+                  <div class="col-xs-6 col-sm-6 col-md-4 right-col">
                         <ringblocks :blocks="step.right.blocks" ref="blocks"></ringblocks>
 
 

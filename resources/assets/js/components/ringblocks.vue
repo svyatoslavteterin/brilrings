@@ -1,10 +1,10 @@
 <template>
     <div class="blocks">
 
-          <div class="blocks__item"  v-for="(value,index)  in blocks" :id="value">
+          <div class="blocks__item"  v-for="(value,index)  in blocks" :id="value" :class="value">
 
               <div v-if="value==='result-img'">
-                <img :src="resultImg" />
+                <img :src="resultImg" class="img-fluid" />
 
               </div>
 

@@ -10,7 +10,8 @@
         "laravel/framework": "5.5.*",
         "intervention/image": "dev-master",
         "laravel/tinker": "~1.0",
-        "phpspec/phpspec": "^4.0"
+        "phpspec/phpspec": "^4.0",
+        "joselfonseca/image-manager" : "2.1.*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

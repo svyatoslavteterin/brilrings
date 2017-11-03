@@ -9,7 +9,7 @@
             <li v-else-if="optionTemplate=='imagebox'" :class="{ active: isActive }"><a href="#" @click.prevent="chooseOption">{{ringOptionValue.title}}</a></li>
             <option v-else-if="optionTemplate==='selectbox'" :value="ringOptionValue.value" >{{ringOptionValue.title}}</option>
             <input v-else-if="optionTemplate==='text'" value="text">
-            <div v-else-if="optionTemplate=='card'" class="col-md-4 card__item" @click="gotoConstructor('/constructor/base/'+ringOptionValue.value+'/'+storeValue('material','value'))">
+            <div v-else-if="optionTemplate=='card'" class="col-sm-4 col-md-4 card__item" @click="gotoConstructor('/constructor/base/'+ringOptionValue.value+'/'+storeValue('material','value'))">
                 <div class="card__item__wrapper">
                   <div class="card__img"><img :src="/baseimages/+ringOptionValue.value+'/'+storeValue('material','value')+'/medium'" :alt="ringOptionValue.title" /></div>
                   <div class="card__title">{{ringOptionValue.title}}</div>
@@ -77,10 +77,15 @@
         mounted:function(){
 
 
+          if ($(window).width() <= 990)  {
 
-          $('.jcarousel').jcarousel({
-              vertical: true
-          });
+                $('.jcarousel').jcarousel();
+          }else{
+            $('.jcarousel').jcarousel({
+                vertical: true
+            });
+          }
+
 
 
 

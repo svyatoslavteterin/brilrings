@@ -23,7 +23,7 @@
         </ul>
 
         </div>
-          <div class="options__item" :class="optionKey" v-else-if="optionTemplate==='imageslider'">
+          <div class="options__item " :class="optionKey" v-else-if="optionTemplate==='imageslider'">
           <h3 class="options__item__title">{{ringOption.title}}</h3>
 
             <div class="jcarousel-wrapper">
@@ -93,7 +93,7 @@
             </div>
 
 
-            <div v-else-if="optionTemplate==='range'" class="options__item">
+            <div v-else-if="optionTemplate==='range'" class="options__item col-sm-3 col-xs-3 col-md-12">
                   <h3 class="options__item__title">{{ringOption.title}}</h3>
                   <div class="range-slider">
                      <input class="uk-range" type="range"  step="1" min="1" :max="ringOptionValues[optionKey].length" value="1" v-model="value" @change="update(value)" />

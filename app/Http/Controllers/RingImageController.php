@@ -108,23 +108,32 @@ class RingImageController extends Controller
 
 
       $hash=md5($str);
+
+
       $img=\Image::make('images/rings/'.$hash.'.jpg');
 
+
+
       if ($size=='medium') {
+
         $img->resize(298,null, function ($constraint) {
             $constraint->aspectRatio();
+            $constraint->upsize();
           });
-            $img->crop(298,250);
-      
+        $img->resizeCanvas(298, null, 'center', false, 'fff');
+
+
       }else{
 
           $img->resize(140,null, function ($constraint) {
               $constraint->aspectRatio();
+              $constraint->upsize();
             });
 
-          $img->crop(140,70);
+
+              $img->resizeCanvas(140, 70, 'center', false, 'fff');
         }
 
-       return $img->response('jpg');
+       return $img->response('jpg',100);
     }
 }
