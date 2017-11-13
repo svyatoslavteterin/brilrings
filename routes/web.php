@@ -33,6 +33,7 @@ Route::get('/import',function(){
 
     $import_dir='./import-files/images';
     $list = File::directories($import_dir);
+
     $options=App\RingOption::all()->toArray();
     $params=array();
 
@@ -64,6 +65,7 @@ Route::get('/import',function(){
 
       $base=str_replace(array($import_dir,'/'),'',$value);
 
+      if ($base!=10) continue;
       init($params);
       $params['base']=$base;
 
