@@ -30,10 +30,13 @@ window.Vuex=require('vuex');
 Vue.use(Vuex);
 
 
+
 Vue.prototype.$http = axios;
 
 import { mapState } from 'vuex';
 
+
+const currencyConvert = require('currency-convert');
 
 
 
@@ -141,6 +144,14 @@ window.RingApp = new Vue({
       }
     },
     created:function(){
+
+  
+
+
+        this.$http.get('/getprice').then((response)=>{
+          currencyConvert(response.data, 'USD', 'RUB').then(console.log).catch(console.log);
+        });
+
         this.$http.get('/ring_options').then((response)=>{
         this.ringOptions=response.data;
         var session={};

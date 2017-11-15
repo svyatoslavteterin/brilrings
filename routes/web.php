@@ -65,7 +65,7 @@ Route::get('/import',function(){
 
       $base=str_replace(array($import_dir,'/'),'',$value);
 
-      if ($base!=10) continue;
+      if ($base!=9) continue;
       init($params);
       $params['base']=$base;
 
@@ -149,6 +149,30 @@ Route::get('/constructor/base', function () {
 });
 
 
+Route::get('/getprice/{shape}/{size}/{color}/{clarity}/','ConstructorController@getprice');
+
+
+Route::get('/generate',function(){
+
+  /*$value=8;
+  for ($i=0.22;$i<=2;$i+=0.01){
+    $optionvalue = new \App\ringOptionValue;
+
+  $optionvalue->ring_option_id=7;
+  $optionvalue->value=$value;
+  $optionvalue->title=round($i,2);
+  $optionvalue->price=0;
+  $optionvalue->desc='';
+
+    $optionvalue->save();
+
+    $value++;
+
+  }
+
+  die;
+  */
+});
 
 Route::get('/constructor/stone', function () {
 
