@@ -21,7 +21,7 @@ class ConstructorController extends Controller
 
 
 
-        $sizes=\App\ringOptionValue::where('ring_option_id','=',7)->get();
+        $sizes=\App\RingOptionValue::where('ring_option_id','=',7)->get();
 
         foreach ($sizes->toArray() as $size_arr){
           if ($size_arr['value']==$size){
