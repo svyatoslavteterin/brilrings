@@ -5,6 +5,7 @@
 @section('content')
 
 <div id="app">
+
   <div class="steps">
   <div class="container">
     <nav>

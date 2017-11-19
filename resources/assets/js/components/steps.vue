@@ -22,7 +22,7 @@
                           <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
 
-                        <p class="price"><span v-text="getTotalPrice"></span></p>
+                        <p class="price"><span v-text="getBasePrice"></span></p>
 
                         <button @click="nextStep('stone')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
                     </div>
@@ -114,6 +114,12 @@
         computed: {
           getTotalPrice:function(){
             return currencyFormatter.format(store.state.totalPrice, { code: 'RUB',precision:0});
+
+          },
+          getBasePrice:function(){
+
+
+            return currencyFormatter.format(store.state.basePrice, { code: 'RUB',precision:0});
 
           }
 

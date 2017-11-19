@@ -19,6 +19,7 @@ class RingOptionValueController extends Controller
     $output=array();
     foreach ($ring_option_values as $ring_option_value) {
 
+    $ring_option_value->price=json_decode($ring_option_value->price);
       $c=clone $ring_option_value;
       $ring_option=$c->ringOption;
 

@@ -14,7 +14,7 @@
               </div>
               <div v-if="value==='stone-info'" class="stone-info">
                 <h3 class="totalprice__title" v-text="storeValue('stone','title')"> </h3>
-                  <p class="price"><span v-text="totalPrice"></span> </p>
+                  <p class="price"><span v-text="getStonePrice"></span> </p>
               </div>
 
 
@@ -104,6 +104,9 @@
           },
           totalPrice:function(){
             return currencyFormatter.format(store.state.totalPrice, { code: 'RUB',precision:0});
+          },
+          getStonePrice:function(){
+            return currencyFormatter.format(store.state.stonePrice, { code: 'RUB',precision:0});
           },
           getOptionValue:function(){
 

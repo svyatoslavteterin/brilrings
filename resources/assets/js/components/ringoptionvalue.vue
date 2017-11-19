@@ -14,7 +14,7 @@
                   <div class="card__img"><img :src="/baseimages/+ringOptionValue.value+'/'+storeValue('material','value')+'/medium'" :alt="ringOptionValue.title" /></div>
                   <div class="card__title">{{ringOptionValue.title}}</div>
                   <div class="card__material" v-text="storeValue('material','title')"></div>
-                  <div class="card__price">22175 <span class="currency">руб.</span></div>
+                  <div class="card__price" v-text="formatPrice(ringOptionValue.price.material[storeValue('material','value')])"></div>
                   <a class="btn btn-primary" :href="'/constructor/base/'+ringOptionValue.value+'/'+storeValue('material','value')">Выбрать</a>
                 </div>
              </div>
@@ -28,6 +28,10 @@
 <script>
     module.exports = {
     methods: {
+      formatPrice:function(price){
+        return currencyFormatter.format(price, { code: 'RUB',precision:0});
+
+      },
       gotoConstructor:function(link){
         window.location.href=link;
       },
@@ -111,6 +115,7 @@
           imgHash:function(){
 
           }
+
 
 
 

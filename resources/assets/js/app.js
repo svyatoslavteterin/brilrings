@@ -36,7 +36,28 @@ Vue.prototype.$http = axios;
 import { mapState } from 'vuex';
 
 
-const currencyConvert = require('currency-convert');
+var fx = require('money');
+
+fx.base = "USD";
+
+$.getJSON(
+    	// NB: using Open Exchange Rates here, but you can use any source!
+        'https://openexchangerates.org/api/historical/2017-11-19.json?app_id=cc24b33091c34b19a0f4dea626cab8a2',
+        function(data) {
+            // Check money.js has finished loading:
+            if ( typeof fx !== "undefined" && fx.rates ) {
+                fx.rates = data.rates;
+                fx.base = data.base;
+            } else {
+                // If not, apply to fxSetup global:
+                var fxSetup = {
+                    rates : data.rates,
+                    base : data.base
+                }
+            }
+        }
+    );
+
 
 
 
@@ -60,6 +81,8 @@ Vue.component('steps',require('./components/steps.vue'));
 window.store = new Vuex.Store({
   state: {
     value:0,
+    basePrice:0,
+    stonePrice:0,
     totalPrice: 22000,
     session: {},
     resultImg:'',
@@ -79,6 +102,10 @@ window.store = new Vuex.Store({
 
       if (excludeParams.indexOf(payload.optionKey)==-1)  store.dispatch('refreshResultImg');
 
+      //Refresh base and stone prices after change options
+
+      store.dispatch('refreshPrices');
+
 
     },
     refreshResultImg(state){
@@ -86,6 +113,7 @@ window.store = new Vuex.Store({
       state.resultImg='/resultimage/'+this.getHash;
 
     },
+
     setImage(state,payload){
       state.resultImg=payload.value;
     }
@@ -114,8 +142,20 @@ window.store = new Vuex.Store({
       context.state.resultImg='/resultimage/'+md5(str);
 
 
+    },
+    refreshPrices(context){
+      var basePrice=parseInt(RingApp.$data.ringOptionValues.base[context.state.session.base].price.material[context.state.session.material]);
+      context.state.basePrice=basePrice;
+        RingApp.$http.get('/getprice/'+context.state.session.shape+'/'+context.state.session.weight+'/'+context.state.session.color+'/'+context.state.session.purity).then((response)=>{
+            var stonePrice=Math.round(fx(response.data.price).from('USD').to('RUB'));
+            context.state.stonePrice=stonePrice;
+            context.state.totalPrice=basePrice+stonePrice;
+          });
+
+
     }
   }
+
 })
 
 
@@ -145,12 +185,10 @@ window.RingApp = new Vue({
     },
     created:function(){
 
-  
 
 
-        this.$http.get('/getprice').then((response)=>{
-          currencyConvert(response.data, 'USD', 'RUB').then(console.log).catch(console.log);
-        });
+
+
 
         this.$http.get('/ring_options').then((response)=>{
         this.ringOptions=response.data;
@@ -173,6 +211,9 @@ window.RingApp = new Vue({
         });
 
         store.state.resultImg='/resultimage/'+md5(str);
+
+
+
         store.commit('init',session);
 
 
@@ -182,6 +223,14 @@ window.RingApp = new Vue({
       this.$http.get('/ring_option_values').then((response)=>{
 
         this.ringOptionValues=response.data;
+
+        store.state.basePrice=parseInt(this.$data.ringOptionValues.base[store.state.session.base].price.material[store.state.session.material]);
+
+        this.$http.get('/getprice/'+store.state.session.shape+'/'+store.state.session.weight+'/'+store.state.session.color+'/'+store.state.session.purity).then((response)=>{
+            store.state.stonePrice=Math.round(fx(response.data.price).from('USD').to('RUB'));
+              store.state.totalPrice=store.state.basePrice+store.state.stonePrice;
+          });
+
       },(response)=> {
 
       });
@@ -189,6 +238,9 @@ window.RingApp = new Vue({
     computed:{
       getTotalPrice:function(){
         return store.state.totalPrice;
+      },
+      getBasePrice:function(){
+
       }
     },
     mounted:function(){
