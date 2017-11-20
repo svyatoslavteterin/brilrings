@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+set_time_limit(200);
 Route::get('/ring_sessions','RingSessionController@index');
 
 
@@ -29,7 +29,7 @@ Route::get('/ring_option_values','RingOptionValueController@get');
 Route::get('/ring_option_values/{option}','RingOptionValueController@index');
 
 Route::get('/ring_sessions/create',function(){return view('sessions/create');});
-Route::get('/import',function(){
+Route::get('/import-images',function(){
 
     $import_dir='./import-files/images';
     $list = File::directories($import_dir);
@@ -65,7 +65,9 @@ Route::get('/import',function(){
 
       $base=str_replace(array($import_dir,'/'),'',$value);
 
-      if ($base!=9) continue;
+      if ($base!=12) continue;
+
+    
       init($params);
       $params['base']=$base;
 
@@ -132,8 +134,121 @@ Route::get('/import',function(){
 //  $img->save('public/bar.jpg');
 });
 
+///*** PREPARE STEP:  sort images for import to system
+
+Route::get('/sort-images',function(){
+
+  $import_dir='./import-files/sort-images';
+  $list = File::directories($import_dir);
+
+  $material_aliases=array(
+    'Rose'=>array(6),
+    'White'=>array(1,2,3,7),
+    'Yellow'=>array(4,5)
+  );
+  $shape_aliases=array(
+    'round'=>1,
+    'princess'=>2,
+    'oval'=>3,
+    'asscher'=>4,
+    'heart'=>5,
+    'pear'=>6,
+    'cushion'=>7,
+    'emerald'=>8
+  );
+
+  $weights=\App\RingOptionValue::where('ring_option_id','=',7)->get();
 
 
+$weight_aliases=array();
+  foreach ($weights->toArray() as $weight_arr){
+
+
+    $weight_aliases[$weight_arr['title']]=$weight_arr['value'];
+
+  }
+
+
+
+  foreach ($list as $key=>$value){
+
+    $material_value=str_replace(array($import_dir,'/'),'',$value);
+
+    $d=$material_aliases[$material_value];
+
+    foreach ($d as $material){ //material
+
+
+        $bases=File::directories($value);
+
+
+        foreach ($bases as $base_value){
+
+
+          $base=str_replace(array($import_dir,'/',$material_value),'',$base_value); //base
+          if ($base!=12) continue;
+          $shapes=File::directories($base_value);
+          unset($shapes[0]);
+          foreach ($shapes as $shape_value){
+
+            $shape=$shape_aliases[strtolower(str_replace(array($import_dir,'/',$base,$material_value),'',$shape_value))]; // shape
+
+
+            $imgs=File::files($shape_value);
+
+            foreach ($imgs as $img){
+              $img_name=$img->getRelativePathname();
+              $img_name_arr=explode('_',$img_name);
+              $weight_value=str_replace('.jpg','',$img_name_arr[2]);
+              $weight_value=str_replace(',','.',  $weight_value);
+              $weight=$weight_aliases[$weight_value]; //weight
+
+              $readfile=$shape_value.'/'.$img_name;
+
+              if ( File::exists($readfile))  {
+
+                $img = Image::make($readfile);
+                if (!file_exists('./import-files/test/'.$base)) {
+                    mkdir('./import-files/test/'.$base, 0777, true);
+                }
+                //
+                $path='';
+                $params=array();
+                $path.='./import-files/test/';
+                $path.=$base.'/';
+                if ($material>1){
+                  $params[]='m'.$material;
+                }
+                if ($shape>1){
+                  $params[]='sh'.$shape;
+                }
+                if ($weight>1){
+                  $params[]='w'.$weight;
+                }
+
+                $path.=implode('-',$params);
+
+
+                  if (!file_exists(  $path)) {
+                    mkdir($path, 0777, true);
+
+              }
+
+                $img->save($path.'/1.jpg');
+              }
+
+
+
+            }
+
+          }
+        }
+    }
+
+  }
+
+
+});
 
 Route::get('/', function () {
 

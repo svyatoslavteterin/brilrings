@@ -17,16 +17,16 @@ class ConstructorController extends Controller
     {
       return view('constructor/base',compact('material','base'));
     }
-    public function getprice($shape,$size,$color,$clarity){
+    public function getprice($shape,$weight,$color,$clarity){
 
 
 
-        $sizes=\App\RingOptionValue::where('ring_option_id','=',7)->get();
+        $weights=\App\RingOptionValue::where('ring_option_id','=',7)->get();
 
-        foreach ($sizes->toArray() as $size_arr){
-          if ($size_arr['value']==$size){
+        foreach ($weights->toArray() as $weight_arr){
+          if ($weight_arr['value']==$weight){
 
-            $size=$size_arr['title'];
+            $weight=$weight_arr['title'];
           }
         }
 
@@ -88,7 +88,7 @@ class ConstructorController extends Controller
 
         //get price for single diamond
         $paramsA["shape"] = $shape_aliases[$shape];
-        $paramsA["size"] = $size;
+        $paramsA["size"] = $weight;
         $paramsA["color"] = $color_aliases[$color];
         $paramsA["clarity"] = $clarity_aliases[$clarity];
         $soap_Client->setHeaders($rap_auth_ticket);
