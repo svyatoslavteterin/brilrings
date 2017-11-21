@@ -90,17 +90,17 @@ class RingImageController extends Controller
     }
     public function getBaseImg($base,$material,$size='medium',$shape=1){
 
+
       $options=RingOption::all()->toArray();
       $params=array();
         $str='';
 
       foreach ($options as $option){
+         $params[$option['key']]=1;
+        if ($option['key']=="base")   $params[$option['key']]=$base;
+        if ($option['key']=="material") $params[$option['key']]=$material;
+        if ($option['key']=="shape") $params[$option['key']]=$shape;
 
-        $params[$option['key']]=($option['key']=="base")?$base:1;
-
-        if ($option['key']=="material") $params['material']=$material;
-
-        $params[$option['key']]=($option['key']=="shape")?$shape:1;
 
 
         $str.=$option['key'].$params[$option['key']];
