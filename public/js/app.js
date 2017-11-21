@@ -60,45 +60,18 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 35);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var bind = __webpack_require__(18);
-var isBuffer = __webpack_require__(19);
+var bind = __webpack_require__(4);
+var isBuffer = __webpack_require__(5);
 
 /*global toString:true*/
 
@@ -401,7 +374,288 @@ module.exports = {
 
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(0);
+var normalizeHeaderName = __webpack_require__(24);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(7);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(7);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+// The _isBuffer check is for Safari 5-7 support, because it's missing
+// Object.prototype.constructor. Remove this eventually
+module.exports = function (obj) {
+  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+}
+
+function isBuffer (obj) {
+  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+// For Node v0.10 support. Remove this eventually.
+function isSlowBuffer (obj) {
+  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
+}
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -591,371 +845,19 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(1);
-var normalizeHeaderName = __webpack_require__(44);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(20);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(20);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(60);
-exports.setImmediate = setImmediate;
-exports.clearImmediate = clearImmediate;
-
-
-/***/ }),
-/* 15 */,
-/* 16 */,
-/* 17 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 18 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = function bind(fn, thisArg) {
-  return function wrap() {
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i];
-    }
-    return fn.apply(thisArg, args);
-  };
-};
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-// The _isBuffer check is for Safari 5-7 support, because it's missing
-// Object.prototype.constructor. Remove this eventually
-module.exports = function (obj) {
-  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
-}
-
-function isBuffer (obj) {
-  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-// For Node v0.10 support. Remove this eventually.
-function isSlowBuffer (obj) {
-  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
-}
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(1);
-var settle = __webpack_require__(45);
-var buildURL = __webpack_require__(47);
-var parseHeaders = __webpack_require__(48);
-var isURLSameOrigin = __webpack_require__(49);
-var createError = __webpack_require__(21);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(50);
+var utils = __webpack_require__(0);
+var settle = __webpack_require__(25);
+var buildURL = __webpack_require__(27);
+var parseHeaders = __webpack_require__(28);
+var isURLSameOrigin = __webpack_require__(29);
+var createError = __webpack_require__(8);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(30);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -1052,7 +954,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(51);
+      var cookies = __webpack_require__(31);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -1130,13 +1032,13 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 21 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(46);
+var enhanceError = __webpack_require__(26);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -1155,7 +1057,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 22 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1167,7 +1069,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 23 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1193,7 +1095,66 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 24 */
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(40);
+exports.setImmediate = setImmediate;
+exports.clearImmediate = clearImmediate;
+
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -1232,7 +1193,7 @@ module.exports = charenc;
 
 
 /***/ }),
-/* 25 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2178,29 +2139,20 @@ var index_esm = {
 
 
 /***/ }),
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(36);
-module.exports = __webpack_require__(119);
+__webpack_require__(15);
+module.exports = __webpack_require__(70);
 
 
 /***/ }),
-/* 36 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(13);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -2208,18 +2160,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(37);
+__webpack_require__(16);
 
-window.jcarousel = __webpack_require__(62);
-window.jcarouselSwipe = __webpack_require__(63);
+window.jcarousel = __webpack_require__(42);
+window.jcarouselSwipe = __webpack_require__(43);
 
-var md5 = __webpack_require__(64);
+var md5 = __webpack_require__(44);
 
-window.currencyFormatter = __webpack_require__(66);
+window.currencyFormatter = __webpack_require__(46);
 
-window.Vue = __webpack_require__(73);
+window.Vue = __webpack_require__(53);
 
-window.Vuex = __webpack_require__(25);
+window.Vuex = __webpack_require__(13);
 
 Vue.use(Vuex);
 
@@ -2227,7 +2179,7 @@ Vue.prototype.$http = axios;
 
 
 
-var fx = __webpack_require__(74);
+var fx = __webpack_require__(54);
 
 fx.base = "USD";
 
@@ -2253,14 +2205,14 @@ $.getJSON(
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('ringoptions', __webpack_require__(104));
-Vue.component('ringblocks', __webpack_require__(107));
+Vue.component('ringoptions', __webpack_require__(55));
+Vue.component('ringblocks', __webpack_require__(58));
 
-Vue.component('ringoption', __webpack_require__(110));
+Vue.component('ringoption', __webpack_require__(61));
 
-Vue.component('ringoptionvalue', __webpack_require__(113));
+Vue.component('ringoptionvalue', __webpack_require__(64));
 
-Vue.component('steps', __webpack_require__(116));
+Vue.component('steps', __webpack_require__(67));
 
 window.store = new Vuex.Store({
   state: {
@@ -2396,17 +2348,17 @@ window.RingApp = new Vue({
 });
 
 /***/ }),
-/* 37 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_uikit__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_uikit__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_uikit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_uikit__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_uikit_dist_js_uikit_icons__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_uikit_dist_js_uikit_icons__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_uikit_dist_js_uikit_icons___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_uikit_dist_js_uikit_icons__);
 
-window._ = __webpack_require__(38);
+window._ = __webpack_require__(17);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -2415,9 +2367,9 @@ window._ = __webpack_require__(38);
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(39);
+  window.$ = window.jQuery = __webpack_require__(19);
 
-  __webpack_require__(40);
+  __webpack_require__(20);
 } catch (e) {}
 
 /**
@@ -2426,7 +2378,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(41);
+window.axios = __webpack_require__(21);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -2470,7 +2422,7 @@ __WEBPACK_IMPORTED_MODULE_0_uikit___default.a.use(__WEBPACK_IMPORTED_MODULE_1_ui
 __WEBPACK_IMPORTED_MODULE_0_uikit___default.a.formCustom('.uk-form-select', {});
 
 /***/ }),
-/* 38 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -19559,10 +19511,38 @@ __WEBPACK_IMPORTED_MODULE_0_uikit___default.a.formCustom('.uk-form-select', {});
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(17)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(18)(module)))
 
 /***/ }),
-/* 39 */
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -29822,7 +29802,7 @@ return jQuery;
 
 
 /***/ }),
-/* 40 */
+/* 20 */
 /***/ (function(module, exports) {
 
 /*!
@@ -32205,22 +32185,22 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 41 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(42);
+module.exports = __webpack_require__(22);
 
 /***/ }),
-/* 42 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
-var bind = __webpack_require__(18);
-var Axios = __webpack_require__(43);
-var defaults = __webpack_require__(13);
+var utils = __webpack_require__(0);
+var bind = __webpack_require__(4);
+var Axios = __webpack_require__(23);
+var defaults = __webpack_require__(3);
 
 /**
  * Create an instance of Axios
@@ -32253,15 +32233,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(23);
-axios.CancelToken = __webpack_require__(57);
-axios.isCancel = __webpack_require__(22);
+axios.Cancel = __webpack_require__(10);
+axios.CancelToken = __webpack_require__(37);
+axios.isCancel = __webpack_require__(9);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(58);
+axios.spread = __webpack_require__(38);
 
 module.exports = axios;
 
@@ -32270,18 +32250,18 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 43 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(13);
-var utils = __webpack_require__(1);
-var InterceptorManager = __webpack_require__(52);
-var dispatchRequest = __webpack_require__(53);
-var isAbsoluteURL = __webpack_require__(55);
-var combineURLs = __webpack_require__(56);
+var defaults = __webpack_require__(3);
+var utils = __webpack_require__(0);
+var InterceptorManager = __webpack_require__(32);
+var dispatchRequest = __webpack_require__(33);
+var isAbsoluteURL = __webpack_require__(35);
+var combineURLs = __webpack_require__(36);
 
 /**
  * Create a new instance of Axios
@@ -32363,13 +32343,13 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 44 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -32382,13 +32362,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 45 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(21);
+var createError = __webpack_require__(8);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -32415,7 +32395,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 46 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32443,13 +32423,13 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 47 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -32518,13 +32498,13 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 48 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 /**
  * Parse headers into an object
@@ -32562,13 +32542,13 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 49 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -32637,7 +32617,7 @@ module.exports = (
 
 
 /***/ }),
-/* 50 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32680,13 +32660,13 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 51 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -32740,13 +32720,13 @@ module.exports = (
 
 
 /***/ }),
-/* 52 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -32799,16 +32779,16 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 53 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
-var transformData = __webpack_require__(54);
-var isCancel = __webpack_require__(22);
-var defaults = __webpack_require__(13);
+var utils = __webpack_require__(0);
+var transformData = __webpack_require__(34);
+var isCancel = __webpack_require__(9);
+var defaults = __webpack_require__(3);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -32885,13 +32865,13 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 54 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 /**
  * Transform the data for a request or a response
@@ -32912,7 +32892,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 55 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32933,7 +32913,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 56 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32954,13 +32934,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 57 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(23);
+var Cancel = __webpack_require__(10);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -33018,7 +32998,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 58 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33052,7 +33032,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 59 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {/*! UIkit 3.0.0-beta.35 | http://www.getuikit.com | (c) 2014 - 2017 YOOtheme | MIT License */
@@ -43547,10 +43527,10 @@ return UIkit$2;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11).setImmediate))
 
 /***/ }),
-/* 60 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -43740,10 +43720,10 @@ return UIkit$2;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(6)))
 
 /***/ }),
-/* 61 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! UIkit 3.0.0-beta.35 | http://www.getuikit.com | (c) 2014 - 2017 YOOtheme | MIT License */
@@ -44011,7 +43991,7 @@ return plugin;
 
 
 /***/ }),
-/* 62 */
+/* 42 */
 /***/ (function(module, exports) {
 
 /*! jCarousel - v0.3.5 - 2017-03-15
@@ -45500,7 +45480,7 @@ return plugin;
 
 
 /***/ }),
-/* 63 */
+/* 43 */
 /***/ (function(module, exports) {
 
 /*! jсarouselSwipe - v0.3.4 - 2016-02-18
@@ -45828,14 +45808,14 @@ return plugin;
 
 
 /***/ }),
-/* 64 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(65),
-      utf8 = __webpack_require__(24).utf8,
-      isBuffer = __webpack_require__(19),
-      bin = __webpack_require__(24).bin,
+  var crypt = __webpack_require__(45),
+      utf8 = __webpack_require__(12).utf8,
+      isBuffer = __webpack_require__(5),
+      bin = __webpack_require__(12).bin,
 
   // The core
   md5 = function (message, options) {
@@ -45994,7 +45974,7 @@ return plugin;
 
 
 /***/ }),
-/* 65 */
+/* 45 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -46096,14 +46076,14 @@ return plugin;
 
 
 /***/ }),
-/* 66 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var accounting = __webpack_require__(67)
-var assign = __webpack_require__(68)
-var localeCurrency = __webpack_require__(69)
-var currencies = __webpack_require__(71)
-var localeFormats = __webpack_require__(72)
+var accounting = __webpack_require__(47)
+var assign = __webpack_require__(48)
+var localeCurrency = __webpack_require__(49)
+var currencies = __webpack_require__(51)
+var localeFormats = __webpack_require__(52)
 
 var defaultCurrency = {
   symbol: '',
@@ -46220,7 +46200,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 67 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -46639,7 +46619,7 @@ module.exports = {
 
 
 /***/ }),
-/* 68 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46736,10 +46716,10 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 69 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var map = __webpack_require__(70);
+var map = __webpack_require__(50);
 
 var getCountryCode = function(localeString) {
     var components = localeString.split("_");
@@ -46773,7 +46753,7 @@ exports.getLocales = function(currencyCode) {
 }
 
 /***/ }),
-/* 70 */
+/* 50 */
 /***/ (function(module, exports) {
 
 // Generated using ShowCurrencies.java
@@ -47031,19 +47011,19 @@ ZW: 'ZWL'
 module.exports = map;
 
 /***/ }),
-/* 71 */
+/* 51 */
 /***/ (function(module, exports) {
 
 module.exports = {"AED":{"code":"AED","symbol":"د.إ.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"AFN":{"code":"AFN","symbol":"؋","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ALL":{"code":"ALL","symbol":"Lek","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AMD":{"code":"AMD","symbol":"֏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ANG":{"code":"ANG","symbol":"ƒ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AOA":{"code":"AOA","symbol":"Kz","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ARS":{"code":"ARS","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"AUD":{"code":"AUD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AWG":{"code":"AWG","symbol":"ƒ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AZN":{"code":"AZN","symbol":"₼","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BAM":{"code":"BAM","symbol":"КМ","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BBD":{"code":"BBD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BDT":{"code":"BDT","symbol":"৳","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":0},"BGN":{"code":"BGN","symbol":"лв.","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BHD":{"code":"BHD","symbol":"د.ب.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"BIF":{"code":"BIF","symbol":"FBu","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"BMD":{"code":"BMD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BND":{"code":"BND","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"BOB":{"code":"BOB","symbol":"Bs","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BRL":{"code":"BRL","symbol":"R$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BSD":{"code":"BSD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BTC":{"code":"BTC","symbol":"Ƀ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BTN":{"code":"BTN","symbol":"Nu.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":1},"BWP":{"code":"BWP","symbol":"P","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BYR":{"code":"BYR","symbol":"р.","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BZD":{"code":"BZD","symbol":"BZ$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CAD":{"code":"CAD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CDF":{"code":"CDF","symbol":"FC","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CHF":{"code":"CHF","symbol":"CHF","thousandsSeparator":"'","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"CLP":{"code":"CLP","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"CNY":{"code":"CNY","symbol":"¥","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"COP":{"code":"COP","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"CRC":{"code":"CRC","symbol":"₡","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CUC":{"code":"CUC","symbol":"CUC","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CUP":{"code":"CUP","symbol":"$MN","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CVE":{"code":"CVE","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CZK":{"code":"CZK","symbol":"Kč","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"DJF":{"code":"DJF","symbol":"Fdj","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"DKK":{"code":"DKK","symbol":"kr.","thousandsSeparator":"","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"DOP":{"code":"DOP","symbol":"RD$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"DZD":{"code":"DZD","symbol":"د.ج.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"EGP":{"code":"EGP","symbol":"ج.م.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ERN":{"code":"ERN","symbol":"Nfk","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ETB":{"code":"ETB","symbol":"ETB","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"EUR":{"code":"EUR","symbol":"€","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"FJD":{"code":"FJD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"FKP":{"code":"FKP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GBP":{"code":"GBP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GEL":{"code":"GEL","symbol":"Lari","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"GHS":{"code":"GHS","symbol":"₵","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GIP":{"code":"GIP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GMD":{"code":"GMD","symbol":"D","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GNF":{"code":"GNF","symbol":"FG","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"GTQ":{"code":"GTQ","symbol":"Q","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GYD":{"code":"GYD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"HKD":{"code":"HKD","symbol":"HK$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"HNL":{"code":"HNL","symbol":"L.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"HRK":{"code":"HRK","symbol":"kn","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"HTG":{"code":"HTG","symbol":"G","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"HUF":{"code":"HUF","symbol":"Ft","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"IDR":{"code":"IDR","symbol":"Rp","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"ILS":{"code":"ILS","symbol":"₪","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"INR":{"code":"INR","symbol":"₹","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"IQD":{"code":"IQD","symbol":"د.ع.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"IRR":{"code":"IRR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":"/","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ISK":{"code":"ISK","symbol":"kr.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":0},"JMD":{"code":"JMD","symbol":"J$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"JOD":{"code":"JOD","symbol":"د.ا.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"JPY":{"code":"JPY","symbol":"¥","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KES":{"code":"KES","symbol":"S","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"KGS":{"code":"KGS","symbol":"сом","thousandsSeparator":" ","decimalSeparator":"-","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"KHR":{"code":"KHR","symbol":"៛","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KMF":{"code":"KMF","symbol":"CF","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"KPW":{"code":"KPW","symbol":"₩","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KRW":{"code":"KRW","symbol":"₩","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KWD":{"code":"KWD","symbol":"د.ك.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"KYD":{"code":"KYD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"KZT":{"code":"KZT","symbol":"₸","thousandsSeparator":" ","decimalSeparator":"-","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"LAK":{"code":"LAK","symbol":"₭","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"LBP":{"code":"LBP","symbol":"ل.ل.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"LKR":{"code":"LKR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":0},"LRD":{"code":"LRD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"LSL":{"code":"LSL","symbol":"M","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"LYD":{"code":"LYD","symbol":"د.ل.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":3},"MAD":{"code":"MAD","symbol":"د.م.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"MDL":{"code":"MDL","symbol":"lei","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"MGA":{"code":"MGA","symbol":"Ar","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"MKD":{"code":"MKD","symbol":"ден.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"MMK":{"code":"MMK","symbol":"K","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MNT":{"code":"MNT","symbol":"₮","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MOP":{"code":"MOP","symbol":"MOP$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MRO":{"code":"MRO","symbol":"UM","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MTL":{"code":"MTL","symbol":"₤","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MUR":{"code":"MUR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MVR":{"code":"MVR","symbol":"MVR","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":1},"MWK":{"code":"MWK","symbol":"MK","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MXN":{"code":"MXN","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MYR":{"code":"MYR","symbol":"RM","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MZN":{"code":"MZN","symbol":"MT","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"NAD":{"code":"NAD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"NGN":{"code":"NGN","symbol":"₦","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"NIO":{"code":"NIO","symbol":"C$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"NOK":{"code":"NOK","symbol":"kr","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"NPR":{"code":"NPR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"NZD":{"code":"NZD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"OMR":{"code":"OMR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"PAB":{"code":"PAB","symbol":"B/.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"PEN":{"code":"PEN","symbol":"S/.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"PGK":{"code":"PGK","symbol":"K","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"PHP":{"code":"PHP","symbol":"₱","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"PKR":{"code":"PKR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"PLN":{"code":"PLN","symbol":"zł","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"PYG":{"code":"PYG","symbol":"₲","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"QAR":{"code":"QAR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RON":{"code":"RON","symbol":"lei","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RSD":{"code":"RSD","symbol":"Дин.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RUB":{"code":"RUB","symbol":"₽","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RWF":{"code":"RWF","symbol":"RWF","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SAR":{"code":"SAR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SBD":{"code":"SBD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SCR":{"code":"SCR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SDD":{"code":"SDD","symbol":"LSd","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SDG":{"code":"SDG","symbol":"£‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SEK":{"code":"SEK","symbol":"kr","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SGD":{"code":"SGD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SHP":{"code":"SHP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SLL":{"code":"SLL","symbol":"Le","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SOS":{"code":"SOS","symbol":"S","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SRD":{"code":"SRD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"STD":{"code":"STD","symbol":"Db","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SVC":{"code":"SVC","symbol":"₡","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SYP":{"code":"SYP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SZL":{"code":"SZL","symbol":"E","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"THB":{"code":"THB","symbol":"฿","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TJS":{"code":"TJS","symbol":"TJS","thousandsSeparator":" ","decimalSeparator":";","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"TMT":{"code":"TMT","symbol":"m","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"TND":{"code":"TND","symbol":"د.ت.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"TOP":{"code":"TOP","symbol":"T$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TRY":{"code":"TRY","symbol":"TL","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"TTD":{"code":"TTD","symbol":"TT$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TVD":{"code":"TVD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TWD":{"code":"TWD","symbol":"NT$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TZS":{"code":"TZS","symbol":"TSh","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"UAH":{"code":"UAH","symbol":"₴","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"UGX":{"code":"UGX","symbol":"USh","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"USD":{"code":"USD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"UYU":{"code":"UYU","symbol":"$U","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"UZS":{"code":"UZS","symbol":"сўм","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"VEB":{"code":"VEB","symbol":"Bs.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"VEF":{"code":"VEF","symbol":"Bs. F.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"VND":{"code":"VND","symbol":"₫","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":1},"VUV":{"code":"VUV","symbol":"VT","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"WST":{"code":"WST","symbol":"WS$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XAF":{"code":"XAF","symbol":"F","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XCD":{"code":"XCD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XOF":{"code":"XOF","symbol":"F","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XPF":{"code":"XPF","symbol":"F","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"YER":{"code":"YER","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ZAR":{"code":"ZAR","symbol":"R","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ZMW":{"code":"ZMW","symbol":"ZK","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"WON":{"code":"WON","symbol":"₩","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2}}
 
 /***/ }),
-/* 72 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = {"de-AT":{"thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"el-GR":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2},"en-IE":{"symbolOnLeft":true,"thousandsSeparator":",","decimalSeparator":".","spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"es-ES":{"thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"it-IT":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2},"nl-NL":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2},"nl-BE":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2},"de-DE":{"symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2}}
 
 /***/ }),
-/* 73 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57719,10 +57699,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(14).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(11).setImmediate))
 
 /***/ }),
-/* 74 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -57894,44 +57874,15 @@ module.exports = Vue$3;
 
 
 /***/ }),
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(105)
+var __vue_script__ = __webpack_require__(56)
 /* template */
-var __vue_template__ = __webpack_require__(106)
+var __vue_template__ = __webpack_require__(57)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57971,7 +57922,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 105 */
+/* 56 */
 /***/ (function(module, exports) {
 
 //
@@ -58017,7 +57968,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 106 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58051,15 +58002,15 @@ if (false) {
 }
 
 /***/ }),
-/* 107 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(108)
+var __vue_script__ = __webpack_require__(59)
 /* template */
-var __vue_template__ = __webpack_require__(109)
+var __vue_template__ = __webpack_require__(60)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58099,7 +58050,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 108 */
+/* 59 */
 /***/ (function(module, exports) {
 
 //
@@ -58209,7 +58160,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 109 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58336,15 +58287,15 @@ if (false) {
 }
 
 /***/ }),
-/* 110 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(111)
+var __vue_script__ = __webpack_require__(62)
 /* template */
-var __vue_template__ = __webpack_require__(112)
+var __vue_template__ = __webpack_require__(63)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58384,7 +58335,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 111 */
+/* 62 */
 /***/ (function(module, exports) {
 
 //
@@ -58569,7 +58520,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 112 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58780,15 +58731,15 @@ if (false) {
 }
 
 /***/ }),
-/* 113 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(114)
+var __vue_script__ = __webpack_require__(65)
 /* template */
-var __vue_template__ = __webpack_require__(115)
+var __vue_template__ = __webpack_require__(66)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58828,7 +58779,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 114 */
+/* 65 */
 /***/ (function(module, exports) {
 
 //
@@ -58935,7 +58886,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 115 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58963,7 +58914,8 @@ var render = function() {
                   _vm.ringOptionValue.value +
                   "/" +
                   _vm.storeValue("material", "value") +
-                  "/small",
+                  "/small/" +
+                  _vm.storeValue("shape", "value"),
                 width: "140",
                 height: "70",
                 title: _vm.ringOptionValue.title
@@ -59082,15 +59034,15 @@ if (false) {
 }
 
 /***/ }),
-/* 116 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(8)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(117)
+var __vue_script__ = __webpack_require__(68)
 /* template */
-var __vue_template__ = __webpack_require__(118)
+var __vue_template__ = __webpack_require__(69)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -59130,7 +59082,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 117 */
+/* 68 */
 /***/ (function(module, exports) {
 
 //
@@ -59248,7 +59200,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 118 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59530,7 +59482,7 @@ if (false) {
 }
 
 /***/ }),
-/* 119 */
+/* 70 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

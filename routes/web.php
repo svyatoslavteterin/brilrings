@@ -21,6 +21,7 @@ Route::get('/ring_options/{ring_option}/values','RingOptionController@getValues'
 
 Route::get('/resultimage/{hash}/','RingImageController@getResultImg');
 Route::get('/baseimages/{base}/{material}/{size}','RingImageController@getBaseImg');
+Route::get('/baseimages/{base}/{material}/{size}/{shape}','RingImageController@getBaseImg');
 
 
 
@@ -67,7 +68,7 @@ Route::get('/import-images',function(){
 
       if ($base!=12) continue;
 
-    
+
       init($params);
       $params['base']=$base;
 

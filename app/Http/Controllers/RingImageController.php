@@ -88,7 +88,7 @@ class RingImageController extends Controller
 
        return \Image::make('images/rings/'.$hash.'.jpg')->response('jpg');
     }
-    public function getBaseImg($base,$material,$size='medium'){
+    public function getBaseImg($base,$material,$size='medium',$shape=1){
 
       $options=RingOption::all()->toArray();
       $params=array();
@@ -99,6 +99,8 @@ class RingImageController extends Controller
         $params[$option['key']]=($option['key']=="base")?$base:1;
 
         if ($option['key']=="material") $params['material']=$material;
+
+        $params[$option['key']]=($option['key']=="shape")?$shape:1;
 
 
         $str.=$option['key'].$params[$option['key']];

@@ -3,7 +3,7 @@
 
             <li v-if="optionTemplate=='imageslider'" :class="{ active: isActive }"><a href="#" @click.prevent="chooseOption">
 
-              <img :src="'/baseimages/'+ringOptionValue.value+'/'+storeValue('material','value')+'/small'" width="140" height="70" :title="ringOptionValue.title"/>
+              <img :src="'/baseimages/'+ringOptionValue.value+'/'+storeValue('material','value')+'/small/'+storeValue('shape','value')" width="140" height="70" :title="ringOptionValue.title"/>
             </a></li>
 
             <li v-else-if="optionTemplate=='imagebox'" :class="{ active: isActive }"><a href="#" @click.prevent="chooseOption">{{ringOptionValue.title}}</a></li>
