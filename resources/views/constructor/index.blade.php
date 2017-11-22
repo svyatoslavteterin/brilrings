@@ -43,7 +43,7 @@
 
 ];
 var ringBase={{{ isset($base) ? $base : 1 }}};
-var ringMaterial={{{ isset($material) ? $material : 1 }}};
+var ringMaterial={{{ isset($material) ? $material : 4 }}};
 activeStep="start";
 </script>
 

@@ -98,6 +98,7 @@ class RingImageController extends Controller
       foreach ($options as $option){
          $params[$option['key']]=1;
         if ($option['key']=="base")   $params[$option['key']]=$base;
+        if ($option['key']=="weight")   $params[$option['key']]=36;
         if ($option['key']=="material") $params[$option['key']]=$material;
         if ($option['key']=="shape") $params[$option['key']]=$shape;
 

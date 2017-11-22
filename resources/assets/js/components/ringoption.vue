@@ -96,7 +96,7 @@
             <div v-else-if="optionTemplate==='range'" class="options__item col-sm-3 col-xs-3 col-md-12">
                   <h3 class="options__item__title">{{ringOption.title}}</h3>
                   <div class="range-slider">
-                     <input class="uk-range" type="range"  step="1" min="1" :max="ringOptionValues[optionKey].length" value="1" v-model="value" @change="update(value)" />
+                     <input class="uk-range" type="range"  step="1" min="1" :max="ringOptionValues[optionKey].length"  v-model="value" @change="update(value)" />
                      <p class="option-range-label" v-text="getOptionValueTitle.title" :style="{'left':getLabelLeft+'%'}"> </p>
                  </div>
             </div>
@@ -128,7 +128,7 @@
 
 
             return  {
-              value:1
+              value: 1
             };
           },
 
@@ -147,6 +147,13 @@
         created:function(){
           if (this.optionKey=="material") this.value=ringMaterial;
           if (this.optionKey=="base") this.value=ringBase;
+          if (this.optionKey=="weight") this.value=36;
+          if (this.optionKey=="size") this.value=24;
+          if (this.optionKey=="purity") this.value=4;
+          if (this.optionKey=="color") this.value=3;
+
+
+
 
 
         //   var optionId=this.ringOptions[this.option].id;
@@ -157,6 +164,7 @@
         },
 
         computed: {
+
               ringOption:function(){
                 for (var prop in this.option) {
                   return this.ringOptions[prop];

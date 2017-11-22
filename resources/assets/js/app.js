@@ -36,27 +36,6 @@ Vue.prototype.$http = axios;
 import { mapState } from 'vuex';
 
 
-var fx = require('money');
-
-fx.base = "USD";
-
-$.getJSON(
-    	// NB: using Open Exchange Rates here, but you can use any source!
-        'https://openexchangerates.org/api/historical/2017-11-19.json?app_id=cc24b33091c34b19a0f4dea626cab8a2',
-        function(data) {
-            // Check money.js has finished loading:
-            if ( typeof fx !== "undefined" && fx.rates ) {
-                fx.rates = data.rates;
-                fx.base = data.base;
-            } else {
-                // If not, apply to fxSetup global:
-                var fxSetup = {
-                    rates : data.rates,
-                    base : data.base
-                }
-            }
-        }
-    );
 
 
 
@@ -162,7 +141,7 @@ window.store = new Vuex.Store({
 window.RingApp = new Vue({
     el: '#app',
     data:{
-        'excludeParams':['fsize','purity','stone','color'],
+        'excludeParams':['fsize','purity','stone','color','size'],
         'ringOptions':{},
         'ringOptionValues':{},
         'steps':steps
@@ -197,7 +176,11 @@ window.RingApp = new Vue({
 
 
         _.forOwn(this.ringOptions, function(value, key) {
-          session[key]=1;
+          if (parseInt(value.desc)) {
+            session[key]=parseInt(value.desc);
+          }else{
+              session[key]=1;
+          }
 
         });
 
@@ -205,11 +188,17 @@ window.RingApp = new Vue({
         if (typeof(ringMaterial)!="undefined") session['material']=parseInt(ringMaterial);
 
 
-
+        var excludeParams=this.excludeParams;
           _.forOwn(this.ringOptions, function(value, key) {
+
+            if (excludeParams.indexOf(key)==-1)  {
               str+=key+session[key];
+            }else{
+                str+=key+1;
+            }
         });
 
+        console.log(str);
         store.state.resultImg='/resultimage/'+md5(str);
 
 
@@ -227,7 +216,7 @@ window.RingApp = new Vue({
         store.state.basePrice=parseInt(this.$data.ringOptionValues.base[store.state.session.base].price.material[store.state.session.material]);
 
         this.$http.get('/getprice/'+store.state.session.shape+'/'+store.state.session.weight+'/'+store.state.session.color+'/'+store.state.session.purity).then((response)=>{
-          
+
               store.state.stonePrice=response.data.price;
               store.state.totalPrice=store.state.basePrice+store.state.stonePrice;
           });
