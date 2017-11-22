@@ -90,7 +90,7 @@
       'blocks':['result-img']
     },
     'right':{
-      'blocks':['result-table']
+      'blocks':['stone-info','result-table']
     },
     'template':'stone'
 
@@ -101,7 +101,7 @@
     },
     'right':{
       'blocks':['result-table'],
-      'options':[{'fsize':'range'}]
+      'options':[{'fsize':'selectbox'}]
     },
     'template':'result'
   }

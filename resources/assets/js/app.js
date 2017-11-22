@@ -147,7 +147,7 @@ window.store = new Vuex.Store({
       var basePrice=parseInt(RingApp.$data.ringOptionValues.base[context.state.session.base].price.material[context.state.session.material]);
       context.state.basePrice=basePrice;
         RingApp.$http.get('/getprice/'+context.state.session.shape+'/'+context.state.session.weight+'/'+context.state.session.color+'/'+context.state.session.purity).then((response)=>{
-            var stonePrice=Math.round(fx(response.data.price).from('USD').to('RUB'));
+            var stonePrice=response.data.price;
             context.state.stonePrice=stonePrice;
             context.state.totalPrice=basePrice+stonePrice;
           });
@@ -227,7 +227,8 @@ window.RingApp = new Vue({
         store.state.basePrice=parseInt(this.$data.ringOptionValues.base[store.state.session.base].price.material[store.state.session.material]);
 
         this.$http.get('/getprice/'+store.state.session.shape+'/'+store.state.session.weight+'/'+store.state.session.color+'/'+store.state.session.purity).then((response)=>{
-            store.state.stonePrice=Math.round(fx(response.data.price).from('USD').to('RUB'));
+          
+              store.state.stonePrice=response.data.price;
               store.state.totalPrice=store.state.basePrice+store.state.stonePrice;
           });
 
