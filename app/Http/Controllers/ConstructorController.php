@@ -50,7 +50,9 @@ class ConstructorController extends Controller
           4=>'G',
           5=>'H',
           6=>'I',
-          7=>'J'
+          7=>'J',
+          8=>'K',
+          9=>'L'
         );
 
         $clarity_aliases=array(
@@ -70,9 +72,9 @@ class ConstructorController extends Controller
 
 
 
-        $delta_color=5;
+        $delta_color=8;
         $delta_clarity=6;
-        $delta_size=0.1;
+        $delta_size=0.2;
 
 
         $paramsA["shape"] = $shape_aliases[$shape];
@@ -132,7 +134,7 @@ class ConstructorController extends Controller
 
 
 
-        
+
 
 
         $data=json_encode($request);
@@ -150,41 +152,76 @@ class ConstructorController extends Controller
 
 $total_diamonds=0;
 
+if ($response['response']['header']['error_code']!=4001){
+    $total_diamonds=$response['response']['body']['search_results']['total_diamonds_found'];
+}
 
-
-        if ($response['response']['header']['error_code']==4001) {
+        if ($response['response']['header']['error_code']==4001 || $total_diamonds<3) {
 
 
 
 
           if ($paramsA['shape']!="Round"){
 
-            $request_body->size_from=$paramsA['size'];
-            $request_body->size_to=$paramsA['size']+$delta_size;
+            $request_body->size_from=$paramsA['size']-$delta_size/2;
+            $request_body->size_to=$paramsA['size']+$delta_size/2;
           }
           if ($color<round(count($color_aliases)/2)){
-            $diff=$color+$delta_color;
-            if ($diff<1) $diff=1;
-            if ($diff>count($color_aliases)) $diff=count($color_aliases);
-            $request_body->color_to=$color_aliases[$diff];
+
+
+            $diff_color_to=$color+round($delta_color/2);
+
+
+            $diff_color_from=$color-round($delta_color/2);
+
+            if ($diff_color_from<1) $diff_color_from=1;
+            if ($diff_color_to>count($color_aliases)) $diff_color_to=count($color_aliases);
+
+
+            $request_body->color_to=$color_aliases[$diff_color_to];
+            $request_body->color_from=$color_aliases[$diff_color_from];
+
           }else{
-            $diff=$color-$delta_color;
-            if ($diff<1) $diff=1;
-            if ($diff>count($color_aliases)) $diff=count($color_aliases);
-            $request_body->color_from=$color_aliases[$diff];
+            $diff_color_to=$color+round($delta_color/2);
+
+            $diff_color_from=$color-round($delta_color/2);
+
+            if ($diff_color_from<1) $diff_from=1;
+            if ($diff_color_to>count($color_aliases)) $diff_color_to=count($color_aliases);
+
+
+
+
+
+            $request_body->color_to=$color_aliases[$diff_color_to];
+            $request_body->color_from=$color_aliases[$diff_color_from];
           }
 
           if ($clarity<round(count($clarity_aliases)/2)){
-            $diff=$clarity+$delta_clarity;
-            if ($diff<1) $diff=1;
-            if ($diff>count($clarity_aliases)) $diff=count($clarity_aliases);
-            $request_body->clarity_to=$clarity_aliases[$diff];
+            $diff_clarity_to=$clarity+round($delta_clarity/2);
+
+            $diff_clarity_from=$clarity-round($delta_clarity/2);
+
+
+            if ($diff_clarity_from<1) $diff_clarity_from=1;
+            if ($diff_clarity_to>count($clarity_aliases)) $diff_clarity_to=count($clarity_aliases);
+            $request_body->clarity_to=$clarity_aliases[$diff_clarity_to];
+            $request_body->clarity_from=$clarity_aliases[$diff_clarity_from];
+
+
           }else{
-            $diff=$clarity-$delta_clarity;
-            if ($diff<1) $diff=1;
-            if ($diff>count($clarity_aliases)) $diff=count($clarity_aliases);
-            $request_body->clarity_from=$clarity_aliases[$diff];
+            $diff_clarity_to=$clarity+round($delta_clarity/2);
+
+            $diff_clarity_from=$clarity-round($delta_clarity/2);
+
+            if ($diff_clarity_from<1) $diff_clarity_from=1;
+
+            if ($diff_clarity_to>count($clarity_aliases)) $diff_clarity_to=count($clarity_aliases);
+
+            $request_body->clarity_to=$clarity_aliases[$diff_clarity_to];
+            $request_body->clarity_from=$clarity_aliases[$diff_clarity_from];
           }
+
 
 
 
@@ -199,9 +236,27 @@ $total_diamonds=0;
           $response = json_decode($result, true);
             curl_close($curl);
 
+            if ($response['response']['header']['error_code']!=4001){
+            $total_diamonds=$response['response']['body']['search_results']['total_diamonds_found'];
+          }
 
+            if ($total_diamonds<3){
 
+              unset($request_body->clarity_to);
+              unset($request_body->clarity_from);
 
+              $curl = curl_init();
+              curl_setopt($curl, CURLOPT_POST, 1);
+
+              curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($request));
+
+              curl_setopt($curl, CURLOPT_URL, 'http://technet.rapaport.com/HTTP/JSON/RetailFeed/GetDiamonds.aspx');
+                  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+                  $result = curl_exec($curl);
+              $response = json_decode($result, true);
+                curl_close($curl);
+            }
 
 
         }
@@ -217,170 +272,62 @@ $diamonds=$response['response']['body']['diamonds'];
 
 
             $include_diamonds=array();
-          if ($paramsA["shape"]!="Round"){
-
-            foreach ($diamonds as $key=>$diamond){
-              if ($diamond['size']==$paramsA['size']){
-                $include_diamonds[]=$diamond;
-              }
-            }
-            if (count($include_diamonds)==0) {
 
 
 
-              foreach ($diamonds as $key=>$diamond){
 
-
-                if (abs($diamond['size']-$paramsA['size'])<=$delta_size){
-                  $include_diamonds[]=$diamond;
-                }
-              }
-            }
-
-            if (count($include_diamonds)==0){
-
-
-              if ($diamonds[count($diamonds)-1]['size']>$paramsA['size']){
-                $paramsA['size']=$diamonds[0]['size'];
-              }else{
-
-                $paramsA['size']=$diamonds[count($diamonds)-1]['size'];
-              }
-
-              foreach ($diamonds as $key=>$diamond){
-                if ($diamond['size']==$paramsA['size']){
-                  $include_diamonds[]=$diamond;
-                }
-              }
-
-            }
-            $diamonds=$include_diamonds;
-          }else{ // if SHAPE ROUND
 
             foreach ($diamonds as $key=>$diamond){
               if (($diamond['size']==$paramsA['size']) && ($diamond['color']==$paramsA['color'])&& ($diamond['clarity']==$paramsA['clarity']) ){
                 $include_diamonds[]=$diamond;
               }
+              $diamonds[$key]['delta_color']=abs(array_search($diamond['color'],$color_aliases)-$color);
+              $diamonds[$key]['delta_clarity']=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
+              $diamonds[$key]['delta_summary']=$diamonds[$key]['delta_color']+$diamonds[$key]['delta_clarity'];
+
             }
 
 
-              if (count($include_diamonds)<=3){
-
-                  foreach ($diamonds as $key=>$diamond){
-
-                  $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
 
 
-                  $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
 
-                  if (($diamond['size']==$paramsA['size']) && ($delta_color<=2) && ($delta_clarity<=3) ) {
+                if (count($include_diamonds)<=3){
 
-                      $include_diamonds[]=$diamond;
+                  $delta = array();
+                    foreach ($diamonds as $key => $row)
+                    {
+                        $delta[$key] = $row['delta_summary'];
+                    }
+                    array_multisort($delta, SORT_ASC, $diamonds);
 
 
+                    $summary=$diamonds[0]['delta_summary'];
+
+
+
+                    $max_summary=$summary+2;
+
+                    while((count($include_diamonds)<=3)|| ($summary<$max_summary)) {
+                      foreach ($diamonds as $diamond){
+                        if ($diamond['delta_summary']==$summary){
+                          $include_diamonds[]=$diamond;
+                        }
+                      }
+                      $summary++;
                   }
-                }
+
               }
 
 
 
-                if (count($include_diamonds)<=3){
-
-                  foreach ($diamonds as $key=>$diamond){
-
-                  $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-
-                  $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-
-                    if (($diamond['size']==$paramsA['size']) && ($delta_color<=3) && ($delta_clarity<=3) ) {
-
-                        $include_diamonds[]=$diamond;
 
 
-                    }
-                  }
-                }
-                if (count($include_diamonds)<=3){
-                  foreach ($diamonds as $key=>$diamond){
-
-                  $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-
-                  $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-
-                    if (($diamond['size']==$paramsA['size']) && ($delta_color<=3) && ($delta_clarity<=4)) {
-
-                        $include_diamonds[]=$diamond;
-
-
-                    }
-                  }
-                }
-                if (count($include_diamonds)<=3){
-                  foreach ($diamonds as $key=>$diamond){
-
-                  $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-
-                  $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-
-                    if (($diamond['size']==$paramsA['size']) && ($delta_color<=4) && ($delta_clarity<=4)) {
-
-                        $include_diamonds[]=$diamond;
-
-
-                    }
-                  }
-                }
-                if (count($include_diamonds)<=3){
-                  foreach ($diamonds as $key=>$diamond){
-
-                  $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-
-                  $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-
-                    if (($diamond['size']==$paramsA['size']) && ($delta_color<=4) && ($delta_clarity<=5)) {
-
-                        $include_diamonds[]=$diamond;
-
-
-                    }
-                  }
-                }
-                if (count($include_diamonds)<=3){
-                  foreach ($diamonds as $key=>$diamond){
-
-                  $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-
-                  $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-
-                    if (($diamond['size']==$paramsA['size']) && ($delta_color<=5) && ($delta_clarity<=5)) {
-
-                        $include_diamonds[]=$diamond;
-
-
-                    }
-                  }
-                }
-                if (count($include_diamonds)<=3){
-                  foreach ($diamonds as $key=>$diamond){
-
-                  $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-
-                  $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-
-                    if (($diamond['size']==$paramsA['size']) && ($delta_color<=5) && ($delta_clarity<=6)) {
-
-                        $include_diamonds[]=$diamond;
-
-
-                    }
-                  }
-                }
 
             $diamonds=$include_diamonds;
 
 
 
-          }
+
 
         $prices=array();
         foreach ($diamonds as $diamond){
@@ -392,19 +339,7 @@ $diamonds=$response['response']['body']['diamonds'];
         }
 
 
-        if (count($prices)==0){
-            foreach ($diamonds as $diamond){
-              if ($diamond['clarity']==$paramsA['clarity']){
-                  $prices[]=round($diamond['total_sales_price_in_currency']);
-              }
-            }
-        }
 
-        if (count($prices)==0){
-            foreach ($diamonds as $diamond){
-                $prices[]=round($diamond['total_sales_price_in_currency']);
-            }
-        }
 
 
 
@@ -429,81 +364,43 @@ $diamonds=$response['response']['body']['diamonds'];
               $prices=array();
 
 
-              foreach ($diamonds as $diamond){
+              foreach ($diamonds as $key=>$diamond){
 
 
                       if ((($diamond['size']==$paramsA['size']) && ($diamond['color']==$paramsA['color'])&& ($diamond['clarity']==$paramsA['clarity']))||(abs($diamond['size']-$paramsA['size']<=$delta_size)) ){
                         $prices[]=round($diamond['total_sales_price_in_currency']);
                       }
+                      $diamonds[$key]['delta_color']=abs(array_search($diamond['color'],$color_aliases)-$color);
+                      $diamonds[$key]['delta_clarity']=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
+                      $diamonds[$key]['delta_summary']=$diamonds[$key]['delta_color']+$diamonds[$key]['delta_clarity'];
 
               }
 
 
 
-                      if (count($prices)<=3){
-                          foreach ($diamonds as $diamond){
-                            $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-                            $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-                              if (($diamond['size']==$paramsA['size']) && ($delta_color<=2) && ($delta_clarity<=3) ) {
-                                $prices[]=round($diamond['total_sales_price_in_currency']);
-                              }
-                        }
-                      }
-                      if (count($prices)<=3){
-                          foreach ($diamonds as $diamond){
-                            $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-                            $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-                              if (($diamond['size']==$paramsA['size']) && ($delta_color<=3) && ($delta_clarity<=3)) {
-                                $prices[]=round($diamond['total_sales_price_in_currency']);
-                              }
-                        }
-                      }
-                      if (count($prices)<=3){
-                          foreach ($diamonds as $diamond){
-                            $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-                            $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-                              if (($diamond['size']==$paramsA['size']) && ($delta_color<=3) && ($delta_clarity<=4) ) {
-                                $prices[]=round($diamond['total_sales_price_in_currency']);
-                              }
-                        }
-                      }
-                      if (count($prices)<=3){
-                          foreach ($diamonds as $diamond){
-                            $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-                            $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-                              if (($diamond['size']==$paramsA['size']) && ($delta_color<=4) && ($delta_clarity<=4) ) {
-                                $prices[]=round($diamond['total_sales_price_in_currency']);
-                              }
-                        }
-                      }
-                      if (count($prices)<=3){
-                          foreach ($diamonds as $diamond){
-                            $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-                            $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-                              if (($diamond['size']==$paramsA['size']) && ($delta_color<=4) && ($delta_clarity<=5) ) {
-                                $prices[]=round($diamond['total_sales_price_in_currency']);
-                              }
-                        }
-                      }
-                      if (count($prices)<=3){
-                          foreach ($diamonds as $diamond){
-                            $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-                            $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-                              if (($diamond['size']==$paramsA['size']) && ($delta_color<=5) && ($delta_clarity<=5) ) {
-                                $prices[]=round($diamond['total_sales_price_in_currency']);
-                              }
-                        }
-                      }
-                      if (count($prices)<=3){
-                          foreach ($diamonds as $diamond){
-                            $delta_color=abs(array_search($diamond['color'],$color_aliases)-$color);
-                            $delta_clarity=abs(array_search($diamond['clarity'],$clarity_aliases)-$clarity);
-                              if (($diamond['size']==$paramsA['size']) && ($delta_color<=5) && ($delta_clarity<=6) ) {
-                                $prices[]=round($diamond['total_sales_price_in_currency']);
-                              }
-                        }
-                      }
+              if (count($prices)==0){
+                $delta = array();
+                  foreach ($diamonds as $key => $row)
+                  {
+                      $delta[$key] = $row['delta_summary'];
+                  }
+                  array_multisort($delta, SORT_ASC, $diamonds);
 
+
+                  $summary=$diamonds[0]['delta_summary'];
+
+                  $max_summary=$summary+3;
+
+                  while((count($include_diamonds)<=3)|| ($summary<$max_summary)) {
+                    foreach ($diamonds as $diamond){
+                      if ($diamond['delta_summary']==$summary){
+                        $prices[]=round($diamond['total_sales_price_in_currency']);
+                      }
+                    }
+                    $summary++;
+                }
+
+            }
 
 
 
