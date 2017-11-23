@@ -113,9 +113,10 @@ window.store = new Vuex.Store({
 
         if (excludeParams.indexOf(prop)>-1) {
 
-          params[prop]=1;
-        }
+           str+=prop+1;
+        }else{
          str+=prop+params[prop];
+       }
       }
 
       context.state.resultImg='/resultimage/'+md5(str);

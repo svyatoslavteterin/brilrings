@@ -107,6 +107,9 @@
   }
 ];
 
+window.ringBase={{{ isset($base) ? $base : 1 }}};
+window.ringMaterial={{{ isset($material) ? $material : 2 }}};
+
 activeStep="stone";
 
 </script>
