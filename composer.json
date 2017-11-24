@@ -12,7 +12,8 @@
         "joselfonseca/image-manager": "2.1.*",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
-        "phpspec/phpspec": "^4.0"
+        "phpspec/phpspec": "^4.0",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

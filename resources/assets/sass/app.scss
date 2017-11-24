@@ -330,7 +330,7 @@ $form-range-track-focus-background:              #a0d1c3;
 .options__item.shape li a {
     color:#d2e9ee;
   }
-
+.options__item.shape li a.disable{display:none; }
 .options__item.shape li a:before,.options__item.material li:before {
    font-family: "rings" !important;
   font-style: normal !important;

@@ -65,7 +65,8 @@ window.store = new Vuex.Store({
     totalPrice: 22000,
     session: {},
     resultImg:'',
-    step:activeStep
+    step:activeStep,
+    enabledShapes:[1,2,3,4,5,6,7,8]
 
   },
   mutations: {
@@ -87,11 +88,7 @@ window.store = new Vuex.Store({
 
 
     },
-    refreshResultImg(state){
 
-      state.resultImg='/resultimage/'+this.getHash;
-
-    },
 
     setImage(state,payload){
       state.resultImg=payload.value;
@@ -119,8 +116,16 @@ window.store = new Vuex.Store({
        }
       }
 
-      context.state.resultImg='/resultimage/'+md5(str);
+      RingApp.$http.get('/resultimage/'+params['base']+'/'+params['material']+'/'+params['shape']+'/'+params['weight']+'/'+md5(str)).then((response)=>{
 
+
+          context.state.resultImg=response.data.image;
+
+          context.state.enabledShapes=Object.values(response.data.shapes);
+
+      },(response)=> {
+
+      });
 
     },
     refreshPrices(context){
@@ -199,8 +204,19 @@ window.RingApp = new Vue({
             }
         });
 
-        console.log(str);
-        store.state.resultImg='/resultimage/'+md5(str);
+        this.$http.get('/resultimage/'+session['base']+'/'+session['material']+'/1/36/'+md5(str)).then((response)=>{
+
+
+            store.state.resultImg=response.data.image;
+
+            store.state.enabledShapes=Object.values(response.data.shapes);
+
+        },(response)=> {
+
+        });
+
+
+  
 
 
 

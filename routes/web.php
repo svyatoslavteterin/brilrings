@@ -19,7 +19,7 @@ Route::get('/ring_options/{ring_option}','RingOptionController@show');
 Route::get('/ring_options','RingOptionController@get');
 Route::get('/ring_options/{ring_option}/values','RingOptionController@getValues');
 
-Route::get('/resultimage/{hash}/','RingImageController@getResultImg');
+Route::get('/resultimage/{base}/{material}/{shape}/{weight}/{hash}/','RingImageController@getResultImg');
 Route::get('/baseimages/{base}/{material}/{size}','RingImageController@getBaseImg');
 Route::get('/baseimages/{base}/{material}/{size}/{shape}','RingImageController@getBaseImg');
 
@@ -66,7 +66,7 @@ Route::get('/import-images',function(){
 
       $base=str_replace(array($import_dir,'/'),'',$value);
 
-      if ($base!=12) continue;
+      if ($base!=7) continue;
 
 
       init($params);
@@ -161,6 +161,13 @@ Route::get('/sort-images',function(){
   $weights=\App\RingOptionValue::where('ring_option_id','=',7)->get();
 
 
+
+
+
+
+
+
+
 $weight_aliases=array();
   foreach ($weights->toArray() as $weight_arr){
 
@@ -187,15 +194,37 @@ $weight_aliases=array();
 
 
           $base=str_replace(array($import_dir,'/',$material_value),'',$base_value); //base
+
+          if ( $rings_params_map = json_decode(Redis::get('ring_params_map:'.$base))) {
+
+          }else{
+            $rings_params_map=new \StdClass();
+
+          }
+
+
+
+
+
           if ($base!=12) continue;
+
           $shapes=File::directories($base_value);
-          unset($shapes[0]);
+
+          $bok_image_index=array_search($import_dir.'/'.$material_value.'/'.$base.'/'.'_BOK',$shapes);
+          unset($shapes[$bok_image_index]);
+
+
           foreach ($shapes as $shape_value){
+            $weight=array();
+
 
             $shape=$shape_aliases[strtolower(str_replace(array($import_dir,'/',$base,$material_value),'',$shape_value))]; // shape
 
+              if ($shape<4) continue;
 
             $imgs=File::files($shape_value);
+
+                $weights=array();
 
             foreach ($imgs as $img){
               $img_name=$img->getRelativePathname();
@@ -206,16 +235,18 @@ $weight_aliases=array();
 
               $readfile=$shape_value.'/'.$img_name;
 
+
+
               if ( File::exists($readfile))  {
 
                 $img = Image::make($readfile);
-                if (!file_exists('./import-files/test/'.$base)) {
-                    mkdir('./import-files/test/'.$base, 0777, true);
+                if (!file_exists('./import-files/images/'.$base)) {
+                    mkdir('./import-files/images/'.$base, 0777, true);
                 }
                 //
                 $path='';
                 $params=array();
-                $path.='./import-files/test/';
+                $path.='./import-files/images/';
                 $path.=$base.'/';
                 if ($material>1){
                   $params[]='m'.$material;
@@ -236,13 +267,34 @@ $weight_aliases=array();
               }
 
                 $img->save($path.'/1.jpg');
+
+                $weights[]=$weight_value;
+
+
               }
 
 
 
             }
 
+              if (isset(  $rings_params_map->shapes)){
+
+
+              }else{
+                $rings_params_map->shapes=new \StdClass;
+              }
+
+            asort($weights);
+            $weights= array_values($weights);
+                $rings_params_map->shapes->{$shape}=$weights;
+
+
+
+
+
           }
+
+            Redis::set('ring_params_map:'.$base, json_encode($rings_params_map));
         }
     }
 
@@ -269,6 +321,53 @@ Route::get('/getprice/{shape}/{size}/{color}/{clarity}/','ConstructorController@
 
 
 Route::get('/generate',function(){
+
+  $base=12;
+  $weight=3;
+  $shape=1;
+/*
+  $rings_params_map=new \StdClass();
+  $rings_params_map->{$base}=new \StdClass();
+
+
+  $rings_params_map->{$base}->shapes[1]=array(0.15,0.25,0.5,0.75,1.0,1.5,2.0);
+  $rings_params_map->{$base}->shapes[2]=array(0.15,0.25,0.5,0.75,1.0,1.5,2.0);
+  $rings_params_map->{$base}->shapes[3]=array(0.15,0.25,0.5,0.75,1.0,1.5,2.0);
+  $rings_params_map->{$base}->shapes[4]=array(0.15,0.25,0.5,0.75,1.0,1.5,2.0);
+  $rings_params_map->{$base}->shapes[5]=array(0.15,0.25,0.5,0.75,1.0,1.5,2.0);
+  $rings_params_map->{$base}->shapes[6]=array(0.15,0.25,0.5,0.75,1.0,1.5,2.0);
+  $rings_params_map->{$base}->shapes[7]=array(0.15,0.25,0.5,0.75,1.0,1.5,2.0);
+  $rings_params_map->{$base}->shapes[8]=array(0.15,0.25,0.5,0.75,1.0,1.5,2.0);
+*/
+
+
+//Redis::set('ring_params_map:'.$base, '');die;
+
+
+   $rings_params_map = json_decode(Redis::get('ring_params_map:'.$base));
+   echo "<pre>";
+   print_r($rings_params_map); echo "</pre>";die;
+
+if (isset($rings_params_map->shapes->{$shape})){ // If we have ring with such base and shape
+  $sizes=$rings_params_map->shapes->{$shape};
+    //**** Count delta from shape and next shape in sizes set
+    $i=0;
+    $choose_size=$sizes[$i];
+      while(abs($sizes[$i]-$weight)>abs($sizes[$i+1]-$weight) ){
+
+          $choose_size=$sizes[$i+1];
+          $i++;
+          if ($i+1==count($sizes)) break;
+      }
+
+      if ($i==count($sizes))   $choose_size=$sizes[$i-1];
+      echo $choose_size;
+      die;
+
+}
+
+
+die;
 
   /*$value=8;
   for ($i=0.22;$i<=2;$i+=0.01){

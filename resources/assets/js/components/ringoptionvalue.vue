@@ -6,7 +6,7 @@
               <img :src="'/baseimages/'+ringOptionValue.value+'/'+storeValue('material','value')+'/small/'+storeValue('shape','value')" width="140" height="70" :title="ringOptionValue.title"/>
             </a></li>
 
-            <li v-else-if="optionTemplate=='imagebox'" :class="{ active: isActive }"><a href="#" @click.prevent="chooseOption">{{ringOptionValue.title}}</a></li>
+            <li v-else-if="optionTemplate=='imagebox'" :class="{ active: isActive }"><a href="#" :class="{disable:isDisabled}" @click.prevent="chooseOption">{{ringOptionValue.title}}</a></li>
             <option v-else-if="optionTemplate==='selectbox'" :value="ringOptionValue.value" >{{ringOptionValue.title}}</option>
             <input v-else-if="optionTemplate==='text'" value="text">
             <div v-else-if="optionTemplate=='card'" class="col-sm-4 col-md-4 card__item" @click="gotoConstructor('/constructor/base/'+ringOptionValue.value+'/'+storeValue('material','value'))">
@@ -104,6 +104,11 @@
 
           isActive:function(){
             if (this.value===store.state.session[this.optionKey]){
+              return true;
+            }
+          },
+          isDisabled:function(){
+            if (store.state.enabledShapes.indexOf(this.value)==-1) {
               return true;
             }
           },
