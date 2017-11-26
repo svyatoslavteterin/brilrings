@@ -24470,6 +24470,10 @@ nav ul li {
   margin-bottom: 1.142em;
 }
 
+.container.base .right-col .options__item.shape {
+  text-align: left;
+}
+
 .container.base .options__item.base {
   text-align: center;
 }

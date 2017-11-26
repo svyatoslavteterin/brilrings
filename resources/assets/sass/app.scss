@@ -933,6 +933,10 @@ $form-range-track-focus-background:              #a0d1c3;
 
 ////---- CONTAINER BASE --- ///
 
+.container.base .right-col .options__item.shape {
+  text-align: left;
+}
+
 .container.base  .options__item.base{
   text-align: center;
 }

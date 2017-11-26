@@ -60,7 +60,7 @@
           'material':'selectbox'
         },
         {
-          'stone':'selectbox'
+          'shape':'selectbox'
         }
       ],
       'blocks':['info']
