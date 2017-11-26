@@ -2248,9 +2248,12 @@ window.store = new Vuex.Store({
 
       RingApp.$http.get('/resultimage/' + params['base'] + '/' + params['material'] + '/' + params['shape'] + '/' + params['weight'] + '/' + md5(str)).then(function (response) {
 
-        context.state.resultImg = response.data.image;
-
         context.state.enabledShapes = Object.values(response.data.shapes);
+
+        if (response.data.shapes.indexOf(context.state.session.shape) == -1) {
+          context.state.session.shape = 1;
+        }
+        context.state.resultImg = response.data.image;
       }, function (response) {});
     },
     refreshPrices: function refreshPrices(context) {

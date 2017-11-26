@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\RingImage;
 use App\RingOption;
+use App\RingConstructor;
 use Illuminate\Http\Request;
 
 class RingImageController extends Controller
@@ -113,50 +114,48 @@ class RingImageController extends Controller
           $weight=array_search($weight,$weight_aliases);
 
 
-          if (isset($rings_params_map->shapes->{$shape})){ // If we have ring with such base and shape
-            $sizes=(array)$rings_params_map->shapes->{$shape};
-
-            $sizes=array_values($sizes);
+          if (isset($rings_params_map->shapes->{$current_shape})){ // If we have ring with such base and shape
 
 
-              //**** Count delta from shape and next shape in sizes set
-              $i=0;
-              $choose_size=$sizes[$i];
 
-                if (count($sizes)>1){
-                while(abs($sizes[$i]-$weight)>abs($sizes[$i+1]-$weight) ){
+          }else{
+            $current_shape=1;
 
-                    $choose_size=$sizes[$i+1];
-                    $i++;
-                    if ($i+1==count($sizes)) break;
-                }
-
-                if ($i==count($sizes))   $choose_size=$sizes[$i-1];
-
-              }else{
-                $choose_size=$sizes[0];
-              }
           }
+
+          $sizes=(array)$rings_params_map->shapes->{$current_shape};
+
+          $sizes=array_values($sizes);
+
+
+            //**** Count delta from shape and next shape in sizes set
+            $i=0;
+            $choose_size=$sizes[$i];
+
+          if (count($sizes)>1){
+          while(abs($sizes[$i]-$weight)>abs($sizes[$i+1]-$weight) ){
+
+              $choose_size=$sizes[$i+1];
+              $i++;
+              if ($i+1==count($sizes)) break;
+          }
+
+          if ($i==count($sizes))   $choose_size=$sizes[$i-1];
+
+        }else{
+
+          $choose_size=$sizes[0];
+        }
 
           $weight=$weight_aliases[$choose_size];
 
-          $options=RingOption::all()->toArray();
-          $params=array();
-            $str='';
+            $params['weight']=$weight;
+            $params['shape']= $current_shape;
+            $params['material']=$material;
+            $params['base']= $base;
 
-          foreach ($options as $option){
-             $params[$option['key']]=1;
-            if ($option['key']=="base")   $params[$option['key']]=$base;
-            if ($option['key']=="weight")   $params[$option['key']]=$weight;
-            if ($option['key']=="material") $params[$option['key']]=$material;
-            if ($option['key']=="shape") $params[$option['key']]=$current_shape;
+            $hash=RingConstructor::getHash($params);
 
-
-
-            $str.=$option['key'].$params[$option['key']];
-
-          }
-          $hash=md5($str);
           $result_image='images/rings/'.$hash.'.jpg';
             $output->shapes=$shapes;
             $output->image=$result_image;
@@ -165,31 +164,30 @@ class RingImageController extends Controller
     public function getBaseImg($base,$material,$size='medium',$shape=1){
 
 
-      $options=RingOption::all()->toArray();
-      $params=array();
+
         $str='';
-
-      foreach ($options as $option){
-         $params[$option['key']]=1;
-        if ($option['key']=="base")   $params[$option['key']]=$base;
-        if ($option['key']=="weight")   $params[$option['key']]=36;
-        if ($option['key']=="material") $params[$option['key']]=$material;
-        if ($option['key']=="shape") $params[$option['key']]=$shape;
+        $params['base']=$base;
+        $params['material']=$material;
+        $params['shape']=$shape;
+        $params['weight']=36;
 
 
 
-        $str.=$option['key'].$params[$option['key']];
+
+
+
+      $hash=RingConstructor::getHash($params);
+
+      if (\File::exists('images/rings/'.$hash.'.jpg')){
+
+      }else{
+        $params['shape']=1;
+        $hash=RingConstructor::getHash($params);
+
 
       }
 
-
-
-      $hash=md5($str);
-
-
       $img=\Image::make('images/rings/'.$hash.'.jpg');
-
-
 
       if ($size=='medium') {
 

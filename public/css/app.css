@@ -23796,13 +23796,15 @@ nav ul li {
 
 .options__item.shape li a {
   color: #d2e9ee;
+  height: 100%;
+  width: 100%;
+  display: block;
 }
 
 .options__item.shape li a.disable {
   display: none;
 }
 
-.options__item.shape li a:before,
 .options__item.material li:before {
   font-family: "rings" !important;
   font-style: normal !important;
@@ -23817,24 +23819,82 @@ nav ul li {
   font-size: 30px;
 }
 
-.options__item.shape li:nth-child(2) a:before {
-  content: "f";
+.options__item.shape li a:before {
+  content: '';
+  background-image: url("/images/spirit-shape.png");
+  background-repeat: no-repeat;
+  width: 27px;
+  height: 31px;
+  display: block;
+  text-decoration: none;
 }
 
-.options__item.shape li:nth-child(3) a:before {
-  content: "g";
+.options__item.shape li a:hover:before,
+.options__item.shape li.active a:before {
+  background-position: left bottom;
+}
+
+.options__item.shape li:nth-child(2) a:before {
+  background-position: -43px top;
+}
+
+.options__item.shape li:nth-child(2) a:hover:before,
+.options__item.shape li:nth-child(2).active a:before {
+  background-position: -43px bottom;
 }
 
 .options__item.shape li:nth-child(4) a:before {
-  content: "h";
+  background-position: -82px top;
 }
 
-.options__item.shape li:nth-child(5) a:before {
-  content: "i";
+.options__item.shape li:nth-child(4) a:hover:before,
+.options__item.shape li:nth-child(4).active a:before {
+  background-position: -82px bottom;
+}
+
+.options__item.shape li:nth-child(7) a:before {
+  background-position: -124px top;
+}
+
+.options__item.shape li:nth-child(7) a:hover:before,
+.options__item.shape li:nth-child(7).active a:before {
+  background-position: -124px bottom;
+}
+
+.options__item.shape li:nth-child(3) a:before {
+  background-position: -202px top;
+}
+
+.options__item.shape li:nth-child(3) a:hover:before,
+.options__item.shape li:nth-child(3).active a:before {
+  background-position: -202px bottom;
 }
 
 .options__item.shape li:nth-child(6) a:before {
-  content: "j";
+  background-position: -286px top;
+}
+
+.options__item.shape li:nth-child(6) a:hover:before,
+.options__item.shape li:nth-child(6).active a:before {
+  background-position: -286px bottom;
+}
+
+.options__item.shape li:nth-child(5) a:before {
+  background-position: -323px top;
+}
+
+.options__item.shape li:nth-child(5) a:hover:before,
+.options__item.shape li:nth-child(5).active a:before {
+  background-position: -323px bottom;
+}
+
+.options__item.shape li:nth-child(8) a:before {
+  background-position: right top;
+}
+
+.options__item.shape li:nth-child(8) a:hover:before,
+.options__item.shape li:nth-child(8).active a:before {
+  background-position: right bottom;
 }
 
 .options__item li {
@@ -23856,12 +23916,6 @@ nav ul li {
 
 .options__item li:last-child {
   margin-right: 0;
-}
-
-.options__item li a:hover,
-.options__item li.active a {
-  text-decoration: none;
-  color: #acd7ca;
 }
 
 .options__item__title {
