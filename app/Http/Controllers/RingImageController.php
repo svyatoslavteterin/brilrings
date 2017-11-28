@@ -88,7 +88,8 @@ class RingImageController extends Controller
     public function getResultImg($base,$material,$current_shape,$weight,$hash){
 
 
-      $weights=\App\RingOptionValue::where('ring_option_id','=',7)->get();
+
+      $weights=\App\RingOptionValue::where('enabled', 1)->where('ring_option_id','=',7)->get();
 
     $weight_aliases=array();
       foreach ($weights->toArray() as $weight_arr){
@@ -97,6 +98,8 @@ class RingImageController extends Controller
         $weight_aliases[$weight_arr['title']]=$weight_arr['value'];
 
       }
+
+      
 
 
 
@@ -169,7 +172,7 @@ class RingImageController extends Controller
         $params['base']=$base;
         $params['material']=$material;
         $params['shape']=$shape;
-        $params['weight']=36;
+        $params['weight']=8;
 
 
 

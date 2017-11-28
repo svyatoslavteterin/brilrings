@@ -21,7 +21,16 @@ class ConstructorController extends Controller
 
 
 
-        $weights=\App\RingOptionValue::where('ring_option_id','=',7)->get();
+      $stone_price_map=json_decode(\Redis::get('stone_price_map'));
+
+      $price=$stone_price_map->{$shape}->{1}->{$weight}->{$color};
+
+      $return=new \stdClass();
+      $return->price=$price;
+      return   \Response::json($return);
+
+      /*
+        $weights=\App\RingOptionValue::where('enabled', 1)->where('ring_option_id','=',7)->get();
 
         foreach ($weights->toArray() as $weight_arr){
           if ($weight_arr['value']==$weight){
@@ -414,6 +423,6 @@ $diamonds=$response['response']['body']['diamonds'];
         $return->price=$average_price;
         return   \Response::json($return);
 
-
+        */
     }
 }

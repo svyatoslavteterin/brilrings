@@ -2143,7 +2143,7 @@ var index_esm = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
-module.exports = __webpack_require__(69);
+module.exports = __webpack_require__(70);
 
 
 /***/ }),
@@ -2169,7 +2169,9 @@ var md5 = __webpack_require__(44);
 
 window.currencyFormatter = __webpack_require__(46);
 
-window.Vue = __webpack_require__(53);
+window.fx = __webpack_require__(53);
+
+window.Vue = __webpack_require__(54);
 
 window.Vuex = __webpack_require__(13);
 
@@ -2185,14 +2187,32 @@ Vue.prototype.$http = axios;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('ringoptions', __webpack_require__(54));
-Vue.component('ringblocks', __webpack_require__(57));
+Vue.component('ringoptions', __webpack_require__(55));
+Vue.component('ringblocks', __webpack_require__(58));
 
-Vue.component('ringoption', __webpack_require__(60));
+Vue.component('ringoption', __webpack_require__(61));
 
-Vue.component('ringoptionvalue', __webpack_require__(63));
+Vue.component('ringoptionvalue', __webpack_require__(64));
 
-Vue.component('steps', __webpack_require__(66));
+Vue.component('steps', __webpack_require__(67));
+
+fx.rates['RUB'] = 60;
+
+$.getJSON(
+// NB: using Open Exchange Rates here, but you can use any source!
+'https://openexchangerates.org/api/latest.json?app_id=cc24b33091c34b19a0f4dea626cab8a2', function (data) {
+  // Check money.js has finished loading:
+  if (typeof fx !== "undefined" && fx.rates) {
+    fx.rates = data.rates;
+    fx.base = data.base;
+  } else {
+    // If not, apply to fxSetup global:
+    var fxSetup = {
+      rates: data.rates,
+      base: data.base
+    };
+  }
+});
 
 window.store = new Vuex.Store({
   state: {
@@ -2212,6 +2232,23 @@ window.store = new Vuex.Store({
     },
     setOption: function setOption(state, payload) {
       state.session[payload.optionKey] = parseInt(payload.value);
+
+      if (payload.optionKey == "size") {
+        for (var weight in RingApp.weight_size_map.aliases) {
+          if (RingApp.weight_size_map.aliases[weight] == parseInt(payload.value)) {
+            state.session['weight'] = weight;
+            RingApp.$refs.steps.$refs.ringoptions[0].$refs.ringoption[1].value = weight;
+          }
+        }
+      }
+      if (payload.optionKey == "weight") {
+
+        state.session.size = parseInt(RingApp.weight_size_map.aliases[parseInt(payload.value)]);
+
+        // hook to set value to weight
+
+        RingApp.$refs.steps.$refs.ringoptions[0].$refs.ringoption[2].value = parseInt(payload.value);
+      }
 
       var excludeParams = RingApp.$data.excludeParams;
 
@@ -2260,7 +2297,7 @@ window.store = new Vuex.Store({
       var basePrice = parseInt(RingApp.$data.ringOptionValues.base[context.state.session.base].price.material[context.state.session.material]);
       context.state.basePrice = basePrice;
       RingApp.$http.get('/getprice/' + context.state.session.shape + '/' + context.state.session.weight + '/' + context.state.session.color + '/' + context.state.session.purity).then(function (response) {
-        var stonePrice = response.data.price;
+        var stonePrice = Math.round(fx.rates['RUB'] * response.data.price);
         context.state.stonePrice = stonePrice;
         context.state.totalPrice = basePrice + stonePrice;
       });
@@ -2275,8 +2312,8 @@ window.RingApp = new Vue({
     'excludeParams': ['fsize', 'purity', 'stone', 'color', 'size'],
     'ringOptions': {},
     'ringOptionValues': {},
+    'weight_size_map': {},
     'steps': steps
-
   },
   methods: {
     getHash: function getHash() {},
@@ -2335,9 +2372,13 @@ window.RingApp = new Vue({
 
       _this.$http.get('/getprice/' + store.state.session.shape + '/' + store.state.session.weight + '/' + store.state.session.color + '/' + store.state.session.purity).then(function (response) {
 
-        store.state.stonePrice = response.data.price;
+        store.state.stonePrice = Math.round(fx.rates['RUB'] * response.data.price);
         store.state.totalPrice = store.state.basePrice + store.state.stonePrice;
       });
+    }, function (response) {});
+
+    this.$http.get('/weight_size_map').then(function (response) {
+      _this.weight_size_map = response.data;
     }, function (response) {});
   },
   computed: {
@@ -47028,6 +47069,178 @@ module.exports = {"de-AT":{"thousandsSeparator":".","decimalSeparator":",","symb
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*!
+ * money.js / fx() v0.2
+ * Copyright 2014 Open Exchange Rates
+ *
+ * JavaScript library for realtime currency conversion and exchange rate calculation.
+ *
+ * Freely distributable under the MIT license.
+ * Portions of money.js are inspired by or borrowed from underscore.js
+ *
+ * For details, examples and documentation:
+ * http://openexchangerates.github.io/money.js/
+ */
+(function(root, undefined) {
+
+	// Create a safe reference to the money.js object for use below.
+	var fx = function(obj) {
+		return new fxWrapper(obj);
+	};
+
+	// Current version.
+	fx.version = '0.2';
+
+
+	/* --- Setup --- */
+
+	// fxSetup can be defined before loading money.js, to set the exchange rates and the base
+	// (and default from/to) currencies - or the rates can be loaded in later if needed.
+	var fxSetup = root.fxSetup || {
+		rates : {},
+		base : ""
+	};
+
+	// Object containing exchange rates relative to the fx.base currency, eg { "GBP" : "0.64" }
+	fx.rates = fxSetup.rates;
+
+	// Default exchange rate base currency (eg "USD"), which all the exchange rates are relative to
+	fx.base = fxSetup.base;
+
+	// Default from / to currencies for conversion via fx.convert():
+	fx.settings = {
+		from : fxSetup.from || fx.base,
+		to : fxSetup.to || fx.base
+	};
+
+
+	/* --- Conversion --- */
+
+	// The base function of the library: converts a value from one currency to another
+	var convert = fx.convert = function(val, opts) {
+		// Convert arrays recursively
+		if (typeof val === 'object' && val.length) {
+			for (var i = 0; i< val.length; i++ ) {
+				val[i] = convert(val[i], opts);
+			}
+			return val;
+		}
+
+		// Make sure we gots some opts
+		opts = opts || {};
+
+		// We need to know the `from` and `to` currencies
+		if( !opts.from ) opts.from = fx.settings.from;
+		if( !opts.to ) opts.to = fx.settings.to;
+
+		// Multiple the value by the exchange rate
+		return val * getRate( opts.to, opts.from );
+	};
+
+	// Returns the exchange rate to `target` currency from `base` currency
+	var getRate = function(to, from) {
+		// Save bytes in minified version
+		var rates = fx.rates;
+
+		// Make sure the base rate is in the rates object:
+		rates[fx.base] = 1;
+
+		// Throw an error if either rate isn't in the rates array
+		if ( !rates[to] || !rates[from] ) throw "fx error";
+
+		// If `from` currency === fx.base, return the basic exchange rate for the `to` currency
+		if ( from === fx.base ) {
+			return rates[to];
+		}
+
+		// If `to` currency === fx.base, return the basic inverse rate of the `from` currency
+		if ( to === fx.base ) {
+			return 1 / rates[from];
+		}
+
+		// Otherwise, return the `to` rate multipled by the inverse of the `from` rate to get the
+		// relative exchange rate between the two currencies
+		return rates[to] * (1 / rates[from]);
+	};
+
+
+	/* --- OOP wrapper and chaining --- */
+
+	// If fx(val) is called as a function, it returns a wrapped object that can be used OO-style
+	var fxWrapper = function(val) {
+		// Experimental: parse strings to pull out currency code and value:
+		if ( typeof	val === "string" ) {
+			this._v = parseFloat(val.replace(/[^0-9-.]/g, ""));
+			this._fx = val.replace(/([^A-Za-z])/g, "");
+		} else {
+			this._v = val;
+		}
+	};
+
+	// Expose `wrapper.prototype` as `fx.prototype`
+	var fxProto = fx.prototype = fxWrapper.prototype;
+
+	// fx(val).convert(opts) does the same thing as fx.convert(val, opts)
+	fxProto.convert = function() {
+		var args = Array.prototype.slice.call(arguments);
+		args.unshift(this._v);
+		return convert.apply(fx, args);
+	};
+
+	// fx(val).from(currency) returns a wrapped `fx` where the value has been converted from
+	// `currency` to the `fx.base` currency. Should be followed by `.to(otherCurrency)`
+	fxProto.from = function(currency) {
+		var wrapped = fx(convert(this._v, {from: currency, to: fx.base}));
+		wrapped._fx = fx.base;
+		return wrapped;
+	};
+
+	// fx(val).to(currency) returns the value, converted from `fx.base` to `currency`
+	fxProto.to = function(currency) {
+		return convert(this._v, {from: this._fx ? this._fx : fx.settings.from, to: currency});
+	};
+
+
+	/* --- Module Definition --- */
+
+	// Export the fx object for CommonJS. If being loaded as an AMD module, define it as such.
+	// Otherwise, just add `fx` to the global object
+	if (true) {
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports = fx;
+		}
+		exports.fx = fx;
+	} else if (typeof define === 'function' && define.amd) {
+		// Return the library as an AMD module:
+		define([], function() {
+			return fx;
+		});
+	} else {
+		// Use fx.noConflict to restore `fx` back to its original value before money.js loaded.
+		// Returns a reference to the library's `fx` object; e.g. `var money = fx.noConflict();`
+		fx.noConflict = (function(previousFx) {
+			return function() {
+				// Reset the value of the root's `fx` variable:
+				root.fx = previousFx;
+				// Delete the noConflict function:
+				fx.noConflict = undefined;
+				// Return reference to the library to re-assign it:
+				return fx;
+			};
+		})(root.fx);
+
+		// Declare `fx` on the root (global/window) object:
+		root['fx'] = fx;
+	}
+
+	// Root will be `window` in browser or `global` on the server:
+}(this));
+
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
  * Vue.js v2.5.6
@@ -57704,15 +57917,15 @@ module.exports = Vue$3;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(11).setImmediate))
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(55)
+var __vue_script__ = __webpack_require__(56)
 /* template */
-var __vue_template__ = __webpack_require__(56)
+var __vue_template__ = __webpack_require__(57)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57752,9 +57965,10 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports) {
 
+//
 //
 //
 //
@@ -57798,7 +58012,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57811,6 +58025,8 @@ var render = function() {
     _vm._l(_vm.options, function(value, key, index) {
       return _c("ringoption", {
         key: index,
+        ref: "ringoption",
+        refInFor: true,
         attrs: {
           option: value,
           "ring-options": _vm.ringOptions,
@@ -57832,15 +58048,15 @@ if (false) {
 }
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(58)
+var __vue_script__ = __webpack_require__(59)
 /* template */
-var __vue_template__ = __webpack_require__(59)
+var __vue_template__ = __webpack_require__(60)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57880,7 +58096,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports) {
 
 //
@@ -57991,7 +58207,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58118,15 +58334,15 @@ if (false) {
 }
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(61)
+var __vue_script__ = __webpack_require__(62)
 /* template */
-var __vue_template__ = __webpack_require__(62)
+var __vue_template__ = __webpack_require__(63)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58166,7 +58382,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 //
@@ -58286,7 +58502,7 @@ module.exports = {
 
     add: function add() {},
     update: function update(newValue) {
-
+      console.log("update " + this.optionKey);
       this.value = parseInt(newValue);
       store.commit('setOption', { 'value': newValue, 'optionKey': this.optionKey });
     }
@@ -58306,8 +58522,8 @@ module.exports = {
   created: function created() {
     if (this.optionKey == "material") this.value = ringMaterial;
     if (this.optionKey == "base") this.value = ringBase;
-    if (this.optionKey == "weight") this.value = 36;
-    if (this.optionKey == "size") this.value = 24;
+    if (this.optionKey == "weight") this.value = 8;
+    if (this.optionKey == "size") this.value = 8;
     if (this.optionKey == "purity") this.value = 4;
     if (this.optionKey == "color") this.value = 3;
 
@@ -58329,6 +58545,7 @@ module.exports = {
         return prop;
       }
     },
+
     optionTemplate: function optionTemplate() {
       for (var prop in this.option) {
         return this.option[prop];
@@ -58356,7 +58573,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58528,6 +58745,8 @@ var render = function() {
                       staticClass: "uk-range",
                       attrs: {
                         type: "range",
+                        id: "range" + _vm.optionKey,
+                        value: "value",
                         step: "1",
                         min: "1",
                         max: _vm.ringOptionValues[_vm.optionKey].length
@@ -58566,15 +58785,15 @@ if (false) {
 }
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(64)
+var __vue_script__ = __webpack_require__(65)
 /* template */
-var __vue_template__ = __webpack_require__(65)
+var __vue_template__ = __webpack_require__(66)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58614,7 +58833,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 //
@@ -58726,7 +58945,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58875,15 +59094,15 @@ if (false) {
 }
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(67)
+var __vue_script__ = __webpack_require__(68)
 /* template */
-var __vue_template__ = __webpack_require__(68)
+var __vue_template__ = __webpack_require__(69)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58923,7 +59142,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports) {
 
 //
@@ -59041,7 +59260,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59164,6 +59383,8 @@ var render = function() {
                     { staticClass: "col-sm-12 col-md-3 left-col" },
                     [
                       _c("ringoptions", {
+                        ref: "ringoptions",
+                        refInFor: true,
                         attrs: {
                           options: step.left.options,
                           "ring-options": _vm.SRingOptions,
@@ -59323,7 +59544,7 @@ if (false) {
 }
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

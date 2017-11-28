@@ -8,13 +8,13 @@ class RingOptionValueController extends Controller
 {
   public function index(){
 
-    $ring_option_values=RingOptionValue::all();
+    $ring_option_values=RingOptionValue::where('enabled','=',1)->get();
 
     return $ring_option_values;
   }
 
   public function get(){
-    $ring_option_values=RingOptionValue::all();
+    $ring_option_values=RingOptionValue::where('enabled','=',1)->get();
 
     $output=array();
     foreach ($ring_option_values as $ring_option_value) {

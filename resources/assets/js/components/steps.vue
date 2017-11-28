@@ -31,7 +31,7 @@
               <div v-if="step.template==='stone'" class="container" :class="step.template">
                 <div class="row">
                   <div class="col-sm-12 col-md-3 left-col">
-                      <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+                      <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" ref="ringoptions"></ringoptions>
                   </div>
                   <div class="col-xs-6 col-sm-6 col-md-5 center-col">
                         <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>

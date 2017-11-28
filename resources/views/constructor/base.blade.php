@@ -81,9 +81,6 @@
         },
         {
           'color':'range'
-        },
-        {
-          'purity':'range'
         }
       ]
     },

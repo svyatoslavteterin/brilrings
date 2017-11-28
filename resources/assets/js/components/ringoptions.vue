@@ -10,6 +10,7 @@
           :ring-option-values="ringOptionValues"
           :option-key="value"
           :key="index"
+          ref="ringoption"
           >
           </ringoption>
 
