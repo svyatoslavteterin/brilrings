@@ -2355,7 +2355,7 @@ window.RingApp = new Vue({
         }
       });
 
-      _this.$http.get('/resultimage/' + session['base'] + '/' + session['material'] + '/1/36/' + md5(str)).then(function (response) {
+      _this.$http.get('/resultimage/' + session['base'] + '/' + session['material'] + '/1/8/' + md5(str)).then(function (response) {
 
         store.state.resultImg = response.data.image;
 

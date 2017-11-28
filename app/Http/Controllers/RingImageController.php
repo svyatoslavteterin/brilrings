@@ -99,7 +99,7 @@ class RingImageController extends Controller
 
       }
 
-      
+
 
 
 
