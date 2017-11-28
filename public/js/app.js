@@ -2219,6 +2219,7 @@ window.store = new Vuex.Store({
     value: 0,
     basePrice: 0,
     stonePrice: 0,
+    mussanitPrice: 0,
     totalPrice: 22000,
     session: {},
     resultImg: '',
@@ -2298,7 +2299,9 @@ window.store = new Vuex.Store({
       context.state.basePrice = basePrice;
       RingApp.$http.get('/getprice/' + context.state.session.shape + '/' + context.state.session.weight + '/' + context.state.session.color + '/' + context.state.session.purity).then(function (response) {
         var stonePrice = Math.round(fx.rates['RUB'] * response.data.price);
+        var mussanitPrice = Math.round(fx.rates['RUB'] * response.data.mussanit_price);
         context.state.stonePrice = stonePrice;
+        context.state.mussanitPrice = mussanitPrice;
         context.state.totalPrice = basePrice + stonePrice;
       });
     }
@@ -2373,6 +2376,8 @@ window.RingApp = new Vue({
       _this.$http.get('/getprice/' + store.state.session.shape + '/' + store.state.session.weight + '/' + store.state.session.color + '/' + store.state.session.purity).then(function (response) {
 
         store.state.stonePrice = Math.round(fx.rates['RUB'] * response.data.price);
+        store.state.mussanitPrice = Math.round(fx.rates['RUB'] * response.data.mussanit_price);
+
         store.state.totalPrice = store.state.basePrice + store.state.stonePrice;
       });
     }, function (response) {});
@@ -59219,6 +59224,7 @@ module.exports = Component.exports
 //
 //
 //
+//
 
 module.exports = {
   methods: {
@@ -59254,6 +59260,9 @@ module.exports = {
     getBasePrice: function getBasePrice() {
 
       return currencyFormatter.format(store.state.basePrice, { code: 'RUB', precision: 0 });
+    },
+    getTotalMussanitPrice: function getTotalMussanitPrice() {
+      return currencyFormatter.format(store.state.totalPrice - store.state.stonePrice + store.state.mussanitPrice, { code: 'RUB', precision: 0 });
     }
 
   }
@@ -59424,9 +59433,20 @@ var render = function() {
                       _c("p", [_vm._v("Итоговая цена:")]),
                       _vm._v(" "),
                       _c("p", [
+                        _vm._v("Бриллиант: "),
                         _c("span", {
                           staticClass: "price",
                           domProps: { textContent: _vm._s(_vm.getTotalPrice) }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v("Муссанит: "),
+                        _c("span", {
+                          staticClass: "price",
+                          domProps: {
+                            textContent: _vm._s(_vm.getTotalMussanitPrice)
+                          }
                         })
                       ]),
                       _vm._v(" "),

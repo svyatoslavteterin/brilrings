@@ -593,6 +593,121 @@ $prices[8]=array(499,420,360,300,650,540,450,360,790,604,520,460,860,680,600,530
 
     }
 
+    $mussanit_prices[1]["0.15"]=115;
+    $mussanit_prices[1]["0.25"]=132;
+    $mussanit_prices[1]["0.35"]=149;
+    $mussanit_prices[1]["0.5"]=203;
+    $mussanit_prices[1]["0.7"]=221;
+    $mussanit_prices[1]["0.95"]=245;
+    $mussanit_prices[1]["1.1"]=330;
+    $mussanit_prices[1]["1.35"]=339;
+    $mussanit_prices[1]["1.5"]=469;
+    $mussanit_prices[1]["1.75"]=546;
+    $mussanit_prices[1]["2.0"]=633;
+
+    $mussanit_prices[2]["0.15"]=115;
+    $mussanit_prices[2]["0.25"]=132;
+    $mussanit_prices[2]["0.35"]=149;
+
+    $mussanit_prices[2]["0.7"]=221;
+    $mussanit_prices[2]["0.95"]=245;
+    $mussanit_prices[2]["1.1"]=330;
+    $mussanit_prices[2]["1.25"]=245;
+    $mussanit_prices[2]["1.35"]=339;
+    $mussanit_prices[2]["1.5"]=469;
+    $mussanit_prices[2]["1.75"]=546;
+    $mussanit_prices[2]["2.0"]=633;
+
+    $mussanit_prices[3]["0.15"]=115;
+    $mussanit_prices[3]["0.25"]=132;
+    $mussanit_prices[3]["0.35"]=149;
+
+    $mussanit_prices[3]["0.5"]=203;
+
+    $mussanit_prices[3]["0.7"]=221;
+
+    $mussanit_prices[3]["0.95"]=245;
+    $mussanit_prices[3]["1.1"]=330;
+    $mussanit_prices[3]["1.35"]=389;
+    $mussanit_prices[3]["1.5"]=469;
+    $mussanit_prices[3]["1.75"]=546;
+    $mussanit_prices[3]["2.0"]=633;
+
+
+  $mussanit_prices[4]["0.15"]=115;
+  $mussanit_prices[4]["0.25"]=132;
+  $mussanit_prices[4]["0.35"]=149;
+  $mussanit_prices[4]["0.5"]=203;
+  $mussanit_prices[4]["0.7"]=221;
+  $mussanit_prices[4]["0.95"]=245;
+  $mussanit_prices[4]["1.1"]=330;
+  $mussanit_prices[4]["1.35"]=389;
+  $mussanit_prices[4]["1.5"]=469;
+  $mussanit_prices[4]["1.75"]=546;
+  $mussanit_prices[4]["2.0"]=633;
+
+  $mussanit_prices[5]["0.25"]=132;
+  $mussanit_prices[5]["0.35"]=149;
+  $mussanit_prices[5]["0.5"]=203;
+  $mussanit_prices[5]["0.7"]=221;
+  $mussanit_prices[5]["0.95"]=245;
+  $mussanit_prices[5]["1.1"]=330;
+  $mussanit_prices[5]["1.35"]=389;
+  $mussanit_prices[5]["1.75"]=546;
+  $mussanit_prices[5]["2.0"]=633;
+
+  $mussanit_prices[6]["0.15"]=115;
+  $mussanit_prices[6]["0.25"]=132;
+  $mussanit_prices[6]["0.35"]=149;
+  $mussanit_prices[6]["0.5"]=203;
+  $mussanit_prices[6]["0.7"]=221;
+  $mussanit_prices[6]["0.95"]=245;
+  $mussanit_prices[6]["1.1"]=330;
+  $mussanit_prices[6]["1.35"]=389;
+  $mussanit_prices[6]["1.5"]=469;
+  $mussanit_prices[6]["1.75"]=546;
+  $mussanit_prices[6]["2.0"]=633;
+
+  $mussanit_prices[7]["0.15"]=115;
+  $mussanit_prices[7]["0.25"]=132;
+  $mussanit_prices[7]["0.35"]=149;
+  $mussanit_prices[7]["0.5"]=203;
+  $mussanit_prices[7]["0.7"]=221;
+  $mussanit_prices[7]["0.95"]=245;
+  $mussanit_prices[7]["1.1"]=330;
+  $mussanit_prices[7]["1.35"]=389;
+  $mussanit_prices[7]["1.5"]=469;
+  $mussanit_prices[7]["1.75"]=546;
+  $mussanit_prices[7]["2.0"]=633;
+
+
+  $mussanit_prices[8]["0.15"]=115;
+  $mussanit_prices[8]["0.25"]=132;
+  $mussanit_prices[8]["0.35"]=149;
+  $mussanit_prices[8]["0.5"]=203;
+  $mussanit_prices[8]["0.7"]=221;
+  $mussanit_prices[8]["0.95"]=245;
+  $mussanit_prices[8]["1.1"]=330;
+  $mussanit_prices[8]["1.35"]=389;
+  $mussanit_prices[8]["1.5"]=469;
+  $mussanit_prices[8]["1.75"]=546;
+  $mussanit_prices[8]["2.0"]=633;
+
+
+
+$stone=2;
+$color=3;
+  for ($shape=1;$shape<=8;$shape++){
+    foreach ($mussanit_prices[$shape] as $weight=>$price){
+
+       $price_map[$shape][$stone][$weight_aliases["$weight"]][$color]=$mussanit_prices[$shape]["$weight"];
+    }
+
+}
+
+
+
+
     echo "<pre>";
    print_r($price_map);
     echo "</pre>";

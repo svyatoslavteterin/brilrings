@@ -41,7 +41,8 @@
 
                         <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                         <p>Итоговая цена:</p>
-                        <p><span v-text="getTotalPrice" class="price"></span> </p>
+                        <p>Бриллиант: <span v-text="getTotalPrice" class="price"></span> </p>
+                        <p>Муссанит: <span v-text="getTotalMussanitPrice" class="price"></span> </p>
                           <button @click="nextStep('result')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
                   </div>
                 </div>
@@ -121,6 +122,9 @@
 
             return currencyFormatter.format(store.state.basePrice, { code: 'RUB',precision:0});
 
+          },
+          getTotalMussanitPrice:function(){
+            return currencyFormatter.format(store.state.totalPrice-store.state.stonePrice+store.state.mussanitPrice, { code: 'RUB',precision:0});
           }
 
         }

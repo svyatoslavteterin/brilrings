@@ -20,13 +20,21 @@ class ConstructorController extends Controller
     public function getprice($shape,$weight,$color,$clarity){
 
 
-      
+
       $stone_price_map=json_decode(\Redis::get('stone_price_map'));
 
-      $price=$stone_price_map->{$shape}->{1}->{$weight}->{$color};
+      $brilliant_price=$stone_price_map->{$shape}->{1}->{$weight}->{$color};
+      if (isset($stone_price_map->{$shape}->{2}->{$weight}->{$color})){
+        $mussanit_price=$stone_price_map->{$shape}->{2}->{$weight}->{$color};
+      }
 
       $return=new \stdClass();
-      $return->price=$price;
+      $return->price=$brilliant_price;
+      if (isset($mussanit_price)){
+        $return->mussanit_price=$mussanit_price;
+      }else{
+        $return->mussanit_price=0;
+      }
       return   \Response::json($return);
 
       /*
