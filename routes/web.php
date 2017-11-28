@@ -594,14 +594,14 @@ $prices[8]=array(499,420,360,300,650,540,450,360,790,604,520,460,860,680,600,530
     }
 
     echo "<pre>";
-   print_r($price_map);die;
+   print_r($price_map);
     echo "</pre>";
 
 
-    $stone_price_map=json_decode(\Redis::get('stone_price_map'));
+    //$stone_price_map=json_decode(\Redis::get('stone_price_map'));
 
-    print_r($stone_price_map);die;
-  //  Redis::set('stone_price_map', json_encode($price_map));
+    //print_r($stone_price_map);die;
+   Redis::set('stone_price_map', json_encode($price_map));
 });
 Route::get('/generate',function(){
 

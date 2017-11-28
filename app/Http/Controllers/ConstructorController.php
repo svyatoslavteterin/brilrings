@@ -20,7 +20,7 @@ class ConstructorController extends Controller
     public function getprice($shape,$weight,$color,$clarity){
 
 
-
+      
       $stone_price_map=json_decode(\Redis::get('stone_price_map'));
 
       $price=$stone_price_map->{$shape}->{1}->{$weight}->{$color};
