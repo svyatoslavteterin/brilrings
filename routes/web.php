@@ -573,7 +573,7 @@ $prices[8]=array(499,420,360,300,650,540,450,360,790,604,520,460,860,680,600,530
 
       $color_step=1;
 
-      for ($shape=1;$shape<8;$shape++){
+      for ($shape=1;$shape<=8;$shape++){
         $weight=0.15;
         $color=1;
 
