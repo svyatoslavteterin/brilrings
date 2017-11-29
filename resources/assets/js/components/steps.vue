@@ -54,10 +54,10 @@
                   <div class="col-xs-6 col-sm-6 col-md-4 right-col">
                         <ringblocks :blocks="step.right.blocks" ref="blocks"></ringblocks>
 
-
-                            <button class="btn btn-default btn-how-to-know">Как узнать размер?</button>
                         <p>Размер кольца</p>
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+                            <button class="btn btn-default btn-how-to-know">Как узнать размер?</button>
+
                           <p><span v-text="getTotalPrice" class="price"></span> </p>
                         <div class="action-btns">
                           <button class="btn btn-primary btn-order">Заказать</button>

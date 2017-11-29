@@ -452,7 +452,7 @@ $form-range-track-focus-background:              #a0d1c3;
     top: 20px;
     /* background: #000; */
     color: #fff;
-    width: 70px;
+    width: 110px;
     text-align: left;
     margin-left: -10px;
     padding: 5px 0;
@@ -460,10 +460,13 @@ $form-range-track-focus-background:              #a0d1c3;
     font-size: 1em;
     font-weight: bold;
     color: #5a5a5a;
+    z-index: 2;
 }
 
-
-
+#stone-info .price {
+      font-size: 1.5em;
+}
+.stone-info h3 {margin-bottom: 0.3em;}
 .steps__item {
   background:#ffffff;
 }
@@ -946,6 +949,7 @@ $form-range-track-focus-background:              #a0d1c3;
 }
 .container.result .result-img  img{
   margin-top:-140px;
+      padding: 0 3em;
 }
 
 .container.base  .options__item.base ul li {display: inline-block;}

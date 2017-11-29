@@ -47,14 +47,7 @@ import { mapState } from 'vuex';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
- Vue.component('ringoptions',require('./components/ringoptions.vue'));
- Vue.component('ringblocks',require('./components/ringblocks.vue'));
 
- Vue.component('ringoption',require('./components/ringoption.vue'));
-
- Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
-
-Vue.component('steps',require('./components/steps.vue'));
 
 fx.rates['RUB']=60;
 
@@ -167,7 +160,7 @@ window.store = new Vuex.Store({
           context.state.enabledShapes=Object.values(response.data.shapes);
 
           if (response.data.shapes.indexOf(context.state.session.shape)==-1) {
-            context.state.session.shape=1;
+              store.commit('setOption',{'value':1,'optionKey':'shape'});
           }
             context.state.resultImg=response.data.image;
 
@@ -316,3 +309,8 @@ window.RingApp = new Vue({
 
     }
 });
+Vue.component('steps',require('./components/steps.vue'));
+Vue.component('ringoptions',require('./components/ringoptions.vue'));
+Vue.component('ringoption',require('./components/ringoption.vue'));
+Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
+Vue.component('ringblocks',require('./components/ringblocks.vue'));

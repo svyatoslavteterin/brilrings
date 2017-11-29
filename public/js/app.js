@@ -2187,15 +2187,6 @@ Vue.prototype.$http = axios;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('ringoptions', __webpack_require__(55));
-Vue.component('ringblocks', __webpack_require__(58));
-
-Vue.component('ringoption', __webpack_require__(61));
-
-Vue.component('ringoptionvalue', __webpack_require__(64));
-
-Vue.component('steps', __webpack_require__(67));
-
 fx.rates['RUB'] = 60;
 
 $.getJSON(
@@ -2289,7 +2280,7 @@ window.store = new Vuex.Store({
         context.state.enabledShapes = Object.values(response.data.shapes);
 
         if (response.data.shapes.indexOf(context.state.session.shape) == -1) {
-          context.state.session.shape = 1;
+          store.commit('setOption', { 'value': 1, 'optionKey': 'shape' });
         }
         context.state.resultImg = response.data.image;
       }, function (response) {});
@@ -2395,6 +2386,11 @@ window.RingApp = new Vue({
   },
   mounted: function mounted() {}
 });
+Vue.component('steps', __webpack_require__(67));
+Vue.component('ringoptions', __webpack_require__(55));
+Vue.component('ringoption', __webpack_require__(61));
+Vue.component('ringoptionvalue', __webpack_require__(64));
+Vue.component('ringblocks', __webpack_require__(58));
 
 /***/ }),
 /* 16 */
@@ -58157,9 +58153,6 @@ module.exports = Component.exports
 //
 //
 //
-//
-//
-//
 
 module.exports = {
   methods: {
@@ -58293,7 +58286,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("tr", [
-                      _c("th", [_vm._v("Цвет")]),
+                      _c("th", [_vm._v("Качество")]),
                       _vm._v(" "),
                       _c("td", {
                         domProps: {
@@ -58303,17 +58296,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("tr", [
-                      _c("th", [_vm._v("Чистота")]),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: {
-                          textContent: _vm._s(_vm.storeValue("purity", "title"))
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("th", [_vm._v("Размер")]),
+                      _c("th", [_vm._v("Диаметр")]),
                       _vm._v(" "),
                       _c("td", {
                         domProps: {
@@ -58390,8 +58373,6 @@ module.exports = Component.exports
 /***/ }),
 /* 62 */
 /***/ (function(module, exports) {
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 //
 //
@@ -58545,16 +58526,7 @@ module.exports = {
     selectValue: {
       get: function get() {
         var optionKey = this.optionKey;
-
-        if (_typeof(store.state.session == "undefined")) {
-          if (optionKey == "material") {
-            return 2;
-          } else {
-            return 1;
-          }
-        } else {
-          return store.state.session[optionKey];
-        }
+        return store.state.session[optionKey];
       },
       set: function set(newValue) {
         this.value = parseInt(newValue);
@@ -59520,12 +59492,6 @@ var render = function() {
                       attrs: { blocks: step.right.blocks }
                     }),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      { staticClass: "btn btn-default btn-how-to-know" },
-                      [_vm._v("Как узнать размер?")]
-                    ),
-                    _vm._v(" "),
                     _c("p", [_vm._v("Размер кольца")]),
                     _vm._v(" "),
                     _c("ringoptions", {
@@ -59535,6 +59501,12 @@ var render = function() {
                         "ring-option-values": _vm.SRingOptionValues
                       }
                     }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      { staticClass: "btn btn-default btn-how-to-know" },
+                      [_vm._v("Как узнать размер?")]
+                    ),
                     _vm._v(" "),
                     _c("p", [
                       _c("span", {

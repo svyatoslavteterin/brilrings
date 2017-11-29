@@ -167,14 +167,7 @@
               selectValue:{
                 get:function(){
                   var optionKey=this.optionKey;
-
-                  if (typeof (store.state.session=="undefined")){
-                      if (optionKey=="material") {return 2;}else{  return 1;}
-
-                  }else{
                     return store.state.session[optionKey];
-                  }
-
                 },
                 set:function(newValue){
                   this.value=parseInt(newValue);

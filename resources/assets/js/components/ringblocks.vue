@@ -30,15 +30,12 @@
                       <td v-text="storeValue('weight','title')"></td>
                     </tr>
                     <tr>
-                      <th>Цвет</th>
+                      <th>Качество</th>
                       <td v-text="storeValue('color','title')"></td>
                     </tr>
+
                     <tr>
-                      <th>Чистота</th>
-                      <td v-text="storeValue('purity','title')"></td>
-                    </tr>
-                    <tr>
-                      <th>Размер</th>
+                      <th>Диаметр</th>
                       <td v-text="storeValue('size','title')"></td>
                     </tr>
 
