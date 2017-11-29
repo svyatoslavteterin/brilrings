@@ -197,7 +197,7 @@ window.store = new Vuex.Store({
 window.RingApp = new Vue({
     el: '#app',
     data:{
-        'excludeParams':['fsize','purity','stone','color','size'],
+        'excludeParams':['fsize','purity','stone','color'],
         'ringOptions':{},
         'ringOptionValues':{},
         'weight_size_map':{},
@@ -237,6 +237,7 @@ window.RingApp = new Vue({
           }
 
         });
+            store.commit('init',session);
 
         if (typeof(ringBase)!="undefined") session['base']=parseInt(ringBase);
         if (typeof(ringMaterial)!="undefined") session['material']=parseInt(ringMaterial);
@@ -286,7 +287,7 @@ window.RingApp = new Vue({
               store.state.mussanitPrice=Math.round(fx.rates['RUB']*response.data.mussanit_price);
 
               store.state.totalPrice=store.state.basePrice+store.state.stonePrice;
-            
+
           });
 
       },(response)=> {

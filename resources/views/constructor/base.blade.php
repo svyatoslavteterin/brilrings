@@ -23,10 +23,13 @@
     </nav>
   </div>
   </div>
-  <steps :steps-list="steps"
+
+  <steps
   :s-ring-options="ringOptions"
+  :steps-list="steps"
   :s-ring-option-values="ringOptionValues"
   ref="steps"
+
   >
 
   </steps>

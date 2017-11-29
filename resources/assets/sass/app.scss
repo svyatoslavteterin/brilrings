@@ -333,7 +333,7 @@ $form-range-track-focus-background:              #a0d1c3;
     width: 100%;
     display: block;
   }
-.options__item.shape li a.disable{display:none; }
+.options__item.shape li.disable{display:none; }
 .options__item.material li:before {
    font-family: "rings" !important;
   font-style: normal !important;
@@ -1126,7 +1126,11 @@ $form-range-track-focus-background:              #a0d1c3;
 .container.stone .left-col .options__item.shape{padding-bottom:0.5em;}
 
 .options__item.shape ul li {padding-left:0;}
-.options__item.shape li {margin-right:1.1em;   margin-bottom:1em;}
+
+.options__item.shape ul li{    margin-right: .5em;    margin-left: .5em;}
+
+
+.options__item.shape li {margin-bottom:1em;}
 
 .options__item.shape li:nth-child(5) {clear:both;}
 

@@ -80,7 +80,7 @@
 
 
           <div class="options__item" :class="optionKey" v-else-if="optionTemplate==='selectbox'">
-            <select class="uk-select" v-model="value" @change="update(value)">
+            <select class="uk-select" v-model="selectValue" >
               <ringoptionvalue v-for="ringOptionValue in ringOptionValues[optionKey]"
                               :ring-option-value="ringOptionValue"
                               :option-template-value="optionTemplate"
@@ -164,7 +164,23 @@
         },
 
         computed: {
+              selectValue:{
+                get:function(){
+                  var optionKey=this.optionKey;
 
+                  if (typeof (store.state.session=="undefined")){
+                      if (optionKey=="material") {return 2;}else{  return 1;}
+
+                  }else{
+                    return store.state.session[optionKey];
+                  }
+
+                },
+                set:function(newValue){
+                  this.value=parseInt(newValue);
+                  store.commit('setOption',{'value':newValue,'optionKey':this.optionKey});
+                }
+              },
               ringOption:function(){
                 for (var prop in this.option) {
                   return this.ringOptions[prop];

@@ -23801,7 +23801,7 @@ nav ul li {
   display: block;
 }
 
-.options__item.shape li a.disable {
+.options__item.shape li.disable {
   display: none;
 }
 
@@ -24658,8 +24658,12 @@ nav ul li {
   padding-left: 0;
 }
 
+.options__item.shape ul li {
+  margin-right: .5em;
+  margin-left: .5em;
+}
+
 .options__item.shape li {
-  margin-right: 1.1em;
   margin-bottom: 1em;
 }
 

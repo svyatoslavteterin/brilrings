@@ -2312,7 +2312,7 @@ window.store = new Vuex.Store({
 window.RingApp = new Vue({
   el: '#app',
   data: {
-    'excludeParams': ['fsize', 'purity', 'stone', 'color', 'size'],
+    'excludeParams': ['fsize', 'purity', 'stone', 'color'],
     'ringOptions': {},
     'ringOptionValues': {},
     'weight_size_map': {},
@@ -2344,6 +2344,7 @@ window.RingApp = new Vue({
           session[key] = 1;
         }
       });
+      store.commit('init', session);
 
       if (typeof ringBase != "undefined") session['base'] = parseInt(ringBase);
       if (typeof ringMaterial != "undefined") session['material'] = parseInt(ringMaterial);
@@ -58390,6 +58391,8 @@ module.exports = Component.exports
 /* 62 */
 /***/ (function(module, exports) {
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 //
 //
 //
@@ -58539,7 +58542,25 @@ module.exports = {
   },
 
   computed: {
+    selectValue: {
+      get: function get() {
+        var optionKey = this.optionKey;
 
+        if (_typeof(store.state.session == "undefined")) {
+          if (optionKey == "material") {
+            return 2;
+          } else {
+            return 1;
+          }
+        } else {
+          return store.state.session[optionKey];
+        }
+      },
+      set: function set(newValue) {
+        this.value = parseInt(newValue);
+        store.commit('setOption', { 'value': newValue, 'optionKey': this.optionKey });
+      }
+    },
     ringOption: function ringOption() {
       for (var prop in this.option) {
         return this.ringOptions[prop];
@@ -58688,30 +58709,25 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.value,
-                      expression: "value"
+                      value: _vm.selectValue,
+                      expression: "selectValue"
                     }
                   ],
                   staticClass: "uk-select",
                   on: {
-                    change: [
-                      function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.value = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      },
-                      function($event) {
-                        _vm.update(_vm.value)
-                      }
-                    ]
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectValue = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
                   }
                 },
                 _vm._l(_vm.ringOptionValues[_vm.optionKey], function(
@@ -58935,8 +58951,10 @@ module.exports = {
       }
     },
     isDisabled: function isDisabled() {
-      if (store.state.enabledShapes.indexOf(this.value) == -1) {
-        return true;
+      if (this.optionKey == "shape") {
+        if (store.state.enabledShapes.indexOf(this.value) == -1) {
+          return true;
+        }
       }
     },
     isSelected: function isSelected() {
@@ -58989,11 +59007,10 @@ var render = function() {
         )
       ])
     : _vm.optionTemplate == "imagebox"
-      ? _c("li", { class: { active: _vm.isActive } }, [
+      ? _c("li", { class: { active: _vm.isActive, disable: _vm.isDisabled } }, [
           _c(
             "a",
             {
-              class: { disable: _vm.isDisabled },
               attrs: { href: "#" },
               on: {
                 click: function($event) {
@@ -59006,9 +59023,14 @@ var render = function() {
           )
         ])
       : _vm.optionTemplate === "selectbox"
-        ? _c("option", { domProps: { value: _vm.ringOptionValue.value } }, [
-            _vm._v(_vm._s(_vm.ringOptionValue.title))
-          ])
+        ? _c(
+            "option",
+            {
+              attrs: { disabled: _vm.isDisabled },
+              domProps: { value: _vm.ringOptionValue.value }
+            },
+            [_vm._v(_vm._s(_vm.ringOptionValue.title))]
+          )
         : _vm.optionTemplate === "text"
           ? _c("input", { attrs: { value: "text" } })
           : _vm.optionTemplate == "card"

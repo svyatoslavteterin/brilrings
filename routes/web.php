@@ -312,8 +312,9 @@ Route::get('/constructor/base/{base}/{material}','ConstructorController@index');
 
 Route::get('/constructor/base', function () {
 
+    $ring_options=json_encode(\App\RingOption::all()->toArray());
 
-    return view('constructor/base');
+    return view('constructor/base',['ring_options'=>$ring_options]);
 });
 
 
