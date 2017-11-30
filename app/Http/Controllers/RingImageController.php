@@ -85,7 +85,7 @@ class RingImageController extends Controller
         //
     }
 
-    public function getResultImg($base,$material,$current_shape,$weight,$hash){
+    public function getResultImg($base,$material,$current_shape,$weight){
 
 
 
@@ -160,8 +160,17 @@ class RingImageController extends Controller
             $hash=RingConstructor::getHash($params);
 
           $result_image='images/rings/'.$hash.'.jpg';
+          $bok_image='./import-files/images/'.$base.'/';
+          if ($params['material']>1){
+            $bok_image.='m'.$params['material'].'/';
+          }
+          $bok_image.="bok.jpg";
+
             $output->shapes=$shapes;
-            $output->image=$result_image;
+              $output->image=array();
+            $output->image[]=$result_image;
+            $output->image[]=$bok_image;
+
             return   \Response::json($output);
     }
     public function getBaseImg($base,$material,$size='medium',$shape=1){
