@@ -41,8 +41,8 @@
 
                         <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                         <p>Итоговая цена:</p>
-                        <p>Бриллиант: <span v-text="getTotalPrice" class="price"></span> </p>
-                        <p>Муссанит: <span v-text="getTotalMussanitPrice" class="price"></span> </p>
+                        <div class="stone-price-block">С бриллиантом: <span v-text="getTotalPrice" class="price"></span> </div>
+                        <div class="stone-price-block">С муссанитом: <span v-text="getTotalMussanitPrice" class="price"></span> </div>
                           <button @click="nextStep('result')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
                   </div>
                 </div>

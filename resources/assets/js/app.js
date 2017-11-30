@@ -16,7 +16,7 @@ window.jcarouselSwipe = require('jcarouselSwipe');
 
 
 
-var md5 = require('md5');
+window.md5 = require('md5');
 
 window.currencyFormatter = require('currency-formatter');
 

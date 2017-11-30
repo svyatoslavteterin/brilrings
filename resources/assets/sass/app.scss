@@ -933,7 +933,7 @@ $form-range-track-focus-background:              #a0d1c3;
 
 
 
-
+option.disable{display: none;}
 ////---- CONTAINER BASE --- ///
 
 .container.base .right-col .options__item.shape {
@@ -944,10 +944,10 @@ $form-range-track-focus-background:              #a0d1c3;
   text-align: center;
 }
 .container.base .result-img, .container.result {overflow: hidden;}
-.container.base .result-img  img{
+.container.base .result-img  img.img0{
   margin-top:-75px;
 }
-.container.result .result-img  img{
+.container.result .result-img  img.img0{
   margin-top:-140px;
       padding: 0 3em;
 }
@@ -1332,3 +1332,6 @@ $form-range-track-focus-background:              #a0d1c3;
 .ring-images li:last-child {margin-right:0;}
 .ring-images li.active {border-color:#a0d1c3;}
 .ring-images li a{display:inline-block;}
+
+
+.stone-price-block {float: left;border:1px solid #ccc;width: 50%;margin-bottom: 3em;padding:20px;}

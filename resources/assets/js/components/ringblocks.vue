@@ -4,7 +4,7 @@
           <div class="blocks__item"  v-for="(value,index)  in blocks" :id="value" :class="value">
 
               <div v-if="value==='result-img'">
-                <img :src="resultImg" class="img-fluid" />
+                <img :src="resultImg" class="img-fluid" :class="'img'+storeParam('activeResultImg')" />
 
               </div>
 
@@ -70,6 +70,9 @@
       test:function(){
           store.commit('setImage',{'value':'12.jpg'});
 
+      },
+      storeParam:function(param){
+        return store.state[param];
       },
       storeValue:function(optionKey,column){
         var optionvalue=store.state.session[optionKey];
