@@ -79,6 +79,7 @@ window.store = new Vuex.Store({
     totalPrice: 22000,
     session: {},
     resultImg:'',
+    activeResultImg:0,
     step:activeStep,
     enabledShapes:[1,2,3,4,5,6,7,8]
 
@@ -127,7 +128,7 @@ window.store = new Vuex.Store({
 
 
     setImage(state,payload){
-      state.resultImg=payload.value;
+      state.activeResultImg=payload.value;
     }
   },
   getters: {
@@ -152,7 +153,7 @@ window.store = new Vuex.Store({
        }
       }
 
-      RingApp.$http.get('/resultimage/'+params['base']+'/'+params['material']+'/'+params['shape']+'/'+params['weight']+'/'+md5(str)).then((response)=>{
+      RingApp.$http.get('/resultimage/'+params['base']+'/'+params['material']+'/'+params['shape']+'/'+params['weight']).then((response)=>{
 
 
 
@@ -164,13 +165,14 @@ window.store = new Vuex.Store({
           }
             context.state.resultImg=response.data.image;
 
+
       },(response)=> {
 
       });
 
     },
     refreshPrices(context){
-      var basePrice=parseInt(RingApp.$data.ringOptionValues.base[context.state.session.base].price.material[context.state.session.material]);
+      var basePrice=parseInt(RingApp.$data.ringOptionValues.base[context.state.session.base-1].price.material[context.state.session.material]);
       context.state.basePrice=basePrice;
         RingApp.$http.get('/getprice/'+context.state.session.shape+'/'+context.state.session.weight+'/'+context.state.session.color+'/'+context.state.session.purity).then((response)=>{
             var stonePrice=Math.round(fx.rates['RUB']*response.data.price);
@@ -246,10 +248,11 @@ window.RingApp = new Vue({
             }
         });
 
-        this.$http.get('/resultimage/'+session['base']+'/'+session['material']+'/1/8/'+md5(str)).then((response)=>{
+        this.$http.get('/resultimage/'+session['base']+'/'+session['material']+'/1/8/').then((response)=>{
 
 
             store.state.resultImg=response.data.image;
+
 
             store.state.enabledShapes=Object.values(response.data.shapes);
 
@@ -272,7 +275,7 @@ window.RingApp = new Vue({
 
         this.ringOptionValues=response.data;
 
-        store.state.basePrice=parseInt(this.$data.ringOptionValues.base[store.state.session.base].price.material[store.state.session.material]);
+        store.state.basePrice=parseInt(this.$data.ringOptionValues.base[store.state.session.base-1].price.material[store.state.session.material]);
 
         this.$http.get('/getprice/'+store.state.session.shape+'/'+store.state.session.weight+'/'+store.state.session.color+'/'+store.state.session.purity).then((response)=>{
 

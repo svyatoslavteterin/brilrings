@@ -17,7 +17,13 @@
                   <p class="price"><span v-text="getStonePrice"></span> </p>
               </div>
 
+                <div v-else-if="value==='ring-images'" class="ring-image">
+                  <ul>
+                    <li :class="{ active: isActive(0) }"> <a href="#" @click.prevent="updateResultImg(0)"><img :src="getImage(0)" alt="" width="150" height="150"/></a> </li>
+                    <li :class="{ active: isActive(1) }"> <a href="#" @click.prevent="updateResultImg(1)"><img :src="getImage(1)" alt="" width="150" height="150"/></a> </li>
+                  </ul>
 
+                </div>
               <div v-else-if="value==='result-table'">
 
                   <table>
@@ -53,6 +59,14 @@
 <script>
     module.exports = {
     methods: {
+      updateResultImg:function(index){
+        store.commit('setImage',{'value':index});
+      },
+      isActive:function(index){
+        if (index==store.state.activeResultImg){
+          return true;
+        }
+      },
       test:function(){
           store.commit('setImage',{'value':'12.jpg'});
 
@@ -70,6 +84,10 @@
           }
         }
         return returnValue;
+      },
+
+      getImage:function(index=0){
+                return store.state.resultImg[index];
       }
 
       },
@@ -96,9 +114,11 @@
 
 
         computed: {
-          resultImg:function(){
-            return store.state.resultImg;
+          resultImg:function(i){
+            return store.state.resultImg[store.state.activeResultImg];
+
           },
+
           totalPrice:function(){
             return currencyFormatter.format(store.state.totalPrice, { code: 'RUB',precision:0});
           },

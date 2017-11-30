@@ -19,7 +19,7 @@ Route::get('/ring_options/{ring_option}','RingOptionController@show');
 Route::get('/ring_options','RingOptionController@get');
 Route::get('/ring_options/{ring_option}/values','RingOptionController@getValues');
 
-Route::get('/resultimage/{base}/{material}/{shape}/{weight}/{hash}/','RingImageController@getResultImg');
+Route::get('/resultimage/{base}/{material}/{shape}/{weight}/','RingImageController@getResultImg');
 Route::get('/baseimages/{base}/{material}/{size}','RingImageController@getBaseImg');
 Route::get('/baseimages/{base}/{material}/{size}/{shape}','RingImageController@getBaseImg');
 
@@ -75,14 +75,22 @@ Route::get('/import-images',function(){
       $imgs=File::directories($value);
       $i=0;
 
+
+
       $file['params']=$params;
-      $file['file']=$value;
+      $file['file']=$value.'/1.jpg';
+      $file['bok_file']=$value.'/bok.jpg';
+
       $Files[]=$file;
+
+
 
       foreach ($imgs as $img){
 
 
         init($params);
+
+
         $params['base']=$base;
 
         $modif=str_replace(array($value,'/'),'',$img);
@@ -99,18 +107,34 @@ Route::get('/import-images',function(){
 
         }// loop modifs
 
+
+
+
+
           $file=array();
+
+            $img_bok=  $import_dir.'/'.$base.'/';
+          if ($params['shape']>1 || $params['weight']>1){
+
+
+
+              if ($params['material']>1){
+                $img_bok.="m".$params['material'].'/';
+              }
+
+          }
+          $img_bok.='bok.jpg';
+
+          $file['bok_file']=$img_bok;
+
           $file['params']=$params;
-          $file['file']=$img;
+          $file['file']=$img.'/1.jpg';;
           $Files[]=$file;
           $i++;
 
       } // folders with modif
 
     } // folders with base
-
-
-
 
 
     foreach ($Files as $file) {
@@ -120,11 +144,12 @@ Route::get('/import-images',function(){
 
       $filename=$hash.'.jpg';
 
-      $readfile=$file['file'].'/1.jpg';
+      $readfile=$file['bok_file'];
 
       if ( File::exists($readfile))  {
         $img = Image::make($readfile);
-        $img->save('./images/rings/'.$filename);
+      //  $img->save('./images/rings/'.$filename);
+        $img->save('./images/rings/bok/'.$filename);
       }
 
     }
@@ -206,11 +231,14 @@ $weight_aliases=array();
 
 
 
-          if ($base!=12) continue;
+          if ($base<5) continue;
 
           $shapes=File::directories($base_value);
 
           $bok_image_index=array_search($import_dir.'/'.$material_value.'/'.$base.'/'.'_BOK',$shapes);
+          $bok_images=File::files($shapes[$bok_image_index]);
+          $bok_image= Image::make($bok_images[0]);
+
           unset($shapes[$bok_image_index]);
 
 
@@ -220,7 +248,7 @@ $weight_aliases=array();
 
             $shape=$shape_aliases[strtolower(str_replace(array($import_dir,'/',$base,$material_value),'',$shape_value))]; // shape
 
-              if ($shape<4) continue;
+              if ($shape!=1) continue;
 
             $imgs=File::files($shape_value);
 
@@ -251,6 +279,7 @@ $weight_aliases=array();
                 if ($material>1){
                   $params[]='m'.$material;
                 }
+
                 if ($shape>1){
                   $params[]='sh'.$shape;
                 }
@@ -266,7 +295,8 @@ $weight_aliases=array();
 
               }
 
-                $img->save($path.'/1.jpg');
+
+                //$img->save($path.'/1.jpg');
 
                 $weights[]=$weight_value;
 
@@ -293,6 +323,17 @@ $weight_aliases=array();
 
 
           }
+              $path_bok='';
+              $path_bok.='./import-files/images/';
+              $path_bok.=$base.'/';
+                if ($material>1){
+                  $path_bok.="m".$material;
+                }
+                if (!file_exists(  $path_bok)) {
+                  mkdir($path_bok, 0777, true);
+
+                  }
+              $bok_image->save($path_bok.'/bok.jpg');
 
             Redis::set('ring_params_map:'.$base, json_encode($rings_params_map));
         }

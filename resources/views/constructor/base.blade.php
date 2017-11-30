@@ -66,7 +66,7 @@
           'shape':'selectbox'
         }
       ],
-      'blocks':['info']
+      'blocks':['ring-images','info']
     },
     'template':'base'
   },
@@ -98,7 +98,7 @@
   },
   {
     'center':{
-      'blocks':['result-img','thumb-img']
+        'blocks':['result-img','ring-images']
     },
     'right':{
       'blocks':['info','result-table'],
