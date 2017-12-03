@@ -1,4 +1,4 @@
-<h2>{{$base}}</h2>
+<h2>{{$session->base}}</h2>
 <div class="ring-info__desc"> </div>
 
 <h3>Оправа</h3>
