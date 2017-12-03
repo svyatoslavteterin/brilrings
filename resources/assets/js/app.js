@@ -94,7 +94,7 @@ window.store = new Vuex.Store({
       if (payload.optionKey=="size"){
           for (var weight  in RingApp.weight_size_map.aliases) {
               if (RingApp.weight_size_map.aliases[weight]==parseInt(payload.value)){
-                state.session['weight']=weight;
+                state.session['weight']=parseInt(weight);
                   RingApp.$refs.steps.$refs.ringoptions[0].$refs.ringoption[1].value=weight;
               }
           }
@@ -255,7 +255,7 @@ window.RingApp = new Vue({
           if (parseInt(value.desc)) {
             session[key]=parseInt(value.desc);
           }else{
-              session[key]=1;
+              session[key]=0;
           }
 
         });
