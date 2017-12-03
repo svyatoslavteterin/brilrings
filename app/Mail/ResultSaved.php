@@ -16,6 +16,7 @@ class ResultSaved extends Mailable
      *
      * @return void
      */
+     public $session;
     public function __construct($session)
     {
         //
