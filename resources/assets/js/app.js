@@ -51,6 +51,7 @@ import { mapState } from 'vuex';
 
 fx.rates['RUB']=60;
 
+/* Don't use, we set rate ourself
 $.getJSON(
     	// NB: using Open Exchange Rates here, but you can use any source!
         'https://openexchangerates.org/api/latest.json?app_id=cc24b33091c34b19a0f4dea626cab8a2',
@@ -69,16 +70,15 @@ $.getJSON(
         }
     );
 
-
+*/
 window.store = new Vuex.Store({
   state: {
     value:0,
     basePrice:0,
-    stonePrice:0,
-    mussanitPrice:0,
+    stonePrice:{},
     totalPrice: 22000,
     session: {},
-    resultImg:'',
+    resultImg:{},
     activeResultImg:0,
     step:activeStep,
     enabledShapes:[1,2,3,4,5,6,7,8]
@@ -112,6 +112,14 @@ window.store = new Vuex.Store({
 
       }
 
+      //history
+
+
+      var newUrl=baseurl+state.session.base+'/'+state.session.material+'/'+state.session.shape+'/'+state.session.weight+'/'+state.session.color+'/'+state.session.stone+'/';
+
+
+
+      window.history.pushState('constructor', 'Ring Constructor', newUrl);
 
         var excludeParams=RingApp.$data.excludeParams;
 
@@ -175,11 +183,12 @@ window.store = new Vuex.Store({
       var basePrice=parseInt(RingApp.$data.ringOptionValues.base[context.state.session.base-1].price.material[context.state.session.material]);
       context.state.basePrice=basePrice;
         RingApp.$http.get('/getprice/'+context.state.session.shape+'/'+context.state.session.weight+'/'+context.state.session.color+'/'+context.state.session.purity).then((response)=>{
-            var stonePrice=Math.round(fx.rates['RUB']*response.data.price);
-            var mussanitPrice=Math.round(fx.rates['RUB']*response.data.mussanit_price);
+            var stonePrice={
+              '1':Math.round(fx.rates['RUB']*response.data.price),
+              '2':Math.round(fx.rates['RUB']*response.data.mussanit_price)
+            };
             context.state.stonePrice=stonePrice;
-            context.state.mussanitPrice=mussanitPrice;
-            context.state.totalPrice=basePrice+stonePrice;
+            store.state.totalPrice=store.state.basePrice+store.state.stonePrice[store.state.session.stone];
           });
 
 
@@ -196,9 +205,26 @@ window.RingApp = new Vue({
         'ringOptions':{},
         'ringOptionValues':{},
         'weight_size_map':{},
-        'steps':steps
+        'steps':steps,
+        'showModal':{'ordercall':false,'help':false,'order':false,'save':false}
     },
     methods: {
+      saveToEmail:function(){
+        this.showModal.save = false;
+
+        var formData = JSON.stringify($("#savetoemail-form").serializeArray());
+
+        let options = { emulateJSON: true };
+
+        this.$http.post('/savetoemail',{session:store.state.session,data:formData},options).then(function (response) {
+
+            // Success
+            console.log(response.data)
+        },function (response) {
+            // Error
+            console.log(response.data)
+        });
+      },
       getHash:function(){
 
       },
@@ -208,6 +234,7 @@ window.RingApp = new Vue({
         }
       },
       nextStep(step){
+        store.commit('setImage',{value:0});
         store.state.step=step;
       }
     },
@@ -236,6 +263,10 @@ window.RingApp = new Vue({
 
         if (typeof(ringBase)!="undefined") session['base']=parseInt(ringBase);
         if (typeof(ringMaterial)!="undefined") session['material']=parseInt(ringMaterial);
+        if (typeof(ringShape)!="undefined") session['shape']=parseInt(ringShape);
+        if (typeof(ringWeight)!="undefined") session['weight']=parseInt(ringWeight);
+        if (typeof(ringColor)!="undefined") session['color']=parseInt(ringColor);
+        if (typeof(ringStone)!="undefined") session['stone']=parseInt(ringStone);
 
 
         var excludeParams=this.excludeParams;
@@ -248,7 +279,7 @@ window.RingApp = new Vue({
             }
         });
 
-        this.$http.get('/resultimage/'+session['base']+'/'+session['material']+'/1/8/').then((response)=>{
+        this.$http.get('/resultimage/'+session['base']+'/'+session['material']+'/'+session['shape']+'/'+session['weight']).then((response)=>{
 
 
             store.state.resultImg=response.data.image;
@@ -279,10 +310,13 @@ window.RingApp = new Vue({
 
         this.$http.get('/getprice/'+store.state.session.shape+'/'+store.state.session.weight+'/'+store.state.session.color+'/'+store.state.session.purity).then((response)=>{
 
-              store.state.stonePrice=Math.round(fx.rates['RUB']*response.data.price);
-              store.state.mussanitPrice=Math.round(fx.rates['RUB']*response.data.mussanit_price);
+              var stonePrice={
+                '1':Math.round(fx.rates['RUB']*response.data.price),
+                '2':Math.round(fx.rates['RUB']*response.data.mussanit_price)
+              };
+              store.state.stonePrice=stonePrice;
 
-              store.state.totalPrice=store.state.basePrice+store.state.stonePrice;
+              store.state.totalPrice=store.state.basePrice+store.state.stonePrice[store.state.session.stone];
 
           });
 
@@ -313,6 +347,7 @@ window.RingApp = new Vue({
     }
 });
 Vue.component('steps',require('./components/steps.vue'));
+Vue.component('modal', require('./components/modal.vue'))
 Vue.component('ringoptions',require('./components/ringoptions.vue'));
 Vue.component('ringoption',require('./components/ringoption.vue'));
 Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));

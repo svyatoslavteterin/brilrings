@@ -349,7 +349,14 @@ Route::get('/', function () {
 
     return view('constructor/index');
 });
+
+Route::get('/constructor/{step}/{base}/{material}/{shape}/{weight}/{color}/{stone}','ConstructorController@history');
+
+
+
 Route::get('/constructor/base/{base}/{material}','ConstructorController@index');
+
+Route::get('/constructor/base/{base}/{material}/{shape}/{weight}/{color}/{stone}','ConstructorController@history');
 
 Route::get('/constructor/base', function () {
 
@@ -365,6 +372,8 @@ Route::get('/weight_size_map',function(){
   return Redis::get('weight_size_map');
 
 });
+
+
 Route::get('/generateprice',function(){
 
   $shape=1;
@@ -741,8 +750,9 @@ $stone=2;
 $color=3;
   for ($shape=1;$shape<=8;$shape++){
     foreach ($mussanit_prices[$shape] as $weight=>$price){
-
+      for ($color=1;$color<=4;$color++){
        $price_map[$shape][$stone][$weight_aliases["$weight"]][$color]=$mussanit_prices[$shape]["$weight"];
+      }
     }
 
 }
@@ -909,4 +919,9 @@ Route::get('/constructor/stone', function () {
 });
 
 
+
 Route::post('/ring_sessions','RingSessionController@create');
+
+
+
+Route::post('/savetoemail','ConstructorController@savetoemail');

@@ -126,8 +126,8 @@
             return currencyFormatter.format(store.state.totalPrice, { code: 'RUB',precision:0});
           },
           getStonePrice:function(){
-            console.log(store.state.stonePrice);
-            return currencyFormatter.format(store.state.stonePrice, { code: 'RUB',precision:0});
+
+            return currencyFormatter.format(store.state.stonePrice[store.state.session.stone], { code: 'RUB',precision:0});
           },
           getOptionValue:function(){
 

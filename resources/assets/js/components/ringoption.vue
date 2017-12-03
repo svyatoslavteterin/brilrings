@@ -147,10 +147,10 @@
         created:function(){
           if (this.optionKey=="material") this.value=ringMaterial;
           if (this.optionKey=="base") this.value=ringBase;
-          if (this.optionKey=="weight") this.value=8;
-          if (this.optionKey=="size") this.value=8;
+          if (this.optionKey=="weight") this.value=ringWeight;
+          if (this.optionKey=="size") this.value=ringWeight;
           if (this.optionKey=="purity") this.value=4;
-          if (this.optionKey=="color") this.value=3;
+          if (this.optionKey=="color") this.value=ringColor;
 
 
 

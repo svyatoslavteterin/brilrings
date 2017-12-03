@@ -5,7 +5,6 @@
 @section('content')
 
 <div id="app">
-
   <div class="steps">
   <div class="container">
     <nav>
@@ -34,8 +33,40 @@
 
   </steps>
 
+  <!-- use the modal component, pass in the prop -->
+   <modal v-if="showModal.save" @close="showModal.save = false">
+     <!--
+       you can use custom content here to overwrite
+       default content
+     -->
+     <h3 slot="header">Сохранить на почту</h3>
+     <div  slot="body">
+       <form name="save" action="/savetoemail" method="post" @submit.prevent="saveToEmail" id="savetoemail-form">
+           {{csrf_field()}}
+         <div class="form-group">
+            <input type="text" name="name" value="" placeholder="Имя" />
+
+         </div>
+          <div class="form-group">
+            <input type="text" name="email" value="" placeholder="Email" />
+          </div>
+           <div class="form-group">
+             <input type="text" name="phone" value="" placeholder="Телефон" />
+          </div>
+          <div class="form-group">
+            <button type="submit" name="submit">Отправить</button>
+         </div>
+
+       </form>
+     </div>
+
+   </modal>
 
 </div>
+
+
+
+
 
 
 
@@ -112,8 +143,13 @@
   }
 ];
 
+window.baseurl='/constructor/base/';
 window.ringBase={{{ isset($base) ? $base : 1 }}};
 window.ringMaterial={{{ isset($material) ? $material : 2 }}};
+window.ringShape={{{ isset($shape) ? $shape : 1 }}};
+window.ringWeight={{{ isset($weight) ? $weight : 8 }}};
+window.ringColor={{{ isset($color) ? $color : 3 }}};
+window.ringStone={{{ isset($stone) ? $stone : 1 }}};
 
 activeStep="base";
 

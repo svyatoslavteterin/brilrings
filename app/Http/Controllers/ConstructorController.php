@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResultSaved;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Controller;
+
 
 class ConstructorController extends Controller
 {
@@ -15,8 +19,28 @@ class ConstructorController extends Controller
      */
     public function index($base,$material)
     {
+
       return view('constructor/base',compact('material','base'));
     }
+    public function history($step,$base,$material,$shape,$weight,$color,$stone)
+    {
+
+      return view('constructor/'.$step,compact('material','base','shape','weight','color','stone'));
+    }
+
+    public function savetoemail(){
+      $data=request()->all();
+
+      $session=$data['session'];
+      $formdata=json_decode($data['data']);
+
+      foreach ($formdata as $row){
+        if ($row->name=="email") $email=$row->value;
+      }
+
+      Mail::to($email)->send(new ResultSaved($session));
+    }
+
     public function getprice($shape,$weight,$color,$clarity){
 
 

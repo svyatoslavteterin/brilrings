@@ -107,8 +107,13 @@
   }
 ];
 
+window.baseurl='/constructor/stone/';
 window.ringBase={{{ isset($base) ? $base : 1 }}};
 window.ringMaterial={{{ isset($material) ? $material : 2 }}};
+window.ringShape={{{ isset($shape) ? $shape : 1 }}};
+window.ringWeight={{{ isset($weight) ? $weight : 8 }}};
+window.ringColor={{{ isset($color) ? $color : 3 }}};
+window.ringStone={{{ isset($stone) ? $stone : 1 }}};
 
 activeStep="stone";
 

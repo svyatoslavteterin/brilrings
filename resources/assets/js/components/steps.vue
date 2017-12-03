@@ -32,6 +32,7 @@
                 <div class="row">
                   <div class="col-sm-12 col-md-3 left-col">
                       <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" ref="ringoptions"></ringoptions>
+                      <div class="color-desc" v-text="storeValue('color','desc')"> </div>
                   </div>
                   <div class="col-xs-6 col-sm-6 col-md-5 center-col">
                         <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
@@ -41,8 +42,10 @@
 
                         <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                         <p>Итоговая цена:</p>
-                        <div class="stone-price-block">С бриллиантом: <span v-text="getTotalPrice" class="price"></span> </div>
-                        <div class="stone-price-block">С муссанитом: <span v-text="getTotalMussanitPrice" class="price"></span> </div>
+                        <div class="stone-price-block" :class="'stone'+storeValue('stone','value')">
+                          <div class="stone-price-block-item" @click="setOption('stone',1)" >С бриллиантом: <span v-text="getStonePrice(1)" class="price"></span> </div>
+                          <div class="stone-price-block-item" @click="setOption('stone',2)">С муссанитом: <span v-text="getStonePrice(2)" class="price"></span> </div>
+                        </div>
                           <button @click="nextStep('result')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
                   </div>
                 </div>
@@ -62,7 +65,7 @@
                         <div class="action-btns">
                           <button class="btn btn-primary btn-order">Заказать</button>
                           <span>или</span>
-                          <button class="btn btn-primary btn-handmade">Сделать своими руками</button>
+                          <button class="btn btn-primary btn-handmade" @click.prevent="save">Сохранить на почту</button>
                         </div>
                         <button class="btn btn-default btn-help">Помощь специалиста</button>
                   </div>
@@ -76,12 +79,38 @@
 <script>
     module.exports = {
     methods: {
+      save:function(){
+        RingApp.showModal.save=true;
+      },
+      getStonePrice:function(index){
+        return currencyFormatter.format(store.state.stonePrice[index]+store.state.basePrice, { code: 'RUB',precision:0});
+      },
+        setOption:function(optionKey,value){
+          store.commit('setOption',{optionKey:optionKey,value:value});
+        },
+      storeValue:function(optionKey,column){
+
+
+        var optionvalue=store.state.session[optionKey];
+
+        var ringOptionValues=RingApp.$data.ringOptionValues;
+
+
+        var returnValue='';
+        for (var i=0;i<ringOptionValues[optionKey].length;i++){
+          if (ringOptionValues[optionKey][i].value==optionvalue){
+            returnValue=ringOptionValues[optionKey][i][column];
+            break;
+          }
+        }
+        return returnValue;
+      },
         update:function(){
 
 
         },
         nextStep:function(step){
-          console.log(step);
+            store.commit('setImage',{value:0})
             store.state.step=step;
         },
         isActive:function(key){
@@ -122,10 +151,8 @@
 
             return currencyFormatter.format(store.state.basePrice, { code: 'RUB',precision:0});
 
-          },
-          getTotalMussanitPrice:function(){
-            return currencyFormatter.format(store.state.totalPrice-store.state.stonePrice+store.state.mussanitPrice, { code: 'RUB',precision:0});
           }
+
 
         }
     }
