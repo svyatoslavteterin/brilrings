@@ -39,7 +39,8 @@
                   </div>
                   <div class="col-xs-6 col-sm-6 col-md-4 right-col">
 
-
+                    <h3 class="totalprice__title" v-text="storeValue('stone','title')"> </h3>
+                      <p class="price"><span v-text="stonePrice"></span> </p>
                         <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                         <p>Итоговая цена:</p>
                         <div class="stone-price-block" :class="'stone'+storeValue('stone','value')">
@@ -57,9 +58,9 @@
                   <div class="col-xs-6 col-sm-6 col-md-4 right-col">
                         <ringblocks :blocks="step.right.blocks" ref="blocks"></ringblocks>
 
-                        <p>Размер кольца</p>
+
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
-                            <button class="btn btn-default btn-how-to-know">Как узнать размер?</button>
+                            <a href="#">Как узнать размер?</a>
 
                           <p><span v-text="getTotalPrice" class="price"></span> </p>
                         <div class="action-btns">
@@ -151,7 +152,11 @@
 
             return currencyFormatter.format(store.state.basePrice, { code: 'RUB',precision:0});
 
-          }
+          },
+            stonePrice:function(){
+
+              return currencyFormatter.format(store.state.stonePrice[store.state.session.stone], { code: 'RUB',precision:0});
+            }
 
 
         }

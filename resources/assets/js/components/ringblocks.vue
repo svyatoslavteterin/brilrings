@@ -13,8 +13,27 @@
                 <div class="ring-info__desc" v-text="storeValue('base','desc')"> </div>
               </div>
               <div v-if="value==='stone-info'" class="stone-info">
-                <h3 class="totalprice__title" v-text="storeValue('stone','title')"> </h3>
-                  <p class="price"><span v-text="getStonePrice"></span> </p>
+              <h3 v-text="storeValue('stone','title')"></h3>
+              <table>
+                <tr>
+                  <th>Форма огранки</th>
+                  <td v-text="storeValue('shape','title')"></td>
+                </tr>
+                <tr>
+                  <th>Вес камня</th>
+                  <td v-text="storeValue('weight','title')+' ct'"></td>
+                </tr>
+                <tr>
+                  <th>Качество</th>
+                  <td v-text="storeValue('color','title')"></td>
+                </tr>
+
+                <tr>
+                  <th>Диаметр</th>
+                  <td v-text="storeValue('size','title')+' мм'"></td>
+                </tr>
+
+              </table>
               </div>
 
                 <div v-else-if="value==='ring-images'" class="ring-image">
@@ -25,27 +44,15 @@
 
                 </div>
               <div v-else-if="value==='result-table'">
-
+                  <h3>Оправа</h3>
                   <table>
                     <tr>
-                      <th>Форма огранки</th>
-                      <td v-text="storeValue('shape','title')"></td>
-                    </tr>
-                    <tr>
-                      <th>Вес камня</th>
-                      <td v-text="storeValue('weight','title')"></td>
-                    </tr>
-                    <tr>
-                      <th>Качество</th>
-                      <td v-text="storeValue('color','title')"></td>
-                    </tr>
-
-                    <tr>
-                      <th>Диаметр</th>
-                      <td v-text="storeValue('size','title')"></td>
+                      <th>Материал</th>
+                      <td v-text="storeValue('material','title')"></td>
                     </tr>
 
                   </table>
+
 
               </div>
 

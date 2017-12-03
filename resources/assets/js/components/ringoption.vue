@@ -81,6 +81,7 @@
 
           <div class="options__item" :class="optionKey" v-else-if="optionTemplate==='selectbox'">
             <select class="uk-select" v-model="selectValue" >
+                  <option value="0" disabled selected>{{ringOption.title}}</option>
               <ringoptionvalue v-for="ringOptionValue in ringOptionValues[optionKey]"
                               :ring-option-value="ringOptionValue"
                               :option-template-value="optionTemplate"
