@@ -85,7 +85,7 @@ class RingImageController extends Controller
         //
     }
 
-    public function getResultImg($base,$material,$current_shape,$weight){
+    public static function getResultImg($base,$material,$current_shape,$weight,$format='json'){
 
 
 
@@ -170,8 +170,8 @@ class RingImageController extends Controller
               $output->image=array();
             $output->image[]=$result_image;
             $output->image[]=$bok_image;
-
-            return   \Response::json($output);
+            if ($format=="json") return   \Response::json($output);
+            return $output;
     }
     public function getBaseImg($base,$material,$size='medium',$shape=1){
 

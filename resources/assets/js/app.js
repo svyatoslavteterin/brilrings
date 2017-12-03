@@ -216,7 +216,7 @@ window.RingApp = new Vue({
 
         let options = { emulateJSON: true };
 
-        this.$http.post('/savetoemail',{session:store.state.session,data:formData},options).then(function (response) {
+        this.$http.post('/savetoemail',{store:store.state,data:formData},options).then(function (response) {
 
             // Success
             console.log(response.data)

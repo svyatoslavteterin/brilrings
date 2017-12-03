@@ -31,14 +31,14 @@ class ConstructorController extends Controller
     public function savetoemail(){
       $data=request()->all();
 
-      $session=$data['session'];
+      $store=$data['store'];
       $formdata=json_decode($data['data']);
 
       foreach ($formdata as $row){
         if ($row->name=="email") $email=$row->value;
       }
 
-      Mail::to($email)->send(new ResultSaved($session));
+      Mail::to($email)->send(new ResultSaved($store));
     }
 
     public function getprice($shape,$weight,$color,$clarity){
