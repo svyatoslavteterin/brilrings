@@ -13,8 +13,12 @@ window.jcarousel = require('jcarousel');
 window.jcarouselSwipe = require('jcarouselSwipe');
 
 
+var $ = require('jquery');
+require('fancybox')($);
 
-
+$(document).ready(function() {
+     $('.fancybox').fancybox();
+});
 
 window.md5 = require('md5');
 

@@ -11,6 +11,10 @@
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
+// Bootstrap
+@import "~fancybox/dist/css/jquery.fancybox.css";
+
+
 // UI KIT
 
 @import "~uikit/src/scss/variables-theme.scss";
@@ -899,8 +903,8 @@ $form-range-track-focus-background:              #a0d1c3;
   }
 
 
-  .container.base .center-col,.container.stone .center-col {
-    border-right: 1px solid #CDEAEF;
+  .container.base .right-col,.container.stone .right-col {
+    border-left: 1px solid #CDEAEF;
   }
 
   .container.base .right-col {
@@ -1174,11 +1178,15 @@ option.disable{display: none;}
 
   color:$primary-text-color;
   font-weight: 300;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
   margin-top: 0;
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
-.stone-info h3 {font-size: 1.5em;}
+.stone-info h3 {font-size: 1.3em;}
+
+.container.result .stone-info h3 {
+  margin-bottom: 0;
+}
 #result-table h3+.price {
   font-size: 0.985em;
 }
@@ -1201,7 +1209,7 @@ option.disable{display: none;}
 
 
 #result-table table,.stone-info table {
-  margin-bottom: 2em;
+  margin-bottom:1.3em;
 }
 
 .container.stone .stone-info h3{display: none;}
@@ -1466,4 +1474,30 @@ option.disable{display: none;}
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+
+
+.page-inside-topline {
+  background: #CDEAEF;
+  height:120px;
+  padding:40px 0;
+
+}
+
+.page-inside-topline h2.pagetitle{
+  text-align: center;
+  font-size: 2.5em;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.container.inside-page {
+  max-width: 690px;
+  margin-top:78px;
 }

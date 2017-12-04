@@ -6,8 +6,25 @@
     </head>
     <body>
 
+
+
+
+
+            @include('layouts.header2')
+
+            <div class="container page-inside-topline">
+              @yield('title')
+
+            </div>
+
+            <div class="container inside-page">
         @yield('content')
 
+          </div>
+
+        @include ('layouts.footer')
+        <script type="text/javascript" src="/js/app.js"></script>
+        <script type="text/javascript" src="/js/scripts.js"></script>
 
     </body>
 </html>

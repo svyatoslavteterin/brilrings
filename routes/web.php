@@ -23,6 +23,12 @@ Route::get('/resultimage/{base}/{material}/{shape}/{weight}/','RingImageControll
 Route::get('/baseimages/{base}/{material}/{size}','RingImageController@getBaseImg');
 Route::get('/baseimages/{base}/{material}/{size}/{shape}','RingImageController@getBaseImg');
 
+Route::get('/ringimages/{size}/{hash}.jpg','RingImageController@getImage');
+
+
+
+
+
 
 
 
@@ -349,6 +355,26 @@ Route::get('/', function () {
 
     return view('constructor/index');
 });
+
+Route::get('/for-her', function () {
+
+    $pagetitle='Для нее';
+    return view('pages/for-her',compact('pagetitle'));
+});
+
+Route::get('/about', function () {
+
+    $pagetitle='О нас';
+    return view('pages/about-us',compact('pagetitle'));
+});
+
+Route::get('/contacts', function () {
+
+    $pagetitle='Контакты';
+
+    return view('pages/contacts',compact('pagetitle'));
+});
+
 
 Route::get('/constructor/{step}/{base}/{material}/{shape}/{weight}/{color}/{stone}','ConstructorController@history');
 

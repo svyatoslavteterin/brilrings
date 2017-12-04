@@ -97,7 +97,7 @@
   },
   {
     'center':{
-      'blocks':['result-img','ring-images']
+      'blocks':['result-img']
     },
     'right':{
       'blocks':['info','result-table','stone-info'],
