@@ -1,4 +1,19 @@
 <table>
+  <tr>
+    <th>Имя</th>
+    <td>{{$data['data'][1]['value']}}</td>
+  </tr>
+  <tr>
+    <th>Email</th>
+    <td>{{$data['data'][2]['value']}}</td>
+  </tr>
+  <tr>
+    <th>Телефон</th>
+    <td>{{$data['data'][3]['value']}}</td>
+  </tr>
+</table>
+
+<table>
 
   <tr>
 

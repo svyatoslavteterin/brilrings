@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResultSaved;
+use App\Mail\CallOrder;
+use App\Mail\HelpOrder;
+use App\Mail\GuestOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
@@ -39,6 +42,62 @@ class ConstructorController extends Controller
       }
 
       Mail::to($email)->send(new ResultSaved($store));
+    }
+
+    public function callorder(){
+
+      $manager_email='svyatoslavteterin@gmail.com';
+
+      $data=request()->all();
+
+      $store=$data['store'];
+      $formdata=$data['data'];
+
+      foreach ($formdata as $row){
+        if ($row['name']=="email") $params['email']=$row['value'];
+        if ($row['name']=="name") $params['name']=$row['value'];
+        if ($row['name']=="phone") $params['phone']=$row['value'];
+      }
+
+      Mail::to($manager_email)->send(new CallOrder($params));
+    }
+
+    public function helporder(){
+
+      $manager_email='svyatoslavteterin@gmail.com';
+
+      $data=request()->all();
+
+      $store=$data['store'];
+      $formdata=$data['data'];
+
+      foreach ($formdata as $row){
+        if ($row['name']=="email") $params['email']=$row['value'];
+        if ($row['name']=="name") $params['name']=$row['value'];
+        if ($row['name']=="phone") $params['phone']=$row['value'];
+        if ($row['name']=="step") $params['step']=$row['value'];
+      }
+
+      Mail::to($manager_email)->send(new HelpOrder($params));
+    }
+
+    public function guestorder(){
+
+      $manager_email='svyatoslavteterin@gmail.com';
+
+      $data=request()->all();
+
+      $store=$data['store'];
+      $formdata=$data['data'];
+
+      foreach ($formdata as $row){
+        if ($row['name']=="email") $params['email']=$row['value'];
+        if ($row['name']=="name") $params['name']=$row['value'];
+        if ($row['name']=="phone") $params['phone']=$row['value'];
+        if ($row['name']=="step") $params['step']=$row['value'];
+      }
+
+      Mail::to($manager_email)->send(new GuestOrder($params));
     }
 
     public function getprice($shape,$weight,$color,$clarity){

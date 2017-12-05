@@ -24,7 +24,7 @@
 
                         <p class="price"><span v-text="getBasePrice"></span></p>
 
-                        <button @click="nextStep('stone')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
+                        <button @click="nextStep('stone')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default" @click="showModal('help-order1')">Помощь специалиста</button>
                     </div>
                   </div>
               </div>
@@ -47,7 +47,7 @@
                           <div class="stone-price-block-item" @click="setOption('stone',1)" >С бриллиантом: <span v-text="getStonePrice(1)" class="price"></span> </div>
                           <div class="stone-price-block-item" @click="setOption('stone',2)">С муссанитом: <span v-text="getStonePrice(2)" class="price"></span> </div>
                         </div>
-                          <button @click="nextStep('result')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default">Помощь специалиста</button>
+                          <button @click="nextStep('result')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default" @click="showModal('help-order2')">Помощь специалиста</button>
                   </div>
                 </div>
               </div>
@@ -68,7 +68,7 @@
                           <span>или</span>
                           <button class="btn btn-primary btn-handmade" @click.prevent="save()">Сохранить на почту</button>
                         </div>
-                        <button class="btn btn-default btn-help">Помощь специалиста</button>
+                        <button class="btn btn-default btn-help" @click="showModal('help-order3')">Помощь специалиста</button>
                   </div>
 
               </div>
@@ -80,6 +80,9 @@
 <script>
     module.exports = {
     methods: {
+      showModal:function(modal){
+        RingApp.$modal.show(modal);
+      },
       save:function(){
         RingApp.$modal.show('save-to-email');
       },

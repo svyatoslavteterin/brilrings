@@ -951,3 +951,7 @@ Route::post('/ring_sessions','RingSessionController@create');
 
 
 Route::post('/savetoemail','ConstructorController@savetoemail');
+
+Route::post('/call-order','ConstructorController@callorder');
+Route::post('/help-order','ConstructorController@helporder');
+Route::post('/guest-order','ConstructorController@guestorder');

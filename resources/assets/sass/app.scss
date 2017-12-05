@@ -1447,15 +1447,45 @@ right: 15px;
 top: 15px;
 color: #333;
 font-size: 1em;
+background: none;
+border: none;
 }
+
+
+.v--modal-box {border-radius:0!important;}
+.v--modal-overlay {    background: rgba(0, 0, 0, 0.8);}
+
+
 .modal-header h3 {
   margin-top: 0;
   color: #42b983;
   text-align: center;
 }
 
-.modal-header  {text-align: center;}
-.modal-body {text-align:center;}
+.modal-header  {
+  border-bottom:0;
+  font-size: 2em;
+  text-align: center;
+}
+
+.modal-body form input[type="text"]{
+  background-color:rgba(238, 241, 247, 0.74);
+  height: 65px;
+  border-radius:0;
+  border:none;
+}
+
+.modal-body form button[type="submit"] {
+  background-color: $primary-color;
+  height: 85px;
+  border-radius:0;
+  border:none;
+  color:$primary-text-color;
+  text-transform: uppercase;
+  font-size: 1.5em;
+}
+
+.modal-body {}
 
 .modal-body {
   margin: 20px 0;

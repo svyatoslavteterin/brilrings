@@ -212,19 +212,68 @@ window.RingApp = new Vue({
         'ringOptions':{},
         'ringOptionValues':{},
         'weight_size_map':{},
-        'steps':steps,
-        'showModal':{'ordercall':false,'help':false,'order':false,'save':false}
+        'steps':steps
     },
     methods: {
-      show () {
-    this.$modal.show('hello-world');
-      },
-      hide () {
-        this.$modal.hide('hello-world');
-      },
 
+      callOrder:function(){
+        var formData = $("#call-order-form").serializeArray();
+
+          let options = { emulateJSON: true };
+
+                  this.$http.post('/call-order',{store:store.state,data:formData},options).then(function (response) {
+
+                      // Success
+                      console.log(response.data)
+                  },function (response) {
+                      // Error
+                      console.log(response.data)
+                  });
+      },
+      helpOrder:function(step){
+        var formData = $("#help-order"+step+"-form").serializeArray();
+
+          let options = { emulateJSON: true };
+
+                  this.$http.post('/help-order',{store:store.state,data:formData},options).then(function (response) {
+
+                      // Success
+                      console.log(response.data)
+                  },function (response) {
+                      // Error
+                      console.log(response.data)
+                  });
+      },
+      guestOrder:function(){
+        var formData = $("#guest-order-form").serializeArray();
+
+          let options = { emulateJSON: true };
+
+                  this.$http.post('/guest-order',{store:store.state,data:formData},options).then(function (response) {
+
+                      // Success
+                      console.log(response.data)
+                  },function (response) {
+                      // Error
+                      console.log(response.data)
+                  });
+      },
+      ringOrder:function(){
+        var formData = $("#ring-order-form").serializeArray();
+
+          let options = { emulateJSON: true };
+
+                  this.$http.post('/ring_sessions',{store:store.state,data:formData},options).then(function (response) {
+
+                      // Success
+                      console.log(response.data)
+                  },function (response) {
+                      // Error
+                      console.log(response.data)
+                  });
+      },
       saveToEmail:function(){
-        this.showModal.save = false;
+
 
         var formData = JSON.stringify($("#savetoemail-form").serializeArray());
 

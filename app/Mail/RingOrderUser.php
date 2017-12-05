@@ -10,7 +10,7 @@ use App\RingOptionValue;
 use App\RingOption;
 use App\Http\Controllers\RingImageController;
 
-class ResultSaved extends Mailable
+class RingOrderUser extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -25,11 +25,14 @@ class ResultSaved extends Mailable
      public $ringOptionValues;
      public $result_img;
      public $total_price;
-    public function __construct($store)
+
+    public function __construct($data)
     {
         //
 
-        $session=$store['session'];
+        $this->data=$data;
+
+        $session=$data['store']['session'];
         $ring_option_values=RingOptionValue::where('enabled','=',1)->get();
 
         $output=array();
@@ -48,7 +51,7 @@ class ResultSaved extends Mailable
         $result_img=RingImageController::getResultImg($session['base'],$session['material'],$session['shape'],$session['weight'],'array');
 
        $this->result_img='http://brilliantrings.ru/'.$result_img->image[0];
-       $this->total_price=$store['totalPrice'];
+       $this->total_price=$data['store']['totalPrice'];
         $this->ringOptionValues=$output;
 
         $this->session=$session;
@@ -61,8 +64,6 @@ class ResultSaved extends Mailable
      */
     public function build()
     {
-
-
-      return $this->from('kagoshira@yandex.ru')->subject('Сохраненный вариант кольца')->view('emails.saved.result');
+        return $this->from('kagoshira@yandex.ru')->subject('Детали вашего заказа')->view('emails.orderring.user');
     }
 }
