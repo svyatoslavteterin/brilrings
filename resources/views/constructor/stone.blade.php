@@ -80,10 +80,8 @@
         },
         {
           'color':'range'
-        },
-        {
-          'purity':'range'
         }
+
       ]
     },
     'center':{

@@ -358,7 +358,7 @@ Route::get('/', function () {
 
 Route::get('/for-her', function () {
 
-    $pagetitle='Для нее';
+    $pagetitle='Подарок для нее';
     return view('pages/for-her',compact('pagetitle'));
 });
 
