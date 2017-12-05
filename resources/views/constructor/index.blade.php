@@ -13,6 +13,8 @@
 
   </steps>
 
+@include('layouts.modals')
+
 
 </div>
 

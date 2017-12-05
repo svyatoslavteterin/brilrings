@@ -58,7 +58,7 @@ nav {
 }
 
 #header .logo {
-    padding-top: 42px;
+    padding-top: 1em;
 }
 #header .navbar {
   margin-top:30px;
@@ -1451,7 +1451,11 @@ font-size: 1em;
 .modal-header h3 {
   margin-top: 0;
   color: #42b983;
+  text-align: center;
 }
+
+.modal-header  {text-align: center;}
+.modal-body {text-align:center;}
 
 .modal-body {
   margin: 20px 0;

@@ -64,9 +64,9 @@
 
                           <p><span v-text="getTotalPrice" class="price"></span> </p>
                         <div class="action-btns">
-                          <button class="btn btn-primary btn-order">Заказать</button>
+                          <button class="btn btn-primary btn-order" @click.prevent="order()">Заказать</button>
                           <span>или</span>
-                          <button class="btn btn-primary btn-handmade" @click.prevent="save">Сохранить на почту</button>
+                          <button class="btn btn-primary btn-handmade" @click.prevent="save()">Сохранить на почту</button>
                         </div>
                         <button class="btn btn-default btn-help">Помощь специалиста</button>
                   </div>
@@ -81,7 +81,10 @@
     module.exports = {
     methods: {
       save:function(){
-        RingApp.showModal.save=true;
+        RingApp.$modal.show('save-to-email');
+      },
+      order:function(){
+          RingApp.$modal.show('ring-order');
       },
       getStonePrice:function(index){
         return currencyFormatter.format(store.state.stonePrice[index]+store.state.basePrice, { code: 'RUB',precision:0});

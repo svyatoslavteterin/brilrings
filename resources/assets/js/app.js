@@ -29,9 +29,12 @@ window.fx = require("money");
 
 window.Vue = require('vue');
 
+import VModal from 'vue-js-modal'
+
 window.Vuex=require('vuex');
 
 Vue.use(Vuex);
+Vue.use(VModal);
 
 
 
@@ -213,6 +216,13 @@ window.RingApp = new Vue({
         'showModal':{'ordercall':false,'help':false,'order':false,'save':false}
     },
     methods: {
+      show () {
+    this.$modal.show('hello-world');
+      },
+      hide () {
+        this.$modal.hide('hello-world');
+      },
+
       saveToEmail:function(){
         this.showModal.save = false;
 
@@ -351,8 +361,19 @@ window.RingApp = new Vue({
     }
 });
 Vue.component('steps',require('./components/steps.vue'));
-Vue.component('modal', require('./components/modal.vue'))
+//Vue.component('modal', require('./components/modal.vue'))
 Vue.component('ringoptions',require('./components/ringoptions.vue'));
 Vue.component('ringoption',require('./components/ringoption.vue'));
 Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
 Vue.component('ringblocks',require('./components/ringblocks.vue'));
+
+
+$('.order-call-btn').click(function(e){
+  e.preventDefault();
+  RingApp.$modal.show('call-order');
+});
+
+$('.btn-register').click(function(e){
+  e.preventDefault();
+  RingApp.$modal.show('guest-order');
+});

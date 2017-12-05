@@ -10,7 +10,7 @@
         </div>
         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 v-middle text-right">
             <span class="phone">+7 (495) 888-88-88</span>
-            <a href="#" class="order-call-btn">ЗАКАЗАТЬ ЗВОНОК</a>
+            <a href="#" class="order-call-btn" @click="show()">ЗАКАЗАТЬ ЗВОНОК</a>
         </div>
     </div>
 

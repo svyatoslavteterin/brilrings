@@ -33,34 +33,10 @@
 
   </steps>
 
-  <!-- use the modal component, pass in the prop -->
-   <modal v-if="showModal.save" @close="showModal.save = false">
-     <!--
-       you can use custom content here to overwrite
-       default content
-     -->
-     <h3 slot="header">Сохранить на почту</h3>
-     <div  slot="body">
-       <form name="save" action="/savetoemail" method="post" @submit.prevent="saveToEmail" id="savetoemail-form">
-           {{csrf_field()}}
-         <div class="form-group">
-            <input type="text" name="name" value="" placeholder="Имя" />
+@include('layouts.modals')
 
-         </div>
-          <div class="form-group">
-            <input type="text" name="email" value="" placeholder="Email" />
-          </div>
-           <div class="form-group">
-             <input type="text" name="phone" value="" placeholder="Телефон" />
-          </div>
-          <div class="form-group">
-            <button type="submit" name="submit">Отправить</button>
-         </div>
 
-       </form>
-     </div>
 
-   </modal>
 
 </div>
 

@@ -3,7 +3,7 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-        <a class="modal-close" @click="$emit('close')">x</a>
+        <a class="modal-close"  @click="$emit('close')">x</a>
           <div class="modal-header">
             <slot name="header">
               default header
