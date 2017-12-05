@@ -1,4 +1,4 @@
-<section id="guests" style="background-image:url(images/bg-guest/2.jpg);">
+<section id="guests" style="background-image:url(images/bg-guest/1.jpg);">
   <div class="container text-left">
     <div class="guest-card">
       <div class="guest-card__inside">
@@ -7,7 +7,7 @@
           <a href="#" class="btn btn-register btn-primary">Записаться</a>
       </div>
     </div>
-  
+
 
   </div>
 

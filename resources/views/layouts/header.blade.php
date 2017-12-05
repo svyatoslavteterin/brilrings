@@ -9,8 +9,11 @@
 
         </div>
         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 v-middle text-right">
-            <span class="phone">+7 (495) 888-88-88</span>
-            <a href="#" class="order-call-btn" @click="show()">ЗАКАЗАТЬ ЗВОНОК</a>
+      
+            <a class="phone" href="tel:+74951516051">+7 (495) 151-60-51</a>
+            <a class="phone" href="tel:+79262851390">+7 (926) 285-13-90</a>
+
+            <a href="#" class="order-call-btn">ЗАКАЗАТЬ ЗВОНОК</a>
         </div>
     </div>
 

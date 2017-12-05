@@ -59,7 +59,7 @@
           'material':'selectbox'
         },
         {
-          'stone':'selectbox'
+          'shape':'selectbox'
         }
       ],
       'blocks':['ring-images','info']

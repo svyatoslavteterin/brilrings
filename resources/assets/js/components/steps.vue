@@ -45,7 +45,7 @@
                         <p>Итоговая цена:</p>
                         <div class="stone-price-block" :class="'stone'+storeValue('stone','value')">
                           <div class="stone-price-block-item" @click="setOption('stone',1)" >С бриллиантом: <span v-text="getStonePrice(1)" class="price"></span> </div>
-                          <div class="stone-price-block-item" @click="setOption('stone',2)">С муссанитом: <span v-text="getStonePrice(2)" class="price"></span> </div>
+                          <div class="stone-price-block-item" @click="setOption('stone',2)" :class="{has:hasMussanit}">С муссанитом: <span v-text="getStonePrice(2)" class="price"></span> </div>
                         </div>
                           <button @click="nextStep('result')" class="btn btn-primary">Выбрать</button>  <button class="btn btn-default" @click="showModal('help-order2')">Помощь специалиста</button>
                   </div>
@@ -60,7 +60,7 @@
 
 
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
-                            <a href="#">Как узнать размер?</a>
+                            <a href="#" class="how-to-know">Как узнать размер?</a>
 
                           <p><span v-text="getTotalPrice" class="price"></span> </p>
                         <div class="action-btns">
@@ -80,6 +80,9 @@
 <script>
     module.exports = {
     methods: {
+
+
+
       showModal:function(modal){
         RingApp.$modal.show(modal);
       },
@@ -149,6 +152,14 @@
 
 
         computed: {
+          hasMussanit:function(){
+            console.log(store.state.stonePrice[2]);
+              if (store.state.stonePrice[2]>0){
+                return true;
+              }else{
+                return false;
+              }
+          },
           getTotalPrice:function(){
             return currencyFormatter.format(store.state.totalPrice, { code: 'RUB',precision:0});
 

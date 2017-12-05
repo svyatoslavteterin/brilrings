@@ -161,6 +161,10 @@ nav ul li {display: inline-block;list-style: none;}
   padding:30px 0;
 }
 
+#footer a {
+  color:$primary-text-color;
+}
+
 
 //* CUSTOMIZE FORM RANGE //
 
@@ -599,7 +603,7 @@ $form-range-track-focus-background:              #a0d1c3;
 }
 
 .ring-info__desc,.stone-info__desc {
-  margin-bottom: 20px;
+  margin-bottom: 0;
   font-size: 0.985em;
 }
 
@@ -1195,7 +1199,7 @@ option.disable{display: none;}
 
 #result-table td,.stone-info table td {  border-bottom:1px solid #d8ecf0;  padding-bottom: 5px;
   padding-top:14px;}
-#result-table tr:last-child td,#result-table tr:last-child th,.stone-info table tr:last-child td,.stone-info table tr:last-child th{border-bottom:0;}
+#result-table tr:last-child td,#result-table tr:last-child th,.stone-info table tr:last-child td,.stone-info table tr:last-child th{}
 
 #result-table table,.stone-info table {width: 100%;font-size: 0.985em;}
 
@@ -1359,6 +1363,10 @@ option.disable{display: none;}
   overflow: hidden;
   position: relative;
 }
+
+.stone-price-block .stone-price-block-item:nth-child(2){display: none;}
+.stone-price-block .stone-price-block-item:nth-child(2).has{display: block;}
+
 
 .stone-price-block.stone1 .stone-price-block-item:first-child{
   background: #CDEAEF;
@@ -1566,4 +1574,42 @@ html {
   font-size:2.5em;
   font-weight: 300;
   margin-bottom:1em;
+}
+
+
+#result-table th{
+  padding-top:3px;
+}
+
+#result-table td{
+  padding-top:3px;
+}
+
+.options__item.fsize {
+  position: relative;
+  top: -15px;
+}
+
+.how-to-know {
+  position: relative;
+  top: -10px;
+  font-size: 0.9em;
+}
+
+
+.action-btns>.btn {
+      width: 30%;
+}
+
+.action-btns span {
+      width: 10%;
+}
+
+.action-btns>.btn:last-child {
+      width: 60%;
+      margin-left: -9px;
+}
+
+#result-table th, .stone-info table th {
+      border-bottom: 1px solid #d8ecf0;
 }

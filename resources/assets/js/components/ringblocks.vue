@@ -44,7 +44,7 @@
 
                 </div>
               <div v-else-if="value==='result-table'">
-                  <h3>Оправа</h3>
+          
                   <table>
                     <tr>
                       <th>Материал</th>
