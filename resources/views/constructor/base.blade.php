@@ -5,6 +5,8 @@
 @section('content')
 
 <div id="app">
+
+  @include('layouts.modals')
   <div class="steps">
   <div class="container">
     <nav>
@@ -22,7 +24,7 @@
     </nav>
   </div>
   </div>
-
+@include('layouts.modals')
   <steps
   :s-ring-options="ringOptions"
   :steps-list="steps"
@@ -33,7 +35,7 @@
 
   </steps>
 
-@include('layouts.modals')
+
 
 
 

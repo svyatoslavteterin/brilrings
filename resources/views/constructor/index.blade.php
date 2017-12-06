@@ -4,7 +4,7 @@
 @section('content')
 
 <div id="app">
-
+@include('layouts.modals')
   <steps :steps-list="steps"
   :s-ring-options="ringOptions"
   :s-ring-option-values="ringOptionValues"
@@ -13,7 +13,7 @@
 
   </steps>
 
-@include('layouts.modals')
+
 
 
 </div>
