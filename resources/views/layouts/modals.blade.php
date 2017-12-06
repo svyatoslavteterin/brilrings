@@ -1,4 +1,4 @@
-<modal name="save-to-email" height="auto">
+<modal name="save-to-email" height="auto" v-cloak>
   <button @click="$modal.hide('save-to-email')" class="modal-close">
     <img src="images/close.png" alt="close"/>
   </button>
@@ -23,7 +23,7 @@
     </form>
   </div>
 </modal>
-<modal name="call-order" height="auto">
+<modal name="call-order" height="auto" v-cloak>
   <button @click="$modal.hide('call-order')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -51,7 +51,7 @@
     </form>
   </div>
 </modal>
-<modal name="guest-order" height="auto">
+<modal name="guest-order" height="auto" v-cloak>
   <button @click="$modal.hide('guest-order')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -79,7 +79,7 @@
     </form>
   </div>
 </modal>
-<modal name="ring-order" height="auto">
+<modal name="ring-order" height="auto" v-cloak>
   <button @click="$modal.hide('ring-order')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -105,7 +105,7 @@
     </form>
   </div>
 </modal>
-<modal name="help-order1" height="auto">
+<modal name="help-order1" height="auto" v-cloak>
   <button @click="$modal.hide('help-order1')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -131,7 +131,7 @@
     </form>
   </div>
 </modal>
-<modal name="help-order2" height="auto">
+<modal name="help-order2" height="auto" v-cloak>
   <button @click="$modal.hide('help-order2')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -157,7 +157,7 @@
     </form>
   </div>
 </modal>
-<modal name="help-order3" height="auto">
+<modal name="help-order3" height="auto" v-cloak>
   <button @click="$modal.hide('help-order3')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>

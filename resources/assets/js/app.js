@@ -31,11 +31,17 @@ window.Vue = require('vue');
 
 import VModal from 'vue-js-modal'
 
+
 window.Vuex=require('vuex');
 
 Vue.use(Vuex);
 Vue.use(VModal);
 
+Vue.component('steps',require('./components/steps.vue'));
+Vue.component('ringoptions',require('./components/ringoptions.vue'));
+Vue.component('ringoption',require('./components/ringoption.vue'));
+Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
+Vue.component('ringblocks',require('./components/ringblocks.vue'));
 
 
 Vue.prototype.$http = axios;
@@ -207,6 +213,8 @@ window.store = new Vuex.Store({
 
 window.RingApp = new Vue({
     el: '#app',
+    components:'',
+
     data:{
         'excludeParams':['fsize','purity','stone','color'],
         'ringOptions':{},
@@ -409,12 +417,9 @@ window.RingApp = new Vue({
 
     }
 });
-Vue.component('steps',require('./components/steps.vue'));
-//Vue.component('modal', require('./components/modal.vue'))
-Vue.component('ringoptions',require('./components/ringoptions.vue'));
-Vue.component('ringoption',require('./components/ringoption.vue'));
-Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
-Vue.component('ringblocks',require('./components/ringblocks.vue'));
+
+
+
 
 
 $('.order-call-btn').click(function(e){
