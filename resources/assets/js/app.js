@@ -7,7 +7,13 @@
 
 require('./bootstrap');
 
+if (typeof activeStep=="undefined") {
+  window.activeStep=0;
+}
 
+if (typeof steps=="undefined") {
+  window.steps={};
+}
 
 window.jcarousel = require('jcarousel');
 window.jcarouselSwipe = require('jcarouselSwipe');
@@ -84,6 +90,8 @@ $.getJSON(
     );
 
 */
+
+
 window.store = new Vuex.Store({
   state: {
     value:0,
@@ -417,7 +425,6 @@ window.RingApp = new Vue({
 
     }
 });
-
 
 
 

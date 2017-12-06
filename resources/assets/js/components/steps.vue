@@ -8,6 +8,7 @@
 
                 <div v-if="step.template==='start'" class="container" :class="step.template" >
                       <ringoptions :options="step.center.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+                  
                 </div>
 
               <div v-if="step.template==='base'" class="container" :class="step.template" >

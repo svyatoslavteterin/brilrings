@@ -876,12 +876,12 @@ $form-range-track-focus-background:              #a0d1c3;
 
 .socials__item a {
   display: inline-block;
-  width:36px;
-  height:36px;
+  width:3em;
+  height:3em;
   background:none;
   border-radius: 50%;
   text-align:center;
-  line-height:38px;
+  line-height:3em;
   color:#7B7B7B;
   border:1px solid #7B7B7B;
 }
@@ -1307,7 +1307,7 @@ option.disable{display: none;}
 .btn + .btn {margin-left:1.428em;}
 
 #app {padding-bottom:2.857em;}
-
+.inside-page #app {padding-bottom: 0;}
 @media screen and (max-width:1140px) {
 
 
@@ -1570,7 +1570,7 @@ html {
 
 .guest-card__inside {
   border:1px solid $primary-color;
-  padding:7em 9.4em;
+  padding: 20%;
   text-align:center;
 }
 
@@ -1621,3 +1621,57 @@ html {
     display: none;
   }
   [v-cloak] .modal-close{display: none;}
+
+@media screen and (max-width:1024px) {
+
+  .options__item.material li:nth-child(1):before{
+
+    width: 36px;
+    height: 30px;
+    background-size:100%;
+    background-repeat: no-repeat;
+  }
+
+}
+
+@media screen and (max-width:768px) {
+  .options__item.material li:nth-child(1):before{
+    width: 27px;
+    height: 23px;
+  }
+
+  .carousel {height:400px!important;}
+  #guests .container {min-height:470px;}
+}
+
+.container.start .options__item.material:nth-child(2) {display: none;}
+
+@media screen and (max-width:414px) {
+
+  .ring-images li {width: 50%;margin-left:0 12px 0 -6px;}
+
+  .ring-images li img {
+    display: inline-block;
+    max-width: 100%;
+  }
+  .col-xs-6,.col-xs-3 {clear:both;float:none;width: 100%;}
+
+  #footer .row>div{
+    clear:both;
+    float:none;
+    width: 100%;
+  }
+  #guests .guest-card {
+    width:100%
+  }
+  .container.start .options__item.material:nth-child(1) {display: none;}
+  .container.start .options__item.material:nth-child(2) {display: inline-block;}
+  .container.start .options__item.material:before {
+    content:"Выберите материал";
+    display: block;
+
+  }
+  .container.result .result-img  img.img0{
+    margin-top:0;
+  }
+}

@@ -15,9 +15,20 @@
             <div class="container page-inside-topline">
               @yield('title')
 
+
+
             </div>
 
             <div class="container inside-page">
+              <div id="app">
+
+              @include('layouts.modals')
+              
+
+
+
+
+              </div>
         @yield('content')
 
           </div>
