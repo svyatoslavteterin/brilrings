@@ -36,6 +36,6 @@ class CallOrder extends Mailable
      */
     public function build()
     {
-      return $this->from('kagoshira@yandex.ru')->subject('Заказ звонка')->view('emails.callorder');
+      return $this->from('info@brilliantrings.ru')->subject('Заказ звонка')->view('emails.callorder');
     }
 }

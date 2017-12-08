@@ -64,6 +64,6 @@ class RingOrderManager extends Mailable
      */
     public function build()
     {
-        return $this->from('kagoshira@yandex.ru')->subject('Новый заказ кольца')->view('emails.orderring.manager');
+        return $this->from('info@brilliantrings.ru')->subject('Новый заказ кольца')->view('emails.orderring.manager');
     }
 }

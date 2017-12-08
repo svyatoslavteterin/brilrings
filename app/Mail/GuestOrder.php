@@ -32,6 +32,6 @@ class GuestOrder extends Mailable
      */
     public function build()
     {
-        return $this->from('kagoshira@yandex.ru')->subject('Запись в студию')->view('emails.guestorder');
+        return $this->from('info@brilliantrings.ru')->subject('Запись в студию')->view('emails.guestorder');
     }
 }

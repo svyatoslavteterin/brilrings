@@ -46,7 +46,7 @@ class ConstructorController extends Controller
 
     public function callorder(){
 
-      $manager_email='svyatoslavteterin@gmail.com';
+      $manager_email='info@brilliantrings.ru';
 
       $data=request()->all();
 
@@ -64,7 +64,7 @@ class ConstructorController extends Controller
 
     public function helporder(){
 
-      $manager_email='svyatoslavteterin@gmail.com';
+      $manager_email='info@brilliantrings.ru';
 
       $data=request()->all();
 
@@ -83,7 +83,7 @@ class ConstructorController extends Controller
 
     public function guestorder(){
 
-      $manager_email='svyatoslavteterin@gmail.com';
+      $manager_email='info@brilliantrings.ru';
 
       $data=request()->all();
 

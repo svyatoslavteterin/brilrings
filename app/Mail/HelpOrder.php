@@ -33,6 +33,6 @@ class HelpOrder extends Mailable
      */
     public function build()
     {
-          return $this->from('kagoshira@yandex.ru')->subject('Заказ помощи')->view('emails.orderhelp');
+          return $this->from('info@brilliantrings.ru')->subject('Заказ помощи')->view('emails.orderhelp');
     }
 }
