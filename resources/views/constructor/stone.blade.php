@@ -7,7 +7,7 @@
 <div id="app">
   <div class="steps">
   <div class="container">
-    <nav>
+    <nav class="hidden-xs">
       <ul>
         <li :class="{active:isActive('base')}">
           <a @click.prevent="nextStep('base')"><span>Этап №1 <span>Выбрать оправу</span></span></a>
