@@ -63,6 +63,6 @@ class ResultSaved extends Mailable
     {
 
 
-      return $this->from('info@brilliantrings.ru')->subject('Сохраненный вариант кольца')->view('emails.saved.result');
+      return $this->subject('Сохраненный вариант кольца')->view('emails.saved.result');
     }
 }
