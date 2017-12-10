@@ -14,7 +14,7 @@ class RingOptionValueController extends Controller
   }
 
   public function get(){
-    $ring_option_values=RingOptionValue::where('enabled','=',1)->get();
+    $ring_option_values=RingOptionValue::where('enabled','=',1)->orderBy('sort_index','asc')->orderBy('id','asc')->get();
 
     $output=array();
     foreach ($ring_option_values as $ring_option_value) {
