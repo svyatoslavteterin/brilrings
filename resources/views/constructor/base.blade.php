@@ -85,7 +85,7 @@ activeStep="base";
 
 <div id="app">
 
-  @include('layouts.modals')
+
   <div class="steps">
   <div class="container">
     <nav class="hidden-xs">
