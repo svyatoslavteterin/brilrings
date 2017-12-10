@@ -7,16 +7,8 @@
         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 v-middle">
 
 
-                  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                  </a>
-
-                  <div class="nav-collapse hidden-xs">
-
                       @include('layouts.mainnav')
-                    </div>
+
         </div>
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 text-right v-middle">
           <a class="phone" href="tel:+74951516051">+7 (495) 151-60-51</a>

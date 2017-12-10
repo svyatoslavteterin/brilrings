@@ -313,9 +313,11 @@ window.RingApp = new Vue({
         }
       },
       nextStep(step){
+
         store.commit('setImage',{value:0});
         store.state.step=step;
       }
+
     },
     created:function(){
 
@@ -415,6 +417,14 @@ window.RingApp = new Vue({
       },
       getBasePrice:function(){
 
+      },
+      step:{
+        set:function(step){
+          store.state.step=step;
+        },
+        get:function(){
+          return store.state.step;
+        }
       }
     },
     mounted:function(){
@@ -424,6 +434,8 @@ window.RingApp = new Vue({
 
 
     }
+
+
 });
 
 

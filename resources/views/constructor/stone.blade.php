@@ -20,6 +20,11 @@
         </li>
       </ul>
     </nav>
+    <select class="visible-xs" v-model="step" @change="nextStep(step)">
+      <option value="base" >Этап №1:Выбрать оправу</option>
+      <option value="stone" >Этап №2:Выбрать камень</option>
+      <option value="result" >Этап №3:Завершить кольцо</option>
+    </select>
   </div>
   </div>
   @include('layouts.modals')

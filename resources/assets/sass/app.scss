@@ -61,8 +61,8 @@ nav {
     padding-top: 1em;
 }
 #header .navbar {
-  margin-top:30px;
-  margin-bottom: 30px;
+  margin-top: 1.2em;
+  margin-bottom: 1.2em;
 }
 
 #header .phone {
@@ -79,7 +79,7 @@ nav {
 
 .mainnav a {
   color: #7a7a7a;
-    padding: 0 0.857em;
+  padding: 0 0.657em;
     font-size: 1.2em;
     font-weight: 300;
     letter-spacing: 0.05em;
@@ -158,7 +158,7 @@ nav ul li {display: inline-block;list-style: none;}
 
 #footer {
   background:#231f20;
-  padding:30px 0;
+  padding:2em 0;
 }
 
 #footer a {
@@ -791,7 +791,7 @@ $form-range-track-focus-background:              #a0d1c3;
   vertical-align: middle;
 }
 
-#header .mainnav {text-align:center;}
+#header .mainnav {text-align:center;position: static;}
 
 #header .icon-map-pin-5 {
   color:#a4d3c5;
@@ -966,10 +966,14 @@ option.disable{display: none;}
   margin-top:-75px;
 }
 .container.result .result-img  img.img0{
-  margin-top:-140px;
       padding: 0 3em;
 }
+@media screen and (min-width:1025px) {
+  .container.result .result-img  img.img0{
+    margin-top:-140px;
 
+  }
+}
 .container.base  .options__item.base ul li {display: inline-block;}
 
 /// -- -END CONTAINER BASE ---- //
@@ -1154,7 +1158,9 @@ option.disable{display: none;}
 
 .options__item.shape li {margin-bottom:1em;}
 
-.options__item.shape li:nth-child(5) {clear:both;}
+
+  .options__item.shape li:nth-child(5) {clear:both;}
+
 
 .container.stone .left-col .options__item {
     padding-top:1.785em;
@@ -1339,12 +1345,14 @@ option.disable{display: none;}
 
 
   #header {
-    font-size:0.6em;
+    font-size:0.5em;
   }
   #app {
-    font-size:0.6em;
+    font-size:0.85em;
   }
-  #top {font-size: 0.6em;}
+  #top {font-size: 0.85em;}
+
+  
 
 
 
@@ -1482,14 +1490,14 @@ border: none;
 
 .modal-body form input[type="text"]{
   background-color:rgba(238, 241, 247, 0.74);
-  height: 65px;
+  height: 4em;
   border-radius:0;
   border:none;
 }
 
 .modal-body form button[type="submit"] {
   background-color: $primary-color;
-  height: 85px;
+  height: 5em;
   border-radius:0;
   border:none;
   color:$primary-text-color;
@@ -1622,6 +1630,60 @@ html {
   }
   [v-cloak] .modal-close{display: none;}
 
+
+.navbar {min-height: 0;}
+
+.icon-bar {
+  width: 100%;
+  height: 2px;
+  background: #000;
+  display: block;
+  margin-bottom: 0.3em;
+}
+
+.icon-bar:last-child {margin-bottom:0;}
+.navbar-collapse.in, .navbar-collapse.collapsing {
+  overflow-y: visible;
+  width: 100%;
+  position: absolute;
+  background: #93D5C4;
+  z-index: 100;
+  left: 0;
+  overflow: hidden;
+  padding:0;
+}
+
+.navbar-collapse.in ul, .navbar-collapse.collapsing ul { width: 100%;}
+.navbar-collapse.in li, .navbar-collapse.collapsing li {
+
+  width: 100%;
+}
+
+.navbar-collapse.in li a, .navbar-collapse.collapsing li a{
+  padding: 1em 0;
+display: inline-block;
+width: 100%;
+}
+
+.navbar-collapse.in li.active a, .navbar-collapse.collapsing li.active a {
+  background: #C7ECF0;
+  color:#fff;
+}
+
+.mainnav .navbar-collapse.in  li:after, .mainnav .navbar-collapse.collapsing  li:after{display: none;}
+
+
+.steps select {
+  margin: 0 auto;
+  font-size: 1.5em;
+  border: none;
+  background: none;
+  border-bottom: 1px solid #000;
+  border-radius: 0;
+  margin-bottom: 1em;
+}
+
+.navbar-toggle {float:none;display: inline-block;}
 @media screen and (max-width:1024px) {
 
   .options__item.material li:nth-child(1):before{
@@ -1645,10 +1707,37 @@ html {
 }
 
 .container.start .options__item.material:nth-child(2) {display: none;}
+.color-desc{display: none;}
 
 @media screen and (max-width:414px) {
 
-  .ring-images li {width: 50%;margin-left:0 12px 0 -6px;}
+  .btn-primary {
+    padding-left: 2.557em;
+    padding-right: 2.557em;
+  }
+
+.container.stone .left-col .options__item {padding-top:0.5em;}
+.right-col {font-size:11px;}
+
+.container.stone .left-col  {font-size: 12px;}
+  .options__item.shape li:nth-child(5) {
+
+  }
+  #result-img img {
+    margin-top:-20px;
+    margin-bottom:-20px;
+  }
+
+  #result-img {overflow: hidden;}
+  #header .row>div {
+    width: 33.333333333%;
+    position: static;
+
+  }
+  #header address {margin-bottom: 0;}
+
+
+  .ring-images li {width: 50%;margin:0 6px 0 -5px;text-align:center;}
 
   .ring-images li img {
     display: inline-block;
@@ -1660,7 +1749,10 @@ html {
     clear:both;
     float:none;
     width: 100%;
+    padding-top:2em;
+    text-align: center;
   }
+    #footer .socials {float:none;display: inline-block;margin:0;padding:0;}
   #guests .guest-card {
     width:100%
   }

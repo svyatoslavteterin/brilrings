@@ -3,56 +3,6 @@
 
 
 @section('content')
-
-<div id="app">
-
-  @include('layouts.modals')
-  <div class="steps">
-  <div class="container">
-    <nav>
-      <ul>
-        <li :class="{active:isActive('base')}">
-          <a @click.prevent="nextStep('base')"><span>Этап №1 <span>Выбрать оправу</span></span></a>
-        </li>
-        <li :class="{active:isActive('stone')}">
-          <a @click.prevent="nextStep('stone')"><span>Этап №2 <span>Выбрать камень</span></span></a>
-        </li>
-        <li :class="{active:isActive('result')}">
-          <a @click.prevent="nextStep('result')"><span>Этап №3 <span>Завершить кольцо</span></span></a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-  </div>
-@include('layouts.modals')
-  <steps
-  :s-ring-options="ringOptions"
-  :steps-list="steps"
-  :s-ring-option-values="ringOptionValues"
-  ref="steps"
-
-  >
-
-  </steps>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-@endsection
-
-
-@section('footer')
-
 <script type="text/javascript">
   steps=[
     {
@@ -132,5 +82,61 @@ window.ringStone={{{ isset($stone) ? $stone : 1 }}};
 activeStep="base";
 
 </script>
+
+<div id="app">
+
+  @include('layouts.modals')
+  <div class="steps">
+  <div class="container">
+    <nav class="hidden-xs">
+      <ul>
+        <li :class="{active:isActive('base')}">
+          <a @click.prevent="nextStep('base')"><span>Этап №1 <span>Выбрать оправу</span></span></a>
+        </li>
+        <li :class="{active:isActive('stone')}">
+          <a @click.prevent="nextStep('stone')"><span>Этап №2 <span>Выбрать камень</span></span></a>
+        </li>
+        <li :class="{active:isActive('result')}">
+          <a @click.prevent="nextStep('result')"><span>Этап №3 <span>Завершить кольцо</span></span></a>
+        </li>
+      </ul>
+    </nav>
+    <select class="visible-xs" v-model="step" @change="nextStep(step)">
+      <option value="base" >Этап №1:Выбрать оправу</option>
+      <option value="stone" >Этап №2:Выбрать камень</option>
+      <option value="result" >Этап №3:Завершить кольцо</option>
+    </select>
+  </div>
+  </div>
+@include('layouts.modals')
+  <steps
+  :s-ring-options="ringOptions"
+  :steps-list="steps"
+  :s-ring-option-values="ringOptionValues"
+  ref="steps"
+
+  >
+
+  </steps>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+@endsection
+
+
+@section('footer')
+
+
 
 @endsection
