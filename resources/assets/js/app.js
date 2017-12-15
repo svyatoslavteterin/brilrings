@@ -205,8 +205,8 @@ window.store = new Vuex.Store({
       context.state.basePrice=basePrice;
         RingApp.$http.get('/getprice/'+context.state.session.shape+'/'+context.state.session.weight+'/'+context.state.session.color+'/'+context.state.session.purity).then((response)=>{
             var stonePrice={
-              '1':Math.round(fx.rates['RUB']*response.data.price),
-              '2':Math.round(fx.rates['RUB']*response.data.mussanit_price)
+              '1':Math.round(response.data.price),
+              '2':Math.round(response.data.mussanit_price)
             };
             context.state.stonePrice=stonePrice;
             store.state.totalPrice=store.state.basePrice+store.state.stonePrice[store.state.session.stone];
@@ -392,8 +392,8 @@ window.RingApp = new Vue({
         this.$http.get('/getprice/'+store.state.session.shape+'/'+store.state.session.weight+'/'+store.state.session.color+'/'+store.state.session.purity).then((response)=>{
 
               var stonePrice={
-                '1':Math.round(fx.rates['RUB']*response.data.price),
-                '2':Math.round(fx.rates['RUB']*response.data.mussanit_price)
+                '1':Math.round(response.data.price),
+                '2':Math.round(response.data.mussanit_price)
               };
               store.state.stonePrice=stonePrice;
 
