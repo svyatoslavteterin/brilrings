@@ -6,7 +6,7 @@
               <img :src="'/baseimages/'+ringOptionValue.value+'/'+storeValue('material','value')+'/small/'+storeValue('shape','value')" width="140" height="70" :title="ringOptionValue.title"/>
             </a></li>
 
-            <li v-else-if="optionTemplate=='imagebox'" :class="{ active: isActive,disable:isDisabled}"><a href="#" :class="optionKey+''+ringOptionValue.value" @click.prevent="chooseOption">{{ringOptionValue.title}}</a></li>
+            <li v-else-if="optionTemplate=='imagebox'" :class="{ active: isActive,disable:isDisabled}"><a href="#" :class="optionKey+''+ringOptionValue.value" @click.prevent="chooseOption"><span>{{ringOptionValue.title}}</span></a></li>
 
             <option v-else-if="optionTemplate==='selectbox'" :value="ringOptionValue.value"  :class="{ active: isActive,disable:isDisabled }" >{{ringOptionValue.title}}</option>
             <input v-else-if="optionTemplate==='text'" value="text">

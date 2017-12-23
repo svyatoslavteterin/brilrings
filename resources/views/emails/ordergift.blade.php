@@ -1,0 +1,18 @@
+<table>
+  <tr>
+    <th>Подарок</th>
+    <td>{{$data['gift']}}</td>
+  </tr>
+  <tr>
+    <th>Имя</th>
+    <td>{{$data['name']}}</td>
+  </tr>
+  <tr>
+    <th>Email</th>
+    <td>{{$data['email']}}</td>
+  </tr>
+  <tr>
+    <th>Телефон</th>
+    <td>{{$data['phone']}}</td>
+  </tr>
+</table>

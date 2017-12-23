@@ -64,6 +64,6 @@ class RingOrderUser extends Mailable
      */
     public function build()
     {
-        return $this->from('info@brilliantrings.ru')->subject('Детали вашего заказа')->view('emails.orderring.user');
+        return $this->from('service@brilliantrings.ru')->subject('Детали вашего заказа')->view('emails.orderring.user');
     }
 }

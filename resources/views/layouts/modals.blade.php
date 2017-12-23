@@ -1,4 +1,4 @@
-<modal name="save-to-email" height="auto" adaptive v-cloak>
+<modal name="save-to-email" height="auto" adaptive v-cloak @closed="$modal.show('thanks')">
   <button @click="$modal.hide('save-to-email')" class="modal-close">
     <img src="images/close.png" alt="close"/>
   </button>
@@ -23,7 +23,7 @@
     </form>
   </div>
 </modal>
-<modal name="call-order" height="auto" adaptive v-cloak>
+<modal name="call-order" height="auto" adaptive v-cloak @closed="$modal.show('thanks')">
   <button @click="$modal.hide('call-order')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -51,7 +51,7 @@
     </form>
   </div>
 </modal>
-<modal name="guest-order" height="auto" adaptive v-cloak>
+<modal name="guest-order" height="auto" adaptive v-cloak @closed="$modal.show('thanks')">
   <button @click="$modal.hide('guest-order')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -79,7 +79,7 @@
     </form>
   </div>
 </modal>
-<modal name="ring-order" height="auto" adaptive v-cloak>
+<modal name="ring-order" height="auto" adaptive v-cloak @closed="$modal.show('thanks')">
   <button @click="$modal.hide('ring-order')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -105,7 +105,7 @@
     </form>
   </div>
 </modal>
-<modal name="help-order1" height="auto" adaptive v-cloak>
+<modal name="help-order1" height="auto" adaptive v-cloak @closed="$modal.show('thanks')">
   <button @click="$modal.hide('help-order1')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -131,7 +131,7 @@
     </form>
   </div>
 </modal>
-<modal name="help-order2" height="auto" adaptive v-cloak>
+<modal name="help-order2" height="auto" adaptive v-cloak @closed="$modal.show('thanks')">
   <button @click="$modal.hide('help-order2')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -157,7 +157,7 @@
     </form>
   </div>
 </modal>
-<modal name="help-order3" height="auto" adaptive v-cloak>
+<modal name="help-order3" height="auto" adaptive v-cloak @closed="$modal.show('thanks')">
   <button @click="$modal.hide('help-order3')" class="modal-close">
       <img src="images/close.png" alt="close"/>
   </button>
@@ -181,5 +181,54 @@
       </div>
         <input type="hidden" name="step" value="3" />
     </form>
+  </div>
+</modal>
+
+<modal name="thanks" height="auto" adaptive v-cloak>
+  <button @click="$modal.hide('thanks')" class="modal-close">
+      <img src="images/close.png" alt="close"/>
+  </button>
+  <h3 class="modal-header">Спасибо</h3>
+  <div class="modal-body">
+    <p>Ваш персональный менеджер свяжется с Вами в ближайшее время! </p>
+  </div>
+</modal>
+
+
+<modal name="for-her" height="auto" adaptive v-cloak  @before-open="beforeOpen"
+         @before-close="beforeClose" >
+  <button @click="$modal.hide('for-her')" class="modal-close">
+      <img src="images/close.png" alt="close"/>
+  </button>
+  <h3 class="modal-header" v-text="currentGiftText"></h3>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+        <img :src="currentGiftImg" alt="gift" class="img-fluid" />
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <p v-text="currentGiftDesc"></p>
+
+        <form name="order-gift" action="/order-gift" method="post" @submit.prevent="orderGift" id="order-gift-form">
+            {{csrf_field()}}
+          <div class="form-group">
+             <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="email" value="" placeholder="Email" required />
+         </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
+           </div>
+
+           <div class="form-group">
+             <button type="submit" class="form-control" name="submit" @click="$modal.hide('for-her')">Заказать</button>
+          </div>
+          <input type="hidden" name="gift" :value="currentGiftText"/>
+        </form>
+
+      </div>
+    </div>
   </div>
 </modal>

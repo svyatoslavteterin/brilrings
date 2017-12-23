@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class GuestOrder extends Mailable
+class OrderGift extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -17,12 +17,16 @@ class GuestOrder extends Mailable
      * @return void
      */
 
-          public $data;
+
+     public $data;
+
     public function __construct($data)
     {
-        //
 
-          $this->data=$data;
+      $this->data=$data;
+
+
+        //
     }
 
     /**
@@ -32,6 +36,6 @@ class GuestOrder extends Mailable
      */
     public function build()
     {
-        return $this->from('service@brilliantrings.ru')->subject('Запись в студию')->view('emails.guestorder');
+      return $this->from('service@brilliantrings.ru')->subject('Заказ подарка')->view('emails.ordergift');
     }
 }

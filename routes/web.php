@@ -966,3 +966,4 @@ Route::post('/savetoemail','ConstructorController@savetoemail');
 Route::post('/call-order','ConstructorController@callorder');
 Route::post('/help-order','ConstructorController@helporder');
 Route::post('/guest-order','ConstructorController@guestorder');
+Route::post('/order-gift','ConstructorController@ordergift');

@@ -228,10 +228,32 @@ window.RingApp = new Vue({
         'ringOptions':{},
         'ringOptionValues':{},
         'weight_size_map':{},
-        'steps':steps
+        'steps':steps,
+        'currentGiftText':'test',
+        'currentGiftImg':'',
+        'currentGiftDesc':''
     },
     methods: {
+      beforeOpen:function(){
 
+      },
+      beforeClose:function(){
+
+      },
+      orderGift:function(){
+        var formData = $("#order-gift-form").serializeArray();
+
+          let options = { emulateJSON: true };
+
+                  this.$http.post('/order-gift',{store:store.state,data:formData},options).then(function (response) {
+
+                      // Success
+                      console.log(response.data)
+                  },function (response) {
+                      // Error
+                      console.log(response.data)
+                  });
+      },
       callOrder:function(){
         var formData = $("#call-order-form").serializeArray();
 
@@ -449,4 +471,13 @@ $('.order-call-btn').click(function(e){
 $('.btn-register').click(function(e){
   e.preventDefault();
   RingApp.$modal.show('guest-order');
+});
+
+
+$('.for-her__item').click(function(e){
+  e.preventDefault();
+  RingApp.$data.currentGiftText=$(this).data('title');
+  RingApp.$data.currentGiftImg=$(this).attr('href');
+  RingApp.$data.currentGiftDesc=$(this).data('desc');
+  RingApp.$modal.show('for-her');
 });
