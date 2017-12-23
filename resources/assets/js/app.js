@@ -248,6 +248,8 @@ window.RingApp = new Vue({
                   this.$http.post('/order-gift',{store:store.state,data:formData},options).then(function (response) {
 
                       // Success
+
+                      RingApp.$modal.show('thanks');
                       console.log(response.data)
                   },function (response) {
                       // Error
@@ -262,6 +264,7 @@ window.RingApp = new Vue({
                   this.$http.post('/call-order',{store:store.state,data:formData},options).then(function (response) {
 
                       // Success
+                        RingApp.$modal.show('thanks');
                       console.log(response.data)
                   },function (response) {
                       // Error
@@ -276,6 +279,7 @@ window.RingApp = new Vue({
                   this.$http.post('/help-order',{store:store.state,data:formData},options).then(function (response) {
 
                       // Success
+                        RingApp.$modal.show('thanks');
                       console.log(response.data)
                   },function (response) {
                       // Error
@@ -290,6 +294,7 @@ window.RingApp = new Vue({
                   this.$http.post('/guest-order',{store:store.state,data:formData},options).then(function (response) {
 
                       // Success
+                        RingApp.$modal.show('thanks');
                       console.log(response.data)
                   },function (response) {
                       // Error
@@ -304,6 +309,7 @@ window.RingApp = new Vue({
                   this.$http.post('/ring_sessions',{store:store.state,data:formData},options).then(function (response) {
 
                       // Success
+                        RingApp.$modal.show('thanks');
                       console.log(response.data)
                   },function (response) {
                       // Error
@@ -320,6 +326,7 @@ window.RingApp = new Vue({
         this.$http.post('/savetoemail',{store:store.state,data:formData},options).then(function (response) {
 
             // Success
+            RingApp.$modal.show('thanks');
             console.log(response.data)
         },function (response) {
             // Error
