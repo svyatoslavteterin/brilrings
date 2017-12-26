@@ -84,10 +84,13 @@
 
           if ($(window).width() <= 990)  {
 
-                $('.jcarousel').jcarousel();
+                $('.jcarousel').jcarousel({
+                   wrap: 'circular'
+                });
           }else{
             $('.jcarousel').jcarousel({
-                vertical: true
+                vertical: true,
+                 wrap: 'circular'
             });
           }
 
