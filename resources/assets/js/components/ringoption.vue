@@ -133,7 +133,7 @@
             };
           },
 
-        props:['ringOptions','active','ringOptionValues','option','optionKey'],
+        props:['ringOptions','active','ringOptionValues','option','optionKey','store','params'],
 
         ready: function () {
 
@@ -142,7 +142,7 @@
         mounted:function(){
 
 
-
+            this.value=this.params[this.optionKey];
 
         },
         created:function(){
@@ -152,6 +152,9 @@
           if (this.optionKey=="size") this.value=ringWeight;
           if (this.optionKey=="purity") this.value=4;
           if (this.optionKey=="color") this.value=ringColor;
+
+
+
 
 
 
@@ -167,12 +170,21 @@
         computed: {
               selectValue:{
                 get:function(){
-                  var optionKey=this.optionKey;
-                    return store.state.session[optionKey];
+
+                  if (this.store){
+                    return store.state.session[this.optionKey];
+                  }else{
+                    return this.value;
+                  }
                 },
                 set:function(newValue){
                   this.value=parseInt(newValue);
-                  store.commit('setOption',{'value':newValue,'optionKey':this.optionKey});
+                  if (this.store){
+                      store.commit('setOption',{'value':newValue,'optionKey':this.optionKey});
+                  }else{
+                    this.$emit('update',{[this.optionKey]:parseInt(newValue)});
+                  }
+
                 }
               },
               ringOption:function(){

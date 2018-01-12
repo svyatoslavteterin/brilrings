@@ -19,6 +19,10 @@ Route::get('/ring_options/{ring_option}','RingOptionController@show');
 Route::get('/ring_options','RingOptionController@get');
 Route::get('/ring_options/{ring_option}/values','RingOptionController@getValues');
 
+Route::get('/gift_options','RingOptionController@getGiftOptions');
+Route::get('/gift_option_values','RingOptionValueController@getGiftOptionValues');
+
+
 Route::get('/resultimage/{base}/{material}/{shape}/{weight}/','RingImageController@getResultImg');
 Route::get('/baseimages/{base}/{material}/{size}','RingImageController@getBaseImg');
 Route::get('/baseimages/{base}/{material}/{size}/{shape}','RingImageController@getBaseImg');
@@ -30,7 +34,7 @@ Route::get('/ringimages/{size}/{hash}.jpg','RingImageController@getImage');
 
 
 
-
+Route::get('/gifts','GiftController@get');
 
 Route::get('/ring_option_values','RingOptionValueController@get');
 Route::get('/ring_option_values/{option}','RingOptionValueController@index');
@@ -357,9 +361,11 @@ Route::get('/', function () {
 });
 
 Route::get('/for-her', function () {
-
+    $page="for-her";
     $pagetitle='Подарок для нее';
-    return view('pages/for-her',compact('pagetitle'));
+    $gift_options=json_encode(App\Http\Controllers\RingOptionController::getGiftOptions());
+    $gift_option_values=json_encode(App\Http\Controllers\RingOptionValueController::getGiftOptionValues());
+    return view('pages/for-her',compact(array('pagetitle','page','gift_option_values','gift_options','gifts')));
 });
 
 Route::get('/about', function () {

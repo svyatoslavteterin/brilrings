@@ -99,9 +99,37 @@
        </div>
 
        <div class="form-group">
-         <button type="submit" class="form-control" name="submit" @click="$modal.hide('save-to-email')">Отправить</button>
+         <button type="submit" class="form-control" name="submit" @click="$modal.hide('ring-order')">Отправить</button>
       </div>
 
+    </form>
+  </div>
+</modal>
+
+<modal name="gift-order" height="auto" adaptive v-cloak >
+  <button @click="$modal.hide('gift-order')" class="modal-close">
+      <img src="images/close.png" alt="close"/>
+  </button>
+  <h3 class="modal-header">Заказать <span v-text="gifts[activeGift].title"></span></h3>
+  <div class="modal-body">
+    <form name="save" action="/ringorder" method="post" @submit.prevent="orderGift" id="gift-order-form">
+        {{csrf_field()}}
+      <div class="form-group">
+         <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="email" value="" placeholder="Email" required />
+     </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
+       </div>
+
+       <div class="form-group">
+         <button type="submit" class="form-control" name="submit" >Отправить</button>
+      </div>
+      <input type="hidden" name="gift" :value="gifts[activeGift-1].title" />
+      <input type="hidden" name="giftid" :value="gifts[activeGift-1].id" />
     </form>
   </div>
 </modal>
@@ -191,43 +219,5 @@
   <h3 class="modal-header">Спасибо</h3>
   <div class="modal-body">
     <p>Ваш персональный менеджер свяжется с Вами в ближайшее время! </p>
-  </div>
-</modal>
-
-
-<modal name="for-her" height="auto" adaptive v-cloak   >
-  <button @click="$modal.hide('for-her')" class="modal-close">
-      <img src="images/close.png" alt="close"/>
-  </button>
-  <h3 class="modal-header" v-text="currentGiftText"></h3>
-  <div class="modal-body">
-    <div class="row">
-      <div class="col-lg-6 col-md-6">
-        <img :src="currentGiftImg" alt="gift" class="img-fluid" />
-      </div>
-      <div class="col-lg-6 col-md-6">
-        <p v-text="currentGiftDesc"></p>
-
-        <form name="order-gift" action="/order-gift" method="post" @submit.prevent="orderGift" id="order-gift-form">
-            {{csrf_field()}}
-          <div class="form-group">
-             <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
-
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" name="email" value="" placeholder="Email" required />
-         </div>
-            <div class="form-group">
-              <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
-           </div>
-
-           <div class="form-group">
-             <button type="submit" class="form-control" name="submit" @click="$modal.hide('for-her')">Заказать</button>
-          </div>
-          <input type="hidden" name="gift" :value="currentGiftText"/>
-        </form>
-
-      </div>
-    </div>
   </div>
 </modal>

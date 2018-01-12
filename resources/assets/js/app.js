@@ -48,6 +48,7 @@ Vue.component('ringoptions',require('./components/ringoptions.vue'));
 Vue.component('ringoption',require('./components/ringoption.vue'));
 Vue.component('ringoptionvalue',require('./components/ringoptionvalue.vue'));
 Vue.component('ringblocks',require('./components/ringblocks.vue'));
+Vue.component('gift',require('./components/gift.vue'));
 
 
 Vue.prototype.$http = axios;
@@ -229,34 +230,44 @@ window.RingApp = new Vue({
         'ringOptionValues':{},
         'weight_size_map':{},
         'steps':steps,
-        'currentGiftText':'test',
-        'currentGiftImg':'',
-        'currentGiftDesc':''
+        'activeGift':1,
+        'gifts':[]
     },
     methods: {
-      beforeOpen:function(){
+      beforeOpen:function()
+      {
 
       },
-      beforeClose:function(){
+      beforeClose:function()
+      {
 
       },
+
       orderGift:function(){
-        var formData = $("#order-gift-form").serializeArray();
+        var formData = $("#gift-order-form").serializeArray();
 
           let options = { emulateJSON: true };
 
-                  this.$http.post('/order-gift',{store:store.state,data:formData},options).then(function (response) {
+          let store=[];
+
+          store=RingApp.$refs.gift[this.activeGift-1].$data.store;
+
+
+
+                  this.$http.post('/order-gift',{store:store,data:formData},options).then(function (response) {
 
                       // Success
-
+                      RingApp.$modal.hide('gift-order');
                       RingApp.$modal.show('thanks');
+
                       console.log(response.data)
                   },function (response) {
                       // Error
                       console.log(response.data)
                   });
       },
-      callOrder:function(){
+      callOrder:function()
+      {
         var formData = $("#call-order-form").serializeArray();
 
           let options = { emulateJSON: true };
@@ -351,8 +362,14 @@ window.RingApp = new Vue({
     created:function(){
 
 
+          this.$http.get('/gifts').then((response)=>
+          {
+            this.gifts=response.data;
 
+          },(response)=>
+          {
 
+          });
 
 
         this.$http.get('/ring_options').then((response)=>{
@@ -478,13 +495,4 @@ $('.order-call-btn').click(function(e){
 $('.btn-register').click(function(e){
   e.preventDefault();
   RingApp.$modal.show('guest-order');
-});
-
-
-$('.for-her__item').click(function(e){
-  e.preventDefault();
-  RingApp.$data.currentGiftText=$(this).data('title');
-  RingApp.$data.currentGiftImg=$(this).attr('href');
-  RingApp.$data.currentGiftDesc=$(this).data('desc');
-  RingApp.$modal.show('for-her');
 });

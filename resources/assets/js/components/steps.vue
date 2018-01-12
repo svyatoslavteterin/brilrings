@@ -7,21 +7,21 @@
 
 
                 <div v-if="step.template==='start'" class="container" :class="step.template" >
-                      <ringoptions :options="step.center.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
-                  
+                      <ringoptions :options="step.center.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" :store="true"></ringoptions>
+
                 </div>
 
               <div v-if="step.template==='base'" class="container" :class="step.template" >
                   <div class="row">
                     <div class="col-sm-12 col-md-2 left-col">
-                        <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+                        <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" :store="true"></ringoptions>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 center-col" >
                       <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-4 right-col">
                           <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
-                        <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+                        <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" :store="true"></ringoptions>
 
                         <p class="price"><span v-text="getBasePrice"></span></p>
 
@@ -32,7 +32,7 @@
               <div v-if="step.template==='stone'" class="container" :class="step.template">
                 <div class="row">
                   <div class="col-sm-12 col-md-3 left-col">
-                      <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" ref="ringoptions"></ringoptions>
+                      <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" ref="ringoptions" :store="true"></ringoptions>
                       <div class="color-desc" v-text="storeValue('color','desc')"> </div>
                   </div>
                   <div class="col-xs-6 col-sm-6 col-md-5 center-col">
@@ -60,7 +60,7 @@
                         <ringblocks :blocks="step.right.blocks" ref="blocks"></ringblocks>
 
 
-                        <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues"></ringoptions>
+                        <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" :store="true"></ringoptions>
                             <a href="#" class="how-to-know">Как узнать размер?</a>
 
                           <p><span v-text="getTotalPrice" class="price"></span> </p>

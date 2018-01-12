@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\RingOptionValue;
+use App\RingOption;
 
 class OrderGift extends Mailable
 {
@@ -19,6 +21,8 @@ class OrderGift extends Mailable
 
 
      public $data;
+     public $store;
+     public $giftOptionValues;
 
     public function __construct($data)
     {

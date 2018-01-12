@@ -8,6 +8,7 @@
           v-for="(value,key,index)  in options"
           :ring-options="ringOptions"
           :ring-option-values="ringOptionValues"
+          :store="store"
           :option-key="value"
           :key="index"
           ref="ringoption"
@@ -35,7 +36,7 @@
         }
         },
 
-        props:['options','ringOptions','ringOptionValues'],
+        props:['options','ringOptions','ringOptionValues','store'],
 
         ready: function () {
 

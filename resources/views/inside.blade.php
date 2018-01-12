@@ -19,17 +19,17 @@
 
             </div>
 
-            <div class="container inside-page">
+            <div class="container inside-page {{$page or ''}}">
               <div id="app">
 
               @include('layouts.modals')
-              
 
 
 
 
+                      @yield('content')
               </div>
-        @yield('content')
+
 
           </div>
 

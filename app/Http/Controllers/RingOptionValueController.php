@@ -14,20 +14,20 @@ class RingOptionValueController extends Controller
   }
 
   public function get(){
-    $ring_option_values=RingOptionValue::where('enabled','=',1)->orderBy('sort_index','asc')->orderBy('id','asc')->get();
+    $ring_option_values=RingOptionValue::where('enabled','=',1)->where('ring_option_id','<',11)->orderBy('sort_index','asc')->orderBy('id','asc')->get();
 
     $output=array();
-    foreach ($ring_option_values as $ring_option_value) {
 
-    $ring_option_value->price=json_decode($ring_option_value->price);
-      $c=clone $ring_option_value;
-      $ring_option=$c->ringOption;
-
-      $output[$ring_option->key][]=$ring_option_value;
-
-    }
-
+    $output=RingOptionValue::group($ring_option_values);
     return $output;
   }
 
+  public static function getGiftOptionValues(){
+    $ring_option_values=RingOptionValue::where('enabled','=',1)->where('ring_option_id','>',11)->orWhere('ring_option_id','=',4)->orderBy('sort_index','asc')->orderBy('id','asc')->get();
+
+    $output=array();
+
+    $output=RingOptionValue::group($ring_option_values);
+    return $output;
+  }
 }
