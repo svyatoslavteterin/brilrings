@@ -11,7 +11,7 @@ class RingConstructor extends Model
 
     static public function getHash($params){
 
-      $options=RingOption::where('id','<',11)->get();
+      $options=RingOption::where('id','<',11)->get()->toArray();
       $str='';
 
 

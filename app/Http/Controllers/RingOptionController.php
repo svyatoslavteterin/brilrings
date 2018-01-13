@@ -7,7 +7,7 @@ use App\RingOption;
 class RingOptionController extends Controller
 {
     //
-    public function get(){
+    public static function get(){
 
       $ring_options=RingOption::where('id','<',11)->get()->keyBy('key');
 

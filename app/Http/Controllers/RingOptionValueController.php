@@ -13,7 +13,7 @@ class RingOptionValueController extends Controller
     return $ring_option_values;
   }
 
-  public function get(){
+  public static function get(){
     $ring_option_values=RingOptionValue::where('enabled','=',1)->where('ring_option_id','<',11)->orderBy('sort_index','asc')->orderBy('id','asc')->get();
 
     $output=array();

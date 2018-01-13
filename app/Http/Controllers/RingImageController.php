@@ -159,12 +159,34 @@ class RingImageController extends Controller
 
             $hash=RingConstructor::getHash($params);
 
-          $result_image='images/rings/'.$hash.'.jpg';
-          $bok_image='./import-files/images/'.$base.'/';
-          if ($params['material']>1){
-            $bok_image.='m'.$params['material'].'/';
+
+          $result_image=array(
+            'original'=>'images/rings/'.$hash.'.jpg',
+            'medium'=>'images/rings/medium/'.$hash.'.jpg',
+            'small'=>'images/rings/small/'.$hash.'.jpg',
+            'extrasmall'=>'images/rings/extrasmall/'.$hash.'.jpg'
+          );
+
+          $params['shape']=1;
+          $params['size']=1;
+          $params['stone']=1;
+          $params['weight']=1;
+          $params['purity']=1;
+          $params['color']=1;
+          $params['fsize']=1;
+
+          $hash=RingConstructor::getHash($params);
+          $path='images/rings/bok/';
+
+          if ($params['material']>1) {
+            $path.='m'.$params['material'].'/';
           }
-          $bok_image.="bok.jpg";
+
+          $bok_image=array(
+            'original'=>$path.'big/'.$hash.'.jpg',
+            'small'=>$path.'small/'.$hash.'.jpg'
+          );
+
 
             $output->shapes=$shapes;
               $output->image=array();
@@ -172,6 +194,43 @@ class RingImageController extends Controller
             $output->image[]=$bok_image;
             if ($format=="json") return   \Response::json($output);
             return $output;
+    }
+
+    public static function makePreview($img,$size){
+
+      switch($size){
+        case "big":
+          $img->resize(850,null, function ($constraint) {
+              $constraint->aspectRatio();
+              $constraint->upsize();
+            });
+          $img->resizeCanvas(850, 850, 'center', false, 'fff');
+          break;
+        case "medium":
+          $img->resize(298,null, function ($constraint) {
+              $constraint->aspectRatio();
+              $constraint->upsize();
+            });
+          $img->resizeCanvas(298, null, 'center', false, 'fff');
+          break;
+        case "small":
+          $img->resize(150,null, function ($constraint) {
+              $constraint->aspectRatio();
+              $constraint->upsize();
+            });
+          $img->resizeCanvas(150, 150, 'center', false, 'fff');
+          break;
+        case "extrasmall":
+          $img->resize(140,null, function ($constraint) {
+              $constraint->aspectRatio();
+              $constraint->upsize();
+            });
+          $img->resizeCanvas(140, 70, 'center', false, 'fff');
+          break;
+
+      }
+
+        return $img;
     }
     public function getBaseImg($base,$material,$size='medium',$shape=1){
 
@@ -199,27 +258,9 @@ class RingImageController extends Controller
 
       }
 
-      $img=\Image::make('images/rings/'.$hash.'.jpg');
+      $img=\Image::make('images/rings/'.$size.'/'.$hash.'.jpg');
 
-      if ($size=='medium') {
-
-        $img->resize(298,null, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-          });
-        $img->resizeCanvas(298, null, 'center', false, 'fff');
-
-
-      }else{
-
-          $img->resize(140,null, function ($constraint) {
-              $constraint->aspectRatio();
-              $constraint->upsize();
-            });
-
-
-              $img->resizeCanvas(140, 70, 'center', false, 'fff');
-        }
+    //  $img=$this->makePreview($img,$size);
 
        return $img->response('jpg',100);
     }

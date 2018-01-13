@@ -133,7 +133,7 @@
             };
           },
 
-        props:['ringOptions','active','ringOptionValues','option','optionKey','store','params'],
+        props:['ringOptions','active','ringOptionValues','option','store','params'],
 
         ready: function () {
 
@@ -142,16 +142,10 @@
         mounted:function(){
 
 
-            this.value=this.params[this.optionKey];
-
+              this.value=this.params[this.optionKey];
         },
         created:function(){
-          if (this.optionKey=="material") this.value=ringMaterial;
-          if (this.optionKey=="base") this.value=ringBase;
-          if (this.optionKey=="weight") this.value=ringWeight;
-          if (this.optionKey=="size") this.value=ringWeight;
-          if (this.optionKey=="purity") this.value=4;
-          if (this.optionKey=="color") this.value=ringColor;
+
 
 
 
@@ -205,7 +199,10 @@
               },
               getOptionValueTitle:function(){
                 for (var prop in this.option) {
-                  return this.ringOptionValues[prop][this.value-1];
+
+                  let output=this.ringOptionValues[prop][this.value-1];
+
+                  if (output) return output;
                 }
               },
               countValues:function(){

@@ -12,6 +12,7 @@
           :option-key="value"
           :key="index"
           ref="ringoption"
+          :params="params"
           >
           </ringoption>
 
@@ -28,12 +29,25 @@
 
       },
 
-      data() {
+      data:function(){
 
 
-        return {
-          field: '',
-        }
+          return  {
+            field: '',
+            params:
+                {
+                  material:window.ringMaterial,
+                  base:window.ringBase,
+                  weight:window.ringWeight,
+                  size:window.ringWeight,
+                  purity:4,
+                  color:window.ringColor
+                }
+
+
+
+
+          }
         },
 
         props:['options','ringOptions','ringOptionValues','store'],

@@ -4,7 +4,7 @@
           <div class="blocks__item"  v-for="(value,index)  in blocks" :id="value" :class="value">
 
               <div v-if="value==='result-img'">
-                <img :src="resultImg" class="img-fluid" :class="'img'+storeParam('activeResultImg')" />
+                <img v-if="resultImg" :src="resultImg.original" class="img-fluid" :class="'img'+storeParam('activeResultImg')" />
 
               </div>
 
@@ -38,13 +38,13 @@
 
                 <div v-else-if="value==='ring-images'" class="ring-image">
                   <ul>
-                    <li :class="{ active: isActive(0) }"> <a href="#" @click.prevent="updateResultImg(0)"><img :src="getImage(0)" alt="" width="150" height="150"/></a> </li>
-                    <li :class="{ active: isActive(1) }"> <a href="#" @click.prevent="updateResultImg(1)"><img :src="getImage(1)" alt="" width="150" height="150"/></a> </li>
+                    <li :class="{ active: isActive(0) }"> <a href="#" @click.prevent="updateResultImg(0)"><img v-if="resultImg" :src="getImage(0).small" alt="" width="150" height="150"/></a> </li>
+                    <li :class="{ active: isActive(1) }"> <a href="#" @click.prevent="updateResultImg(1)"><img v-if="resultImg" :src="getImage(1).small" alt="" width="150" height="150"/></a> </li>
                   </ul>
 
                 </div>
               <div v-else-if="value==='result-table'">
-          
+
                   <table>
                     <tr>
                       <th>Материал</th>

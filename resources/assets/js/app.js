@@ -362,100 +362,7 @@ window.RingApp = new Vue({
     created:function(){
 
 
-          this.$http.get('/gifts').then((response)=>
-          {
-            this.gifts=response.data;
 
-          },(response)=>
-          {
-
-          });
-
-
-        this.$http.get('/ring_options').then((response)=>{
-        this.ringOptions=response.data;
-        var session={};
-        var str='';
-
-
-        _.forOwn(this.ringOptions, function(value, key) {
-          if (parseInt(value.desc)) {
-            session[key]=parseInt(value.desc);
-          }else{
-              session[key]=0;
-          }
-
-        });
-            store.commit('init',session);
-
-        if (typeof(ringBase)!="undefined") session['base']=parseInt(ringBase);
-        if (typeof(ringMaterial)!="undefined") session['material']=parseInt(ringMaterial);
-        if (typeof(ringShape)!="undefined") session['shape']=parseInt(ringShape);
-        if (typeof(ringWeight)!="undefined") session['weight']=parseInt(ringWeight);
-        if (typeof(ringColor)!="undefined") session['color']=parseInt(ringColor);
-        if (typeof(ringStone)!="undefined") session['stone']=parseInt(ringStone);
-
-
-        var excludeParams=this.excludeParams;
-          _.forOwn(this.ringOptions, function(value, key) {
-
-            if (excludeParams.indexOf(key)==-1)  {
-              str+=key+session[key];
-            }else{
-                str+=key+1;
-            }
-        });
-
-        this.$http.get('/resultimage/'+session['base']+'/'+session['material']+'/'+session['shape']+'/'+session['weight']).then((response)=>{
-
-
-            store.state.resultImg=response.data.image;
-
-
-            store.state.enabledShapes=Object.values(response.data.shapes);
-
-        },(response)=> {
-
-        });
-
-
-
-
-
-
-        store.commit('init',session);
-
-
-      },(response)=> {
-
-      });
-      this.$http.get('/ring_option_values').then((response)=>{
-
-        this.ringOptionValues=response.data;
-
-        store.state.basePrice=parseInt(this.$data.ringOptionValues.base[store.state.session.base-1].price.material[store.state.session.material]);
-
-        this.$http.get('/getprice/'+store.state.session.shape+'/'+store.state.session.weight+'/'+store.state.session.color+'/'+store.state.session.purity).then((response)=>{
-
-              var stonePrice={
-                '1':Math.round(response.data.price),
-                '2':Math.round(response.data.mussanit_price)
-              };
-              store.state.stonePrice=stonePrice;
-
-              store.state.totalPrice=store.state.basePrice+store.state.stonePrice[store.state.session.stone];
-
-          });
-
-      },(response)=> {
-
-      });
-
-      this.$http.get('/weight_size_map').then((response)=>{
-        this.weight_size_map=response.data;
-      },(response)=>{
-
-      });
     },
     computed:{
       getTotalPrice:function(){
@@ -475,7 +382,101 @@ window.RingApp = new Vue({
     },
     mounted:function(){
 
+      
+              this.$http.get('/gifts').then((response)=>
+              {
+                this.gifts=response.data;
 
+              },(response)=>
+              {
+
+              });
+
+
+            this.$http.get('/ring_options').then((response)=>{
+                this.ringOptions=response.data;
+                var session={};
+                var str='';
+
+
+            _.forOwn(this.ringOptions, function(value, key) {
+              if (parseInt(value.desc)) {
+                session[key]=parseInt(value.desc);
+              }else{
+                  session[key]=0;
+              }
+
+            });
+                store.commit('init',session);
+
+            if (typeof(ringBase)!="undefined") session['base']=parseInt(ringBase);
+            if (typeof(ringMaterial)!="undefined") session['material']=parseInt(ringMaterial);
+            if (typeof(ringShape)!="undefined") session['shape']=parseInt(ringShape);
+            if (typeof(ringWeight)!="undefined") session['weight']=parseInt(ringWeight);
+            if (typeof(ringColor)!="undefined") session['color']=parseInt(ringColor);
+            if (typeof(ringStone)!="undefined") session['stone']=parseInt(ringStone);
+
+
+            var excludeParams=this.excludeParams;
+              _.forOwn(this.ringOptions, function(value, key) {
+
+                if (excludeParams.indexOf(key)==-1)  {
+                  str+=key+session[key];
+                }else{
+                    str+=key+1;
+                }
+            });
+
+            this.$http.get('/resultimage/'+session['base']+'/'+session['material']+'/'+session['shape']+'/'+session['weight']).then((response)=>{
+
+
+                store.state.resultImg=response.data.image;
+
+
+                store.state.enabledShapes=Object.values(response.data.shapes);
+
+            },(response)=> {
+
+            });
+
+
+
+
+
+
+            store.commit('init',session);
+
+
+          },(response)=> {
+
+          });
+          this.$http.get('/ring_option_values').then((response)=>{
+
+            this.ringOptionValues=response.data;
+
+            store.state.basePrice=parseInt(this.$data.ringOptionValues.base[store.state.session.base-1].price.material[store.state.session.material]);
+
+            this.$http.get('/getprice/'+store.state.session.shape+'/'+store.state.session.weight+'/'+store.state.session.color+'/'+store.state.session.purity).then((response)=>{
+
+                  var stonePrice={
+                    '1':Math.round(response.data.price),
+                    '2':Math.round(response.data.mussanit_price)
+                  };
+                  store.state.stonePrice=stonePrice;
+
+                  store.state.totalPrice=store.state.basePrice+store.state.stonePrice[store.state.session.stone];
+
+              });
+
+          },(response)=> {
+
+          });
+
+          this.$http.get('/weight_size_map').then((response)=>{
+            this.weight_size_map=response.data;
+          },(response)=>{
+
+          });
 
 
 

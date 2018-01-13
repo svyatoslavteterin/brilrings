@@ -45,7 +45,7 @@ Route::get('/import-images',function(){
     $import_dir='./import-files/images';
     $list = File::directories($import_dir);
 
-    $options=App\RingOption::all()->toArray();
+    $options=App\Http\Controllers\RingOptionController::get();
     $params=array();
 
     $aliases=array(
@@ -76,7 +76,7 @@ Route::get('/import-images',function(){
 
       $base=str_replace(array($import_dir,'/'),'',$value);
 
-      if ($base!=6) continue;
+      if ($base!=8) continue;
 
 
       init($params);
@@ -124,7 +124,6 @@ Route::get('/import-images',function(){
           $file=array();
 
             $img_bok=  $import_dir.'/'.$base.'/';
-          if ($params['shape']>1 || $params['weight']>1){
 
 
 
@@ -132,10 +131,14 @@ Route::get('/import-images',function(){
                 $img_bok.="m".$params['material'].'/';
               }
 
-          }
-          $img_bok.='bok.jpg';
+             if ($params['shape']<2 && $params['size']<2  && $params['stone']<2 && $params['weight']<2 && $params['purity']<2 && $params['color']<2 && $params['fsize']<2){
+               $img_bok.='bok.jpg';
+               $file['bok_file']=$img_bok;
+             }
 
-          $file['bok_file']=$img_bok;
+
+
+
 
           $file['params']=$params;
           $file['file']=$img.'/1.jpg';;
@@ -147,20 +150,73 @@ Route::get('/import-images',function(){
     } // folders with base
 
 
+  //  for ($i=200;$i<300;$i++) {
+
+
+
+
     foreach ($Files as $file) {
 
+    //if ($file['params']['material']!=4) continue;
 
-      $hash=App\RingOption::getHash($file['params']);
+
+      $hash=App\RingConstructor::getHash($file['params']);
 
       $filename=$hash.'.jpg';
 
-      $readfile=$file['bok_file'];
+      $readfile=$file['file'];
 
-      if ( File::exists($readfile))  {
-        $img = Image::make($readfile);
-      //  $img->save('./images/rings/'.$filename);
-        $img->save('./images/rings/bok/'.$filename);
+
+
+        if ( File::exists($readfile))  {
+          $img = Image::make($readfile);
+
+        //  $img->save('./images/rings/'.$filename);
+
+          $img_small=App\Http\Controllers\RingImageController::makePreview(clone $img,'small');
+
+          $img_small->save('./images/rings/small/'.$filename);
+
+          $img_medium=App\Http\Controllers\RingImageController::makePreview(clone $img,'medium');
+
+        //  $img_medium->save('./images/rings/medium/'.$filename);
+
+          $img_extrasmall=App\Http\Controllers\RingImageController::makePreview(clone $img,'extrasmall');
+         //$img_extrasmall->save('./images/rings/extrasmall/'.$filename);
+
+        }
+
+
+
+
+        /*
+      if (isset($file['bok_file'])){
+
+          $readfile=$file['bok_file'];
+        if ( File::exists($readfile))  {
+          $img = Image::make($readfile);
+
+          $path='./images/rings/bok/';
+          if ($file['params']['material']>1) {
+            $path.='m'.$file['params']['material'].'/';
+          }
+
+          $img->save($path.$filename);
+
+          $img_big=App\Http\Controllers\RingImageController::makePreview(clone $img,'big');
+          $img_big->save($path.'big/'.$filename);
+
+          $img_small=App\Http\Controllers\RingImageController::makePreview(clone $img,'small');
+          $img_small->save($path.'small/'.$filename);
+        }
       }
+      */
+
+
+
+
+
+
 
     }
 

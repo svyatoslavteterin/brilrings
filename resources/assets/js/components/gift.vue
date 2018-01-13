@@ -46,7 +46,6 @@
 
             <div class="action-btns">
               <button class="btn btn-primary btn-order" @click.prevent="order()">Заказать</button>
-              <span>или</span>
               <button class="btn btn-default btn-help" @click="$modal.show('help-order3')">Помощь специалиста</button>
             </div>
 

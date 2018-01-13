@@ -48,7 +48,9 @@
     'template':'start'
   }
 
+
 ];
+ window.baseurl='/';
 var ringBase={{{ isset($base) ? $base : 1 }}};
 var ringMaterial={{{ isset($material) ? $material : 2 }}};
 activeStep="start";
