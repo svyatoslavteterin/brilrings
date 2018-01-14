@@ -7,14 +7,14 @@
     <form name="save" action="/savetoemail" method="post" @submit.prevent="saveToEmail" id="savetoemail-form">
         {{csrf_field()}}
       <div class="form-group">
-         <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+         <input type="text" class="form-control" name="name" value="" placeholder="Имя" required />
 
       </div>
        <div class="form-group">
-         <input type="text" class="form-control" name="email" value="" placeholder="Email" />
+         <input type="text" class="form-control" name="email" value="" placeholder="Email"  required />
        </div>
         <div class="form-group">
-          <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" />
+          <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
        </div>
        <div class="form-group">
          <button type="submit" class="form-control" name="submit" @click="$modal.hide('save-to-email')">Отправить</button>
@@ -32,7 +32,7 @@
     <form name="save" action="/callorder" method="post" @submit.prevent="callOrder" id="call-order-form">
         {{csrf_field()}}
       <div class="form-group">
-         <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+         <input type="text" class="form-control" name="name" value="" placeholder="Имя" required />
 
       </div>
 
@@ -57,10 +57,10 @@
   </button>
   <h3 class="modal-header">Записаться в студию</h3>
   <div class="modal-body">
-    <form name="save" action="/callorder" method="post" @submit.prevent="guestOrder" id="guest-order-form">
+    <form name="save" action="/guestorder" method="post" @submit.prevent="guestOrder" id="guest-order-form" > 
         {{csrf_field()}}
       <div class="form-group">
-         <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+         <input type="text" class="form-control" name="name" value="" placeholder="Имя" required />
 
       </div>
 
@@ -73,7 +73,7 @@
         </label>
       </div>
        <div class="form-group">
-         <button type="submit" class="form-control" name="submit" @click="$modal.hide('guest-order')">Отправить</button>
+         <button type="submit" class="form-control" name="submit" >Отправить</button>
       </div>
 
     </form>
@@ -88,7 +88,7 @@
     <form name="save" action="/ringorder" method="post" @submit.prevent="ringOrder" id="ring-order-form">
         {{csrf_field()}}
       <div class="form-group">
-         <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+         <input type="text" class="form-control" name="name" value="" placeholder="Имя" required />
 
       </div>
       <div class="form-group">
@@ -115,7 +115,7 @@
     <form name="save" action="/ringorder" method="post" @submit.prevent="orderGift" id="gift-order-form">
         {{csrf_field()}}
       <div class="form-group">
-         <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+         <input type="text" class="form-control" name="name" value="" placeholder="Имя" required />
 
       </div>
       <div class="form-group">
@@ -142,7 +142,7 @@
     <form name="save" action="/helporder" method="post" @submit.prevent="helpOrder(1)" id="help-order1-form">
         {{csrf_field()}}
       <div class="form-group">
-         <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+         <input type="text" class="form-control" name="name" value="" placeholder="Имя"  required/>
 
       </div>
       <div class="form-group">
@@ -168,7 +168,7 @@
     <form name="save" action="/helporder" method="post" @submit.prevent="helpOrder(2)" id="help-order2-form">
         {{csrf_field()}}
       <div class="form-group">
-         <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+         <input type="text" class="form-control" name="name" value="" placeholder="Имя" required/>
 
       </div>
       <div class="form-group">
@@ -194,7 +194,7 @@
     <form name="save" action="/helporder" method="post" @submit.prevent="helpOrder(3)" id="help-order3-form">
         {{csrf_field()}}
       <div class="form-group">
-         <input type="text" class="form-control" name="name" value="" placeholder="Имя" />
+         <input type="text" class="form-control" name="name" value="" placeholder="Имя" required/>
 
       </div>
       <div class="form-group">

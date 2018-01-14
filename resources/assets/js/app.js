@@ -298,6 +298,7 @@ window.RingApp = new Vue({
                   });
       },
       guestOrder:function(){
+
         var formData = $("#guest-order-form").serializeArray();
 
           let options = { emulateJSON: true };
@@ -305,6 +306,7 @@ window.RingApp = new Vue({
                   this.$http.post('/guest-order',{store:store.state,data:formData},options).then(function (response) {
 
                       // Success
+                        RingApp.$modal.hide('guest-order');
                         RingApp.$modal.show('thanks');
                       console.log(response.data)
                   },function (response) {
@@ -382,7 +384,7 @@ window.RingApp = new Vue({
     },
     mounted:function(){
 
-      
+
               this.$http.get('/gifts').then((response)=>
               {
                 this.gifts=response.data;
