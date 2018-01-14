@@ -1,0 +1,299 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Wordpress POEditor Plugin\n"
+"Language: vi\n"
+
+#: views/changeApiKey.php:8
+msgid "Change your POEditor API Key"
+msgstr "Thay đổi Khóa POEditor API của bạn"
+
+#: views/changeApiKey.php:12 views/index_nokey.php:14
+msgid "POEditor API KEY"
+msgstr "KHÓA POEditor API"
+
+#: views/changeApiKey.php:16 views/index.php:8
+msgid "Change API Key"
+msgstr "Thay đổi khóa API"
+
+#: views/index.php:9
+msgid "Reset plugin"
+msgstr "Đặt lại plugin"
+
+#: views/index.php:17 views/index.php:19
+msgid "Refresh online projects list"
+msgstr "Làm mới danh sách các dự án trực tuyến"
+
+#: views/index.php:33 views/index.php:137
+msgid "Project"
+msgstr "Dự án"
+
+#: views/index.php:36 views/index.php:140
+msgid "Language"
+msgstr "Ngôn ngữ"
+
+#: views/index.php:39 views/index.php:143
+msgid "Progress"
+msgstr "Tiến trình"
+
+#: views/index.php:42 views/index.php:146
+msgid "Assigned file"
+msgstr "Tập tin đã chỉ định"
+
+#: views/index.php:45 views/index.php:149
+msgid "Actions"
+msgstr "Tác vụ"
+
+#: views/index.php:67
+msgid "Assign file"
+msgstr "Chỉ định tập tin"
+
+#: views/index.php:76
+msgid "Import"
+msgstr "Nhập"
+
+#: views/index.php:77
+msgid "Export"
+msgstr "Xuất"
+
+#: views/index.php:78
+msgid "Sync"
+msgstr "Đồng bộ"
+
+#: views/index.php:79
+msgid "Unassign file"
+msgstr "Bỏ chỉ định tập tin"
+
+#: views/index.php:110
+msgid "Import all"
+msgstr "Nhập tất cả"
+
+#: views/index.php:111
+msgid "Export all"
+msgstr "Xuất tất cả"
+
+#: views/index.php:171 views/index.php:173
+msgid "Rescan for language files"
+msgstr "Quét lại để tìm các tập tin ngôn ngữ"
+
+#: views/index.php:182 views/index.php:243 views/index.php:277
+msgid "Location"
+msgstr "Vị trí"
+
+#: views/index.php:185 views/index.php:246 views/index.php:280
+msgid "File"
+msgstr "Tập tin"
+
+#: views/index.php:188 views/index.php:249
+msgid "Last changed"
+msgstr "Lần thay đổi gần đây nhất"
+
+#: views/index.php:258 views/index.php:375
+msgid "No language files found yet. Scan now"
+msgstr "Chưa tìm thấy tập tin ngôn ngữ nào. Quét ngay bây giờ."
+
+#: views/index.php:266
+msgid "Assign a local file to a POEditor project language"
+msgstr "Chỉ định một tập tin cục bộ cho ngôn ngữ dự án POEditor"
+
+#: views/index.php:307 views/index.php:325 views/index.php:343
+#: views/index.php:364
+msgid "Select"
+msgstr "Chọn"
+
+#: views/index.php:321
+msgid "Add new"
+msgstr "Thêm mới"
+
+#: views/index.php:339 views/index.php:360
+msgid "Add location manually"
+msgstr "Thêm vị trí theo cách thủ công"
+
+#: views/index.php:349 views/index.php:370
+msgid "Example"
+msgstr "Ví dụ"
+
+#: views/index.php:387
+msgid "Are you sure you want to reset the plugin?"
+msgstr "Bạn có chắc chắn muốn đặt lại plugin không?"
+
+#: views/index.php:390
+msgid "This will delete all your local file assignments and it will detach your Wordpress installation from you account on %s"
+msgstr "Thao tác này sẽ xóa tất cả các tác vụ chỉ định tập tin cục bộ của bạn và gỡ cài đặt Wordpress khỏi tài khoản của bạn trên %s"
+
+#: views/index.php:104 views/index.php:379 views/index.php:392
+msgid "Cancel"
+msgstr "Hủy"
+
+#: views/index.php:393
+msgid "Reset"
+msgstr "Đặt lại"
+
+#: views/index_nokey.php:8
+msgid "No API key set"
+msgstr "Không có khóa API nào được đặt"
+
+#: poeditor.php:432
+msgid "The language file %1$s for %2$s was successfully synced"
+msgstr "Đã đồng bộ thành công tập tin ngôn ngữ %1$s cho %2$s"
+
+#: poeditor.php:435
+msgid "The language file %1$s for %2$s was successfully uploaded to POEditor.com"
+msgstr "Đã tải thành công tập tin ngôn ngữ %1$s cho %2$s lên POEditor.com"
+
+#: poeditor.php:439
+msgid "There was a problem with the request for %1$s: %2$s"
+msgstr "Đã xảy ra sự cố với yêu cầu cho %1$s: %2$s"
+
+#: poeditor.php:509
+msgid "The language file %1$s for %2$s was successfully imported from POEditor.com"
+msgstr "Đã nhập thành công tập tin ngôn ngữ %1$s cho %2$s từ POEditor.com"
+
+#: poeditor.php:319 poeditor.php:516
+msgid "The %s folder is not writable. Please make it writable and try again"
+msgstr "Không thể ghi vào thư mục %s. Vui lòng chuyển thư mục sang chế độ ghi được rồi thử lại"
+
+#: poeditor.php:520 poeditor.php:523
+msgid "The %s file cannot be overwritten. Please make it writable and try again"
+msgstr "Không thể ghi đè lên tập tin %s. Vui lòng chuyển tập tin sang chế độ ghi được rồi thử lại"
+
+#: poeditor.php:527
+msgid "There was a problem importing the language file from POEditor.com"
+msgstr "Đã xảy ra sự cố khi đang nhập tập tin ngôn ngữ từ POEditor.com"
+
+#: views/getProjects.php:10
+msgid "Loading"
+msgstr "Đang tải"
+
+#: views/getProjects.php:13
+msgid "Retrieving online projects from POEditor.com. Please wait"
+msgstr "Đang truy xuất các dự án trực tuyến từ POEditor.com. Vui lòng chờ"
+
+#: views/index.php:91
+msgid "Add language to %s"
+msgstr "Thêm ngôn ngữ vào %s"
+
+#: views/index.php:103
+msgid "Add language"
+msgstr "Thêm ngôn ngữ"
+
+#: views/index.php:110
+msgid "Do you really like to download all language files for %s from POEditor.com?"
+msgstr "Bạn có thực sự muốn tải xuống tất cả các tập tin ngôn ngữ cho %s từ POEditor.com không?"
+
+#: views/index.php:111
+msgid "Do you really upload all terms for %s to POEditor.com?"
+msgstr "Bạn có thực sự muốn tải tất cả các thuật ngữ cho %s lên POEditor.com không?"
+
+#: views/index.php:112
+msgid "Do you really upload all definitions for %s POEditor.com?"
+msgstr "Bạn có thực sự muốn tải tất cả các định nghĩa cho %s POEditor.com không?"
+
+#: views/index.php:112
+msgid "Sync all"
+msgstr "Đồng bộ tất cả"
+
+#: views/index.php:382
+msgid "This folder is not writable"
+msgstr "Không thể ghi vào thư mục này"
+
+#: views/index_nokey.php:10
+msgid "You must set your API key in order to use this plugin. You can get this key by going to %1$s on %2$s"
+msgstr "Bạn phải đặt khóa API của bạn để sử dụng plugin này. Bạn có thể tải khóa này bằng cách truy cập vào %1$s trên %2$s"
+
+#: views/index_nokey.php:10
+msgid "your account"
+msgstr "tài khoản của bạn"
+
+#: views/index_nokey.php:18
+msgid "Set API Key"
+msgstr "Đặt Khóa API"
+
+#: views/scan.php:13
+msgid "Scanning for language files. Please wait"
+msgstr "Đang quét để tìm các tập tin ngôn ngữ. Vui lòng chờ"
+
+#: views/index.php:22
+msgid "POEditor translations"
+msgstr "Các bản dịch trên POEditor"
+
+#: views/index.php:126 views/index.php:129 views/index.php:159
+#: views/index.php:162
+msgid "Create project"
+msgstr "Tạo dự án"
+
+#: views/index.php:169
+msgid "Local language files"
+msgstr "Các tập tin ngôn ngữ cục bộ"
+
+#: views/index.php:157
+msgid "Found no projects in your POEditor.com account."
+msgstr "Không tìm thấy dự án nào trong tài khoản POEditor.com của bạn."
+
+#: poeditor.php:106
+msgid "The API Key was succesfully changed"
+msgstr "Đã đổi Khóa API thành công"
+
+#: poeditor.php:121 poeditor.php:134 poeditor.php:210 poeditor.php:242
+msgid "The API Key you set is invalid. Please try again"
+msgstr "Khóa API bạn đã đặt không hợp lệ. Vui lòng thử lại"
+
+#: poeditor.php:143
+msgid "The language was successfully added"
+msgstr "Đã thêm ngôn ngữ thành công"
+
+#: poeditor.php:217
+msgid "Please set the name of the project"
+msgstr "Vui lòng đặt tên cho dự án"
+
+#: poeditor.php:224
+msgid "Project creation failed: %s"
+msgstr "Không tạo được dự án: %s"
+
+#: poeditor.php:322
+msgid "The file could not be created. Please make sure that the folder is writable and your host configuration allows you to write files"
+msgstr "Không tạo được tập tin. Hãy đảm bảo rằng bạn có thể ghi được vào thư mục này  và cấu hình máy chủ lưu trữ của bạn cho phép bạn ghi tập tin."
+
+#: poeditor.php:638
+msgid "The plugin has been reset successfully"
+msgstr "Đã đặt lại plugin thành công"
+
+#: views/index.php:382
+msgid "The folder or file is not writable (so we are not be able to update the files with the information from poeditor.com)"
+msgstr "Không thể ghi vào thư mục hoặc tập tin này (vì thế chúng tôi không thể cập nhật thông tin từ poeditor.com cho các tập tin này)"
+
+#: views/index.php:287
+msgid "Search for location"
+msgstr "Tìm kiếm vị trí"
+
+#: views/index.php:288
+msgid "Search for file name"
+msgstr "Tìm kiếm tên tập tin"
+
+#: views/index.php:76
+msgid "Import .po and .mo files from POEditor"
+msgstr "Nhập tập tin .po và .mo từ POEditor"
+
+#: views/index.php:77
+msgid "Export terms to POEditor"
+msgstr "Xuất thuật ngữ lên POEditor"
+
+#: views/index.php:78
+msgid "Export terms and translations to POEditor, overwriting exiting translations"
+msgstr "Xuất thuật ngữ và bản dịch lên POEditor, ghi đè lên các bản dịch hiện có"
+
+#: views/index.php:110
+msgid "Import .po and .mo files from POEditor for all languages"
+msgstr "Nhập tập tin .po và .mo từ POEditor cho tất cả các ngôn ngữ"
+
+#: views/index.php:111
+msgid "Export terms to POEditor from all language files"
+msgstr "Xuất thuật ngữ lên POEditor từ tất cả các tập tin ngôn ngữ"
+
+#: views/index.php:112
+msgid "Export terms and translations to POEditor from all language files, overwriting exiting translations"
+msgstr "Xuất thuật ngữ và bản dịch lên POEditor từ tất cả các tập tin ngôn ngữ, ghi đè lên các bản dịch hiện có"
+

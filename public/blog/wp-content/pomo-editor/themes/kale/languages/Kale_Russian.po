@@ -1,0 +1,749 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Kale\n"
+"Language: ru\n"
+
+#: 404.php:18
+msgid "404"
+msgstr "404"
+
+#: category.php:32 parts/feed.php:51
+msgid "Next Posts"
+msgstr "Следующие посты"
+
+#: comments.php:14
+msgid "Name"
+msgstr "Имя"
+
+#: comments.php:16
+msgid "Email Address"
+msgstr "Email адрес"
+
+#: comments.php:18
+msgid "Website"
+msgstr "Вебсайт"
+
+#: comments.php:20
+msgid "Comment"
+msgstr "Комментарий"
+
+#: comments.php:76
+msgid "You must be <a href=\"%s\">logged in</a> to post a comment."
+msgstr "Вы должно быть <a href=\"%s\">авторизованы</a> чтобы написать комментарий"
+
+#: customize/customizer.php:18
+msgid "Upgrade to Pro"
+msgstr "Обновление до Pro"
+
+#: customize/customizer.php:24
+msgid "General Settings"
+msgstr "Главный настройки"
+
+#: customize/customizer.php:31
+msgid "Front Page"
+msgstr "Главная страница"
+
+#: customize/customizer.php:34
+msgid "Banner / Slider"
+msgstr "Баннер / Слайдер"
+
+#: customize/customizer.php:39 customize/theme-defaults.php:32
+msgid "Featured Posts"
+msgstr "Избранные статьи"
+
+#: customize/customizer.php:44
+msgid "Large / Highlight Post"
+msgstr "Сообщение"
+
+#: customize/customizer.php:51
+msgid "Blog Feed"
+msgstr "Обратная связь"
+
+#: customize/customizer.php:57
+msgid "Posts"
+msgstr "Посты"
+
+#: customize/customizer.php:63 functions.php:384
+msgid "Pages"
+msgstr "Страницы"
+
+#: customize/customizer.php:69
+msgid "Sidebar"
+msgstr "Сайдбар"
+
+#: customize/customizer.php:75
+msgid "Advanced"
+msgstr "продвинутый"
+
+#: customize/customizer.php:81
+msgid "Menu Settings"
+msgstr "Меню настроек"
+
+#: customize/customizer.php:103
+msgid "KALE"
+msgstr "KALE"
+
+#: customize/customizer.php:104
+msgid ""
+"<h1>Kale Pro</h1>\n"
+"        <p><a class=\"button\" href=\"https://www.lyrathemes.com/kale-pro/\" target=\"_blank\">Upgrade to Kale Pro</a></p>\n"
+"        <p>Upgrade for the many awesome features and expert support included with the pro version of this theme. View the <a href=\"http://www.lyrathemes.com/preview/?theme=kale-pro\" target=\"_blank\">Kale Pro Demo</a> to see the additional features and functionality available in your upgrade.</p>\n"
+"        <p>Pro Features:\n"
+"        <ul>\n"
+"            <li>&raquo; Slider options: custom slider</li>\n"
+"            <li>&raquo; Built-in Ads</li>\n"
+"            <li>&raquo; Built-in Related Posts</li>\n"
+"            <li>&raquo; Built-in Recipe Shortcode</li>\n"
+"            <li>&raquo; Recipe Index page template</li>\n"
+"            <li>&raquo; Additional home page elements</li>\n"
+"            <li>&raquo; Built-in social media sharing</li>\n"
+"            <li>&raquo; One on one personal support and continuous theme updates</li>\n"
+"        </ul>\n"
+"        </p>\n"
+"        <hr />\n"
+"        <h1>Current Theme: Kale</h1>\n"
+"        <h3>Demo Site</h3>\n"
+"        <p>Head on over to the <a  href=\"http://www.lyrathemes.com/preview/?theme=kale\" target=\"_blank\">Kale demo</a> to see what you can accomplish with this theme!</p>\n"
+"        <h3>Documentation</h3>\n"
+"        <p>Read how to customize the theme, set up widgets, and learn of all the possible options available to you.</p>\n"
+"        <p><a class=\"button\" href=\"https://www.lyrathemes.com/documentation/kale/\" target=\"_blank\">Kale Documentation</a></p>\n"
+"        <h3>Sample Data</h3>\n"
+"        <p>You can install the content and settings shown on our demo site by importing this sample data.</p>\n"
+"        <p><a class=\"button\" href=\"https://www.lyrathemes.com/sample-data/kale-sample-data.zip\" target=\"_blank\">Kale Sample Data</a></p>\n"
+"        <h3>Feedback and Support</h3>\n"
+"        <p>For feedback and support, please contact us and we would be happy to assist!</p>\n"
+"        <p><a class=\"button\" href=\"https://www.lyrathemes.com/support\" target=\"_blank\">Kale Support</a></p>\n"
+"        "
+msgstr ""
+"        <h1> Kale Pro </ h1>\n"
+"        <p> <a class=\"button\" href=\"https://www.lyrathemes.com/kale-pro/\" target=\"_blank\"> Обновление до Kale Pro </a> </ p>\n"
+"        <p> Обновление для множества удивительных функций и экспертной поддержки, включенных в про-версию этой темы. Просмотрите <a href=\"http://www.lyrathemes.com/preview/?theme=kale-pro\" target=\"_blank\"> Демо-версию Kale Pro </a>, чтобы увидеть дополнительные функции и функции, доступные в вашем обновлении . </ р>\n"
+"        <p> Особенности Pro:\n"
+"        <UL>\n"
+"            <Литий> & RAQUO; Параметры слайдера: пользовательский слайдер </ li>\n"
+"            <Литий> & RAQUO; Встроенные объявления </ li>\n"
+"            <Литий> & RAQUO; Встроенные связанные сообщения. </ Li>\n"
+"            <Литий> & RAQUO; Встроенный короткий код рецепта </ li>\n"
+"            <Литий> & RAQUO; Шаблон страницы рецепта </ li>\n"
+"            <Литий> & RAQUO; Дополнительные элементы домашней страницы. </ Li>\n"
+"            <Литий> & RAQUO; Встроенный обмен социальными сетями. </ Li>\n"
+"            <Литий> & RAQUO; Одна личная поддержка и непрерывные обновления темы. </ Li>\n"
+"        </ UL>\n"
+"        </ Р>\n"
+"        <hr />\n"
+"        <h1> Текущая тема: Kale </ h1>\n"
+"        <h3> Демо-сайт </ h3>\n"
+"        <p> Перейдите к <a href=\"http://www.lyrathemes.com/preview/?theme=kale\" target=\"_blank\"> демо Kale </a>, чтобы узнать, что вы можете сделать с этим тема! </ p>\n"
+"        <H3> Документация </ h3>\n"
+"        <p> Прочитайте, как настроить тему, настроить виджеты и узнать обо всех возможных вариантах, доступных вам. </ p>\n"
+"        <p> <a class=\"button\" href=\"https://www.lyrathemes.com/documentation/kale/\" target=\"_blank\"> Документация Кале </a> </ p>\n"
+"        <h3> Примеры данных </ h3>\n"
+"        <p> Вы можете установить контент и настройки, указанные на нашем демонстрационном сайте, импортировав эти данные образца. </ p>\n"
+"        <p> <a class=\"button\" href=\"https://www.lyrathemes.com/sample-data/kale-sample-data.zip\" target=\"_blank\"> Примеры данных Кале </a> </ р>\n"
+"        <h3> Обратная связь и поддержка </ h3>\n"
+"        <p> Для обратной связи и поддержки, пожалуйста, свяжитесь с нами, и мы будем рады помочь! </ p>\n"
+"        <p> <a class=\"button\" href=\"https://www.lyrathemes.com/support\" target=\"_blank\"> Поддержка Kale </a> </ p>\n"
+"        "
+
+#: customize/customizer.php:145
+msgid "Copyright Text"
+msgstr "Текст авторского права"
+
+#: customize/customizer.php:146
+msgid "Accepts HTML."
+msgstr "Принимает HTML."
+
+#: customize/customizer.php:156
+msgid "Show Example Content?"
+msgstr "Показать тестовый контент?"
+
+#: customize/customizer.php:157
+msgid "Turning this off will disable all default/sample images for posts. It will also hide all default widgets in the Default Sidebar."
+msgstr "Выключение этого параметра отключит все изображения по умолчанию / образцы для сообщений. Он также скроет все виджеты по умолчанию на боковой панели по умолчанию."
+
+#: customize/customizer.php:169
+msgid "Show Image Logo?"
+msgstr "Показать лого?"
+
+#: customize/customizer.php:170
+msgid "Choose whether to display the image logo."
+msgstr "Выберите где показывать лого"
+
+#: customize/customizer.php:179
+msgid "Text Logo"
+msgstr "Текст лого"
+
+#: customize/customizer.php:180
+msgid "Displayed when `Show Image Logo?` is set to `Show` or if there is no logo image uploaded."
+msgstr "Отображается, когда `Show Image Logo?` Установлен в `Show` или если изображение логотипа не загружено."
+
+#: customize/customizer.php:202
+msgid "Caption Heading"
+msgstr "Подпись заголовка"
+
+#: customize/customizer.php:211
+msgid "Caption Description"
+msgstr "Описание заголовка"
+
+#: customize/customizer.php:220
+msgid "Caption URL"
+msgstr "URL-адрес заголовка"
+
+#: customize/customizer.php:233
+msgid "Frontpage Banner / Slider"
+msgstr "Баннер / слайдер главной страницы"
+
+#: customize/customizer.php:251
+msgid "<hr />Posts Slider"
+msgstr "<hr /> Сообщения Slider"
+
+#: customize/customizer.php:252
+msgid "Select a category to show posts from in the slider. Also enter the number of posts to show from that category."
+msgstr "Выберите категорию для показа сообщений в слайдере. Также введите количество сообщений для показа из этой категории."
+
+#: customize/customizer.php:260
+msgid "Posts Slider - Category"
+msgstr "Сообщений Slider - Категория"
+
+#: customize/customizer.php:270
+msgid "Posts Slider - Number of Slides/Posts"
+msgstr "Сообщения Slider - Количество слайдов / Сообщений"
+
+#: customize/customizer.php:271
+msgid "There should be at least three posts in the chosen category for the slider to show up."
+msgstr "Для слайдера должно быть не менее трех должностей в выбранной категории."
+
+#: customize/customizer.php:292
+msgid "Hide Captions, Link Images?"
+msgstr "Скрыть титры, изображения ссылок?"
+
+#: customize/customizer.php:293
+msgid "If this option is turned on, the headings, descriptions, and icons for the slides will be hidden and the image will be linked directly to the URLs provided."
+msgstr "Если этот параметр включен, заголовки, описания и значки для слайдов будут скрыты, и изображение будет напрямую связано с указанными URL-адресами."
+
+#: customize/customizer.php:302
+msgid "Show Color Overlay/Filter?"
+msgstr "Показать наложение / фильтр цвета?"
+
+#: customize/customizer.php:312
+msgid "Select Color"
+msgstr "Выбрать цвет"
+
+#: customize/customizer.php:327
+msgid "Show Featured Posts?"
+msgstr "Показывать избранные статьи?"
+
+#: customize/customizer.php:328
+msgid "Choose whether to display the featured posts under the banner/slider."
+msgstr "Выберите, показывать ли отображаемые сообщения под значком / слайдером."
+
+#: customize/customizer.php:345
+msgid "Heading"
+msgstr "заголовок"
+
+#: customize/customizer.php:354
+msgid "Post 1"
+msgstr "Пост 1"
+
+#: customize/customizer.php:364
+msgid "Post 2"
+msgstr "Пост 2"
+
+#: customize/customizer.php:374
+msgid "Post 3"
+msgstr "Пост 3"
+
+#: customize/customizer.php:388
+msgid "Show Large / Highlight Post?"
+msgstr "Показать крупный / выделенный пост?"
+
+#: customize/customizer.php:389
+msgid "Choose whether to display the large post under the blog feed."
+msgstr "Выберите, показывать ли большую запись в блоге блога."
+
+#: customize/customizer.php:406 customize/customizer.php:415
+msgid "Select Large / Highlight Post"
+msgstr "Выберите Large / Highlight Post"
+
+#: customize/customizer.php:429 customize/customizer.php:512
+msgid "Show Meta?"
+msgstr "Показать Мета?"
+
+#: customize/customizer.php:430
+msgid "Choose whether to display date, category, author, tags for posts in the blog feed. This applies to all blog feeds on all pages, including the front page."
+msgstr "Выберите, показывать ли дату, категорию, автора, теги для сообщений в блоге. Это относится ко всем блогам блога на всех страницах, включая первую страницу."
+
+#: customize/customizer.php:439 customize/customizer.php:522
+msgid "Show Date?"
+msgstr "Показывать дату?"
+
+#: customize/customizer.php:448 customize/customizer.php:531
+msgid "Show Category?"
+msgstr "Показывать категорию?"
+
+#: customize/customizer.php:457 customize/customizer.php:540
+msgid "Show Author?"
+msgstr "Показывать автора?"
+
+#: customize/customizer.php:466
+msgid "Show Comments?"
+msgstr "Показывать комментарии?"
+
+#: customize/customizer.php:482
+msgid "Post Display Format (With Sidebar)"
+msgstr "Формат отображения сообщений (с боковой панелью)"
+
+#: customize/customizer.php:498
+msgid "Heading for Blog Feed"
+msgstr "Заголовок для подачи блога"
+
+#: customize/customizer.php:499
+msgid "The `Recent Posts` label for the blog feed."
+msgstr "Ярлык «Последние сообщения» для фида блога."
+
+#: customize/customizer.php:513
+msgid "Choose whether to display date, category, author, tags for posts on the post page."
+msgstr "Выберите, показывать ли дату, категорию, автора, теги для сообщений на странице сообщений."
+
+#: customize/customizer.php:549
+msgid "Show Tags?"
+msgstr "Показывать теги?"
+
+#: customize/customizer.php:565 customize/customizer.php:589
+msgid "Layout"
+msgstr "раскладка"
+
+#: customize/customizer.php:566 customize/customizer.php:590
+msgid "Choose whether to display the sidebar."
+msgstr "Выберите, следует ли отображать боковую панель."
+
+#: customize/customizer.php:576 customize/customizer.php:600
+msgid "Show Featured Image ?"
+msgstr "Показать выбранное изображение?"
+
+#: customize/customizer.php:577
+msgid "Whether to show featured image at the beginning of the post."
+msgstr "Показывать признак в начале сообщения."
+
+#: customize/customizer.php:601
+msgid "Whether to show featured image at the beginning of the page."
+msgstr "Отображать ли отображаемое изображение в начале страницы."
+
+#: customize/customizer.php:613
+msgid "Choose the sidebar size."
+msgstr "Выберите размер боковой панели."
+
+#: customize/customizer.php:614
+msgid "Default is 1/3. For a more compact (1/4) size, choose COMPACT."
+msgstr "Значение по умолчанию - 1/3. Для более компактного (1/4) размера выберите COMPACT."
+
+#: customize/customizer.php:628
+msgid "Custom CSS"
+msgstr "Пользовательские CSS"
+
+#: customize/customizer.php:629
+msgid "Custom CSS code to modify styling."
+msgstr "Пользовательский CSS-код для изменения стиля."
+
+#: customize/customizer.php:642
+msgid "Search Icon in Main Nav?"
+msgstr "Значок поиска в Главном Nav?"
+
+#: customize/customizer.php:643
+msgid "Add the search icon in the main top navigation."
+msgstr "Добавьте значок поиска в основную верхнюю навигацию."
+
+#: customize/customizer.php:651
+msgid "Enable Dropdown Menu Parent Nodes"
+msgstr "Включить родительские узлы меню раскрывающегося меню"
+
+#: customize/customizer.php:652
+msgid "The menu item that is clicked to drop down sub menus is not assigned a URL by default (it is set to #). If you would like to enable links for the parent nodes, you can do so here."
+msgstr "Элементу меню, нажатому для выпадающего подменю, по умолчанию присвоен URL-адрес (он установлен в #). Если вы хотите включить ссылки для родительских узлов, вы можете сделать это здесь."
+
+#: customize/theme-defaults.php:11
+msgid "Copyright &copy; "
+msgstr "Авторское право и копия;"
+
+#: customize/theme-defaults.php:47 functions.php:385
+msgid "Recent Posts"
+msgstr "Последние посты"
+
+#: functions.php:23
+msgid "Custom Colors"
+msgstr "Пользовательские цвета"
+
+#: functions.php:43
+msgid "Main Menu"
+msgstr "Главное меню"
+
+#: functions.php:299
+msgid "Type here"
+msgstr "Писать здесь"
+
+#: functions.php:383 searchform.php:10
+msgid "Search"
+msgstr "Поиск"
+
+#: functions.php:386
+msgid "Archives"
+msgstr "Архив"
+
+#: functions.php:387
+msgid "Categories"
+msgstr "Категории"
+
+#: image.php:58
+msgid "Previous Image"
+msgstr "Предыдущее изображение"
+
+#: image.php:59
+msgid "Next Image"
+msgstr "Следующее изображение"
+
+#: inc/class-tgm-plugin-activation.php:327
+msgid "Install Required Plugins"
+msgstr "Установка необходимых плагинов"
+
+#: inc/class-tgm-plugin-activation.php:328
+msgid "Install Plugins"
+msgstr "Установка плагинов"
+
+#: inc/class-tgm-plugin-activation.php:330
+msgid "Installing Plugin: %s"
+msgstr "Установка плагина:% s"
+
+#: inc/class-tgm-plugin-activation.php:332
+msgid "Updating Plugin: %s"
+msgstr "Обновление плагина:% s"
+
+#: inc/class-tgm-plugin-activation.php:333
+msgid "Something went wrong with the plugin API."
+msgstr "Что-то пошло не так с API-интерфейсом плагина."
+
+#: inc/class-tgm-plugin-activation.php:385
+msgid "Return to Required Plugins Installer"
+msgstr "Вернитесь к установщику обязательных подключаемых модулей"
+
+#: inc/class-tgm-plugin-activation.php:386
+#: inc/class-tgm-plugin-activation.php:827
+#: inc/class-tgm-plugin-activation.php:2533
+#: inc/class-tgm-plugin-activation.php:3580
+msgid "Return to the Dashboard"
+msgstr "Вернуться на панель инструментов"
+
+#: inc/class-tgm-plugin-activation.php:387
+#: inc/class-tgm-plugin-activation.php:3159
+msgid "Plugin activated successfully."
+msgstr "Плагин успешно активирован."
+
+#: inc/class-tgm-plugin-activation.php:388
+msgid "The following plugin was activated successfully:"
+msgstr "Следующий плагин был успешно активирован:"
+
+#: inc/class-tgm-plugin-activation.php:390
+msgid "No action taken. Plugin %1$s was already active."
+msgstr "Никаких действий не принимается. Плагин% 1 $ s уже активирован."
+
+#: inc/class-tgm-plugin-activation.php:392
+msgid "Plugin not activated. A higher version of %s is needed for this theme. Please update the plugin."
+msgstr "Плагин не активирован. Для этой темы требуется более высокая версия% s. Обновите плагин."
+
+#: inc/class-tgm-plugin-activation.php:394
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr "Все плагины установлены и успешно активированы. % 1 $ s"
+
+#: inc/class-tgm-plugin-activation.php:395
+msgid "Dismiss this notice"
+msgstr "Закрыть это уведомление"
+
+#: inc/class-tgm-plugin-activation.php:396
+msgid "There are one or more required or recommended plugins to install, update or activate."
+msgstr "Для установки, обновления или активации есть один или несколько обязательных или рекомендуемых модулей."
+
+#: inc/class-tgm-plugin-activation.php:397
+msgid "Please contact the administrator of this site for help."
+msgstr "Обратитесь за помощью к администратору этого сайта."
+
+#: inc/class-tgm-plugin-activation.php:523
+msgid "Update Required"
+msgstr "Требуется обновление"
+
+#: inc/class-tgm-plugin-activation.php:934
+msgid "The remote plugin package does not contain a folder with the desired slug and renaming did not work."
+msgstr "Пакет удаленных плагинов не содержит папку с желаемым слизнем, и переименование не работает."
+
+#: inc/class-tgm-plugin-activation.php:934
+#: inc/class-tgm-plugin-activation.php:937
+msgid "Please contact the plugin provider and ask them to package their plugin according to the WordPress guidelines."
+msgstr "Обратитесь к поставщику плагинов и попросите их упаковать их плагин в соответствии с рекомендациями WordPress."
+
+#: inc/class-tgm-plugin-activation.php:937
+msgid "The remote plugin package consists of more than one file, but the files are not packaged in a folder."
+msgstr "Пакет удаленных плагинов состоит из нескольких файлов, но файлы не упакованы в папку."
+
+#: inc/class-tgm-plugin-activation.php:1982
+msgid "TGMPA v%s"
+msgstr "TGMPA v% s"
+
+#: inc/class-tgm-plugin-activation.php:2273
+msgid "Required"
+msgstr "необходимые"
+
+#: inc/class-tgm-plugin-activation.php:2276
+msgid "Recommended"
+msgstr "рекомендуемые"
+
+#: inc/class-tgm-plugin-activation.php:2292
+msgid "WordPress Repository"
+msgstr "Репозиторий WordPress"
+
+#: inc/class-tgm-plugin-activation.php:2295
+msgid "External Source"
+msgstr "Внешний источник"
+
+#: inc/class-tgm-plugin-activation.php:2298
+msgid "Pre-Packaged"
+msgstr "Расфасованных"
+
+#: inc/class-tgm-plugin-activation.php:2315
+msgid "Not Installed"
+msgstr "Не установлен"
+
+#: inc/class-tgm-plugin-activation.php:2319
+msgid "Installed But Not Activated"
+msgstr "Установленные но не активированы"
+
+#: inc/class-tgm-plugin-activation.php:2321
+msgid "Active"
+msgstr "активный"
+
+#: inc/class-tgm-plugin-activation.php:2327
+msgid "Required Update not Available"
+msgstr "Требуемое обновление недоступно"
+
+#: inc/class-tgm-plugin-activation.php:2330
+msgid "Requires Update"
+msgstr "Требуется обновление"
+
+#: inc/class-tgm-plugin-activation.php:2333
+msgid "Update recommended"
+msgstr "Рекомендованное обновление"
+
+#: inc/class-tgm-plugin-activation.php:2490
+msgid "Installed version:"
+msgstr "Установленная версия:"
+
+#: inc/class-tgm-plugin-activation.php:2498
+msgid "Minimum required version:"
+msgstr "Минимальная требуемая версия:"
+
+#: inc/class-tgm-plugin-activation.php:2510
+msgid "Available version:"
+msgstr "Доступная версия:"
+
+#: inc/class-tgm-plugin-activation.php:2533
+msgid "No plugins to install, update or activate."
+msgstr "Нет плагинов для установки, обновления или активации."
+
+#: inc/class-tgm-plugin-activation.php:2547
+msgid "Plugin"
+msgstr "Plugin"
+
+#: inc/class-tgm-plugin-activation.php:2548
+msgid "Source"
+msgstr "Источник"
+
+#: inc/class-tgm-plugin-activation.php:2549
+msgid "Type"
+msgstr "Тип"
+
+#: inc/class-tgm-plugin-activation.php:2553
+msgid "Version"
+msgstr "Версия"
+
+#: inc/class-tgm-plugin-activation.php:2554
+msgid "Status"
+msgstr "Статуст"
+
+#: inc/class-tgm-plugin-activation.php:2603
+msgid "Install %2$s"
+msgstr "Установите% 2 $ s"
+
+#: inc/class-tgm-plugin-activation.php:2608
+msgid "Update %2$s"
+msgstr "Обновить% 2 $ s"
+
+#: inc/class-tgm-plugin-activation.php:2614
+msgid "Activate %2$s"
+msgstr "Активировать% 2 $ s"
+
+#: inc/class-tgm-plugin-activation.php:2684
+msgid "Upgrade message from the plugin author:"
+msgstr "Обновить сообщение от автора плагина:"
+
+#: inc/class-tgm-plugin-activation.php:2717
+msgid "Install"
+msgstr "Установить"
+
+#: inc/class-tgm-plugin-activation.php:2723
+msgid "Update"
+msgstr "Обновить"
+
+#: inc/class-tgm-plugin-activation.php:2726
+msgid "Activate"
+msgstr "Активировать"
+
+#: inc/class-tgm-plugin-activation.php:2757
+msgid "No plugins were selected to be installed. No action taken."
+msgstr "Плагины не были выбраны для установки. Никаких действий не принимается."
+
+#: inc/class-tgm-plugin-activation.php:2759
+msgid "No plugins were selected to be updated. No action taken."
+msgstr "Плагины не были выбраны для обновления. Никаких действий не принимается."
+
+#: inc/class-tgm-plugin-activation.php:2800
+msgid "No plugins are available to be installed at this time."
+msgstr "В настоящее время плагины не доступны для установки."
+
+#: inc/class-tgm-plugin-activation.php:2802
+msgid "No plugins are available to be updated at this time."
+msgstr "В настоящее время плагины не доступны для обновления."
+
+#: inc/class-tgm-plugin-activation.php:2908
+msgid "No plugins were selected to be activated. No action taken."
+msgstr "Плагины не были выбраны для активации. Никаких действий не принимается."
+
+#: inc/class-tgm-plugin-activation.php:2934
+msgid "No plugins are available to be activated at this time."
+msgstr "В настоящее время плагины недоступны."
+
+#: inc/class-tgm-plugin-activation.php:3158
+msgid "Plugin activation failed."
+msgstr "Не удалось активировать плагин."
+
+#: inc/class-tgm-plugin-activation.php:3498
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr "Обновление плагина% 1 $ s (% 2 $ d /% 3 $ d)"
+
+#: inc/class-tgm-plugin-activation.php:3501
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr "При установке% 1 $ s произошла ошибка: <strong>% 2 $ s </ strong>."
+
+#: inc/class-tgm-plugin-activation.php:3503
+msgid "The installation of %1$s failed."
+msgstr "Не удалось выполнить установку% 1 $ s."
+
+#: inc/class-tgm-plugin-activation.php:3507
+msgid "The installation and activation process is starting. This process may take a while on some hosts, so please be patient."
+msgstr "Запускается процесс установки и активации. Этот процесс может занять некоторое время на некоторых хостах, поэтому, пожалуйста, будьте терпеливы."
+
+#: inc/class-tgm-plugin-activation.php:3509
+msgid "%1$s installed and activated successfully."
+msgstr "% 1 $ s установлено и успешно активировано."
+
+#: inc/class-tgm-plugin-activation.php:3509
+#: inc/class-tgm-plugin-activation.php:3517
+msgid "Show Details"
+msgstr "Показать детали"
+
+#: inc/class-tgm-plugin-activation.php:3509
+#: inc/class-tgm-plugin-activation.php:3517
+msgid "Hide Details"
+msgstr "Скрыть детали"
+
+#: inc/class-tgm-plugin-activation.php:3510
+msgid "All installations and activations have been completed."
+msgstr "Все установки и активации завершены."
+
+#: inc/class-tgm-plugin-activation.php:3512
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr "Установка и активация плагина% 1 $ s (% 2 $ d /% 3 $ d)"
+
+#: inc/class-tgm-plugin-activation.php:3515
+msgid "The installation process is starting. This process may take a while on some hosts, so please be patient."
+msgstr "Процесс установки начинается. Этот процесс может занять некоторое время на некоторых хостах, поэтому, пожалуйста, будьте терпеливы."
+
+#: inc/class-tgm-plugin-activation.php:3517
+msgid "%1$s installed successfully."
+msgstr "% 1 $ s успешно установлено."
+
+#: inc/class-tgm-plugin-activation.php:3518
+msgid "All installations have been completed."
+msgstr "Все установки завершены."
+
+#: inc/class-tgm-plugin-activation.php:3520
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr "Установка плагина% 1 $ s (% 2 $ d /% 3 $ d)"
+
+#: inc/wp_bootstrap_navwalker.php:214
+msgid "Add a menu"
+msgstr "Добавить меню"
+
+#: parts/entry.php:57
+msgid "by "
+msgstr "от"
+
+#: widgets/widgets.php:15
+msgid "Sidebar - Default"
+msgstr "Боковая панель - по умолчанию"
+
+#: widgets/widgets.php:24
+msgid "Sidebar - Default - Bordered"
+msgstr "Боковая панель - По умолчанию - Пограничный"
+
+#: widgets/widgets.php:35
+msgid "Header - Left"
+msgstr "Заголовок - левый"
+
+#: widgets/widgets.php:37
+msgid "Add widgets here to appear in the top left area."
+msgstr "Добавьте виджеты здесь, чтобы появиться в верхней левой области."
+
+#: widgets/widgets.php:44
+msgid "Header - Right"
+msgstr "Заголовок - правый"
+
+#: widgets/widgets.php:46
+msgid "Add widgets here to appear in the top right area."
+msgstr "Добавьте виджеты здесь, чтобы появиться в верхней правой области."
+
+#: widgets/widgets.php:56
+msgid "Footer Secondary - Col 1"
+msgstr "Нижний колонтитул - пол 1"
+
+#: widgets/widgets.php:64
+msgid "Footer Secondary - Col 2"
+msgstr "Нижний колонтитул - Col 2"
+
+#: widgets/widgets.php:72
+msgid "Footer Secondary - Col 3"
+msgstr "Нижний колонтитул - Col 3"
+
+#: widgets/widgets.php:80
+msgid "Footer Secondary - Col 4"
+msgstr "Нижний колонтитул - Col 4"
+
+#: widgets/widgets.php:88
+msgid "Footer Secondary - Col 5"
+msgstr "Нижний колонтитул - Col 5"
+
+#: widgets/widgets.php:97
+msgid "Footer - Last"
+msgstr "Нижний колонтитул - последний"
+
+#: 404.php:19
+msgid "Page Not Found"
+msgstr "Страница не найдена"
+
+#: category.php:31 parts/feed.php:50
+msgid "Previous Posts"
+msgstr "Предыдущие сообщения"
+
+#: customize/theme-defaults.php:38
+msgid "My Diary"
+msgstr "Мой дневник"

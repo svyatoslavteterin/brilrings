@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-set_time_limit(200);
+set_time_limit(0);
 Route::get('/ring_sessions','RingSessionController@index');
 
 
