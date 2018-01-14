@@ -13,7 +13,7 @@
         <li class="{{ Request::path() == 'constructor/stone' ? 'active' : '' }}"><a href="constructor/stone">Бриллианты</a></li>
         <li class="{{ Request::path() == 'for-her' ? 'active' : '' }}"><a href="for-her">Подарок для нее</a></li>
         <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="about">О нас</a></li>
-        <li class="{{ Request::path() == 'blog' ? 'active' : '' }}"><a href="/blog">О нас</a></li>
+        <li class="{{ Request::path() == 'blog' ? 'active' : '' }}"><a href="/blog">Блог</a></li>
         <li class="{{ Request::path() == 'contacts' ? 'active' : '' }}"><a href="contacts">Контакты</a></li>
       </ul>
     </div>
