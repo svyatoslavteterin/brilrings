@@ -184,6 +184,7 @@ class RingImageController extends Controller
 
           $bok_image=array(
             'original'=>$path.'big/'.$hash.'.jpg',
+            'medium'=>$path.'big/'.$hash.'.jpg',
             'small'=>$path.'small/'.$hash.'.jpg'
           );
 

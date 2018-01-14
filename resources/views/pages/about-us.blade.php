@@ -8,14 +8,40 @@
 
 <div class="row">
   <div class="col-md-12">
-    <p style="text-align:center"><iframe width="560" height="315" src="https://www.youtube.com/embed/nWGofPtSVj4" frameborder="0" allowfullscreen></iframe></p>
-    <p>fermentum accumsan magna. Nunc congue semper lectus rutrum sagittis. Phasellus nibh justo, posuere non tellus ut, posuere luctus velit. Sed semper ut quam id consectetur. Vestibulum maximus aliquam rhoncus. Integer euismod ante ac justo volutpat, non condimentum ex fringilla.</p>
+    <p class="p1"><span class="s1"><b>Brilliant Rings</b> - это ювелирная компания и уникальный конструктор помолвочных колец.
 
-    <p>In dolor nibh, commodo sit amet semper at, elementum in lacus. Pellentesque ac elementum lectus, ut vestibulum mauris. Praesent consequat arcu nec mi eleifend, vitae convallis lorem auctor. Morbi id nibh aliquet, laoreet ante et, semper velit. Vivamus bibendum faucibus magna et pharetra. Duis libero diam, auctor in imperdiet id, suscipit eget mauris. Morbi luctus blandit tellus eu posuere. Ut at lacus nulla. Nullam pretium lacus non quam finibus, eget euismod libero feugiat. In pulvinar magna et tortor fermentum, sed sollicitudin metus suscipit. Pellentesque at magna maximus, semper dui nec, cursus mi. Integer pulvinar consequat vestibulum. Vivamus maximus commodo diam vitae sagittis. In non molestie eros. Vivamus nunc quam, cursus ac egestas at, posuere aliquam turpis.</p>
+<b>Наша цель</b> - создать красивый, удобный и многофункциональный рынок для большого выбора помолвочных колец, ювелирных изделий и возможности самостоятельно собрать своё изделие в зависимости от эстетического предпочтения и бюджета.
 
-    <p>Phasellus auctor tincidunt ex, eu finibus purus euismod ut. Mauris a semper velit. Morbi dictum neque ut mi dictum viverra. Mauris faucibus ligula nisl, ac elementum turpis bibendum sit amet. Donec aliquam metus gravida sollicitudin rutrum. Aliquam faucibus urna a risus suscipit, vel suscipit est egestas. Praesent bibendum nibh in eros gravida porttitor. Pellentesque condimentum dui vitae accumsan lacinia. Curabitur eleifend, velit eget sollicitudin mattis, metus ante varius purus, id tristique magna arcu vitae erat. Morbi id feugiat leo.</p>
-      <p>  <a href="#" class="btn btn-register btn-primary">Записаться в студию</a></p>
-    </div>
+<i>«Мы хорошо понимаем необходимость клиента в хождении по многочисленным магазинам в поисках идеального кольца. А также понимаем необходимость красивой визуализации изделия при выборе в интернете.
+Именно поэтому мы решили создать уникальный конструктор помолвочных колец, где Вы можете самостоятельно подобрать желаемый дизайн кольца.</i></span></p>
+<p class="p1"><span class="s1"><i>
+В конструкторе колец огромная вариативность - Вы можете выбрать любую модель в любом материале и посмотреть как это будет выглядеть на картинке. После того как Вы выбрали подходящую модель кольца необходимо выбрать камень. Этап на котором Вы сами создаете свое кольцо в зависимости от визуальных предпочтений и бюджета - бриллиант или муассанит? Бриллиант какого размера, качества? Всё это Вы можете выбрать и собрать своё кольцо самостоятельно, а наш конструктор генерирует для Вас красивую картинку и стоимость по заданным параметрам.»</i>
+</span></p>
+<p class="p1"><span class="s1">
+  <p style="text-align:center"><iframe width="560" height="315" src="https://www.youtube.com/embed/tyUM1Wn7Sew" frameborder="0" allowfullscreen></iframe></p>
+
+
+В процессе выбора своего идеального кольца Вы всегда можете оставить заявку «Заказать звонок» или «Помощь специалиста» и с Вами свяжется персональный менеджер, который поможет в выборе и проконсультирует по всем интересующим вопросам.
+
+Для Вашего удобства Вы всегда можете приехать в нашу студию на консультацию, посмотреть образцы колец в живую и вместе с менеджером выбрать Ваше идеальное кольцо или ювелирное украшение.
+</p><p>
+<b>Наши ценности</b> - Ваше счастье, радость, эмоции, любовь, забота, воспоминания, надежность, безусловное доверие и благодарность.
+
+<i>«Мы создали этот проект, чтобы процесс выбора помолвочного кольца был намного удобнее. Всё, что сейчас есть на рынке - ассортимент, информация, функциональность, всё сильно трудозатратно и времязатратно для клиента. Более того, мало кто рассказывает о том, что одно и тоже изделие может быть с разным качеством камней, от которого зависит ценность и цена изделия. А возможность легко выбрать подходящий по качеству и цене вариант вообще почти отсутствует. Мы хотели сделать координально новое. Поменять рынок. Наша главная задача - доставлять эстетическое удовольствие при выборе изделия, сделать его максимально удобным и дать возможность сделать своё, идеальное для Вас кольцо или другое изделие. Для нас очень важно обеспечить всеобъемлюще заботу о клиенте на всех этапах выбора изделия. Мы очень хотим быть частью моментов Вашей жизни, когда Вы планируете делать предложение руки и сердца, дарить подарок любимой или просто приобрести ценное украшение для себя и сделать этот момент максимально счастливым для Вас!»</i> </p>
+
+<p>
+Абрамова Дарья<br/>
+Генеральный директор<br/>
+Brilliant Rings<br/>
+
+<p>Наш проект обручальных колец I Love You, Rings!</p>
+<a href="http://iloveyourings.ru"><img src="/images/logo.png" alt="logo"/></p>
+
+
+
+      <p>  <a href="#" class="btn btn-register btn-primary" @click.prevent="$modal.show('guest-order')">Записаться в студию</a></p>
+
+  </div>
 </div>
 
 

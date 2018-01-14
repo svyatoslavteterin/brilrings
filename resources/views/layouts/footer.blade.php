@@ -14,10 +14,9 @@
           </div>
           <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 col-xl-3">
             <ul class="socials">
-              <li class="socials__item fb"><a href="#"><i class="icon-facebook"></i></a></li>
+              <li class="socials__item fb"><a href="https://www.facebook.com/brilliantrings/"><i class="icon-facebook"></i></a></li>
               <li class="socials__item insta"><a href="https://www.instagram.com/brilliantrings/"><i class="icon-instagram"></i></a></li>
-              <li class="socials__item vk"><a href="#"><i class="icon-vk"></i></a></li>
-              <li class="socials__item ok"><a href="#"><i class="icon-odnoklassniki"></i></a></li>
+              <li class="socials__item youtube"><a href="https://www.youtube.com/channel/UCfoy1Nd9CKVPdLphU3Ittjw"><i class="icon-youtube-play"></i></a></li>
             </ul>
 
           </div>

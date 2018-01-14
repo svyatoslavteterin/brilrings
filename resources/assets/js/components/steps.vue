@@ -16,10 +16,10 @@
                     <div class="col-sm-12 col-md-2 left-col">
                         <ringoptions :options="step.left.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" :store="true"></ringoptions>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 center-col" >
+                    <div class="col-xs-12 col-sm-6 col-md-6 center-col" >
                       <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-4 right-col">
+                    <div class="col-xs-12 col-sm-6 col-md-4 right-col">
                           <ringblocks :blocks="step.right.blocks" ref="blocks" :ring-option-values="SRingOptionValues"></ringblocks>
                         <ringoptions :options="step.right.options" :ring-options="SRingOptions" :ring-option-values="SRingOptionValues" :store="true"></ringoptions>
 
@@ -53,10 +53,10 @@
                 </div>
               </div>
               <div v-if="step.template==='result'" class="container" :class="step.template">
-                  <div class="col-xs-6 col-sm-6 col-md-8 center-col">
+                  <div class="col-xs-12 col-sm-6 col-md-8 center-col">
                     <ringblocks :blocks="step.center.blocks" ref="blocks"></ringblocks>
                   </div>
-                  <div class="col-xs-6 col-sm-6 col-md-4 right-col">
+                  <div class="col-xs-12 col-sm-6 col-md-4 right-col">
                         <ringblocks :blocks="step.right.blocks" ref="blocks"></ringblocks>
 
 

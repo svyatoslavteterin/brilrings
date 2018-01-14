@@ -1,26 +1,26 @@
 <template>
 
-  <div class="gifts__item">
-  <div class="col-md-4">
+  <div class="gifts__item col-md-4 col-xs-6">
+  <div class="">
     <a class="for-her__item" @click="selectGift">
         <img class="img-fluid" :src="getImage(0)" alt="for-her"/>
     </a>
   </div>
 
-  <modal :name="modalName" height="auto" adaptive v-cloak width="80%"  >
+  <modal :name="modalName" height="auto" adaptive v-cloak width="80%" scrollable >
     <button @click="$modal.hide(modalName)" class="modal-close">
         <img src="images/close.png" alt="close"/>
     </button>
 
     <div class="modal-body">
       <div class="row">
-        <div class="col-lg-6 col-md-6">
-          <img :src="resultImg" alt="gift" class="img-fluid" />
+        <div class="col-lg-6 col-md-6 text-center">
+          <img :src="resultImg" alt="gift" class="img-fluid gifts__item__img"  />
         </div>
         <div class="col-lg-6 col-md-6">
         <div class="ring-images">
           <ul>
-            <li v-for="(image,index) in data.images" :class="{ active: isActive(index) }"> <a href="#" @click.prevent="updateResultImg(index)"><img :src="getImage(index)" alt="" width="150" height="150"/></a> </li>
+            <li v-for="(image,index) in data.images" :class="{ active: isActive(index) }" > <a href="#" @click.prevent="updateResultImg(index)"><img :src="getImage(index)" alt="" width="150" height="150"/></a> </li>
           </ul>
         </div>
         <div class="ring-info">
@@ -78,10 +78,8 @@
       },
       order:function(){
         let store={};
-        store.material=RingApp.$refs.gift[RingApp.$data.activeGift-1].$refs.giftoptions.$children[0].$data.value;
-        store['gift'+RingApp.$data.activeGift]=RingApp.$refs.gift[RingApp.$data.activeGift-1].$refs.giftoptions.$children[1].$data.value;
 
-        this.store=store;
+
           RingApp.$modal.hide(this.modalName);
           RingApp.$modal.show('gift-order');
       },

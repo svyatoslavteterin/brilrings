@@ -16,8 +16,13 @@
         <div class="form-group">
           <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
        </div>
+       <div class="checkbox">
+        <label>
+          <input type="checkbox" required> Согласен с <a href="/policy">политикой конфиденциальности</a>
+        </label>
+      </div>
        <div class="form-group">
-         <button type="submit" class="form-control" name="submit" @click="$modal.hide('save-to-email')">Отправить</button>
+         <button type="submit" class="form-control" name="submit" >Отправить</button>
       </div>
 
     </form>
@@ -45,7 +50,7 @@
         </label>
       </div>
        <div class="form-group">
-         <button type="submit" class="form-control" name="submit" @click="$modal.hide('call-order')">Отправить</button>
+         <button type="submit" class="form-control" name="submit" >Отправить</button>
       </div>
 
     </form>
@@ -57,7 +62,7 @@
   </button>
   <h3 class="modal-header">Записаться в студию</h3>
   <div class="modal-body">
-    <form name="save" action="/guestorder" method="post" @submit.prevent="guestOrder" id="guest-order-form" > 
+    <form name="save" action="/guestorder" method="post" @submit.prevent="guestOrder" id="guest-order-form" >
         {{csrf_field()}}
       <div class="form-group">
          <input type="text" class="form-control" name="name" value="" placeholder="Имя" required />
@@ -97,9 +102,13 @@
         <div class="form-group">
           <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
        </div>
-
+       <div class="checkbox">
+        <label>
+          <input type="checkbox" required> Согласен с <a href="/policy">политикой конфиденциальности</a>
+        </label>
+      </div>
        <div class="form-group">
-         <button type="submit" class="form-control" name="submit" @click="$modal.hide('ring-order')">Отправить</button>
+         <button type="submit" class="form-control" name="submit" >Отправить</button>
       </div>
 
     </form>
@@ -124,7 +133,11 @@
         <div class="form-group">
           <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
        </div>
-
+       <div class="checkbox">
+        <label>
+          <input type="checkbox" required> Согласен с <a href="/policy">политикой конфиденциальности</a>
+        </label>
+      </div>
        <div class="form-group">
          <button type="submit" class="form-control" name="submit" >Отправить</button>
       </div>
@@ -151,9 +164,13 @@
         <div class="form-group">
           <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
        </div>
-
+       <div class="checkbox">
+        <label>
+          <input type="checkbox" required> Согласен с <a href="/policy">политикой конфиденциальности</a>
+        </label>
+      </div>
        <div class="form-group">
-         <button type="submit" class="form-control" name="submit" @click="$modal.hide('help-order1')">Отправить</button>
+         <button type="submit" class="form-control" name="submit">Отправить</button>
       </div>
       <input type="hidden" name="step" value="1" />
     </form>
@@ -177,9 +194,13 @@
         <div class="form-group">
           <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
        </div>
-
+       <div class="checkbox">
+        <label>
+          <input type="checkbox" required> Согласен с <a href="/policy">политикой конфиденциальности</a>
+        </label>
+      </div>
        <div class="form-group">
-         <button type="submit" class="form-control" name="submit" @click="$modal.hide('help-order2')">Отправить</button>
+         <button type="submit" class="form-control" name="submit" >Отправить</button>
       </div>
       <input type="hidden" name="step" value="2" />
     </form>
@@ -203,9 +224,13 @@
         <div class="form-group">
           <input type="text" class="form-control" name="phone" value="" placeholder="Телефон" required />
        </div>
-
+       <div class="checkbox">
+        <label>
+          <input type="checkbox" required> Согласен с <a href="/policy">политикой конфиденциальности</a>
+        </label>
+      </div>
        <div class="form-group">
-         <button type="submit" class="form-control" name="submit" @click="$modal.hide('help-order3')">Отправить</button>
+         <button type="submit" class="form-control" name="submit">Отправить</button>
       </div>
         <input type="hidden" name="step" value="3" />
     </form>

@@ -4,7 +4,9 @@
           <div class="blocks__item"  v-for="(value,index)  in blocks" :id="value" :class="value">
 
               <div v-if="value==='result-img'">
-                <img v-if="resultImg" :src="resultImg.original" class="img-fluid" :class="'img'+storeParam('activeResultImg')" />
+
+                <img  v-if="resultImg" :src="resultImg.original"   class="img-fluid hidden-xs" :class="'img'+storeParam('activeResultImg')" />
+                <img  v-if="resultImg" :src="resultImg.medium"   class="img-fluid visible-xs" :class="'img'+storeParam('activeResultImg')" />
 
               </div>
 
@@ -124,6 +126,10 @@
 
 
         computed: {
+
+          getSrcSet:function(){
+            return this.resultImg.medium+','+this.resultImg.original;
+          },
           resultImg:function(i){
             return store.state.resultImg[store.state.activeResultImg];
 

@@ -94,7 +94,7 @@
             </div>
 
 
-            <div v-else-if="optionTemplate==='range'" class="options__item col-sm-3 col-xs-3 col-md-12">
+            <div v-else-if="optionTemplate==='range'" class="options__item col-sm-3 col-xs-4 col-md-12">
                   <h3 class="options__item__title">{{ringOption.title}}</h3>
                   <div class="range-slider">
                      <input class="uk-range" type="range"  :id="'range'+optionKey" value="value" step="1" min="1" :max="ringOptionValues[optionKey].length"  v-model="value" @change="update(value)" />
