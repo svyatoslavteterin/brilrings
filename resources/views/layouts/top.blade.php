@@ -6,7 +6,7 @@
                <!-- Set the first background image using inline CSS below. -->
                <div class="fill" style="background-image:url('/images/slider/2.jpg');"></div>
                <div class="carousel-caption">
-                   <h2>Создайте по вашему бюджету <span>идеальное кольцо</span></h2>
+                   <h2>Прямо сейчас создайте своё <span>идеальное кольцо</span></h2>
                    <a href="/constructor/base" class="btn btn-default btn-create-ring">Создать кольцо</a>
                </div>
            </div>
@@ -14,7 +14,7 @@
              <!-- Set the first background image using inline CSS below. -->
              <div class="fill" style="background-image:url('/images/slider/1.jpg');"></div>
              <div class="carousel-caption">
-                 <h2>Создайте по вашему бюджету <span>идеальное кольцо</span></h2>
+                 <h2>Удобный конструктор помолвочных колец</span></h2>
                  <a href="/constructor/base" class="btn btn-default btn-create-ring">Создать кольцо</a>
              </div>
            </div>

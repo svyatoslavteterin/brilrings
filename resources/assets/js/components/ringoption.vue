@@ -3,7 +3,7 @@
 
       <div class="options__item" :class="optionKey" v-if="optionTemplate==='imagebox'">
 
-          <h3 class="options__item__title">{{ringOption.title}}</h3>
+          <h3 class="options__item__title" v-if="ringOption">{{ringOption.title}}</h3>
         <ul>
 
 
@@ -24,7 +24,7 @@
 
         </div>
           <div class="options__item " :class="optionKey" v-else-if="optionTemplate==='imageslider'">
-          <h3 class="options__item__title">{{ringOption.title}}</h3>
+          <h3 class="options__item__title" v-if="ringOption">{{ringOption.title}}</h3>
 
             <div class="jcarousel-wrapper">
               <a href="#" class="jcarousel-prev" @click.prevent="prevImg"></a>

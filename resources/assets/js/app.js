@@ -188,7 +188,7 @@ window.store = new Vuex.Store({
 
 
 
-          context.state.enabledShapes=Object.values(response.data.shapes);
+          context.state.enabledShapes=response.data.shapes;
 
           if (response.data.shapes.indexOf(context.state.session.shape)==-1) {
               store.commit('setOption',{'value':1,'optionKey':'shape'});
