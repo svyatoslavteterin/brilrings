@@ -35,7 +35,7 @@
 Brilliant Rings<br/>
 
 <p>Наш проект обручальных колец I Love You, Rings!</p>
-<a href="http://iloveyourings.ru"><img src="/images/logo.png" alt="logo"/></p>
+<a href="http://iloveyourings.ru"><img src="/images/ilyr-logo.png" alt="logo"/></p>
 
 
 

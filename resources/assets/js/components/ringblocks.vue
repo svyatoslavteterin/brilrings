@@ -5,9 +5,6 @@
 
               <div v-if="value==='result-img'">
 
-                <img  v-if="resultImg" :src="resultImg.original"   class="img-fluid hidden-xs" :class="'img'+storeParam('activeResultImg')" />
-                <img  v-if="resultImg" :src="resultImg.medium"   class="img-fluid visible-xs" :class="'img'+storeParam('activeResultImg')" />
-
               </div>
 
               <div v-if="value==='info'" class="ring-info">
