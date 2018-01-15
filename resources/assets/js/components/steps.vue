@@ -106,17 +106,18 @@
 
         var optionvalue=store.state.session[optionKey];
 
-        var ringOptionValues=RingApp.$data.ringOptionValues;
+
+        var ringOptionValues=this.SRingOptionValues;
 
 
         var returnValue='';
-        for (var i=0;i<ringOptionValues[optionKey].length;i++){
-          if (ringOptionValues[optionKey][i].value==optionvalue){
-            returnValue=ringOptionValues[optionKey][i][column];
-            break;
-          }
-        }
-        return returnValue;
+          _.forEach(ringOptionValues[optionKey],function(ringOptionValue,key){
+            if (ringOptionValue.value==optionvalue){
+              returnValue=ringOptionValues[optionKey][key][column];
+            }
+          });
+          return returnValue;
+
       },
         update:function(){
 
