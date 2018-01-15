@@ -5,8 +5,8 @@
 
               <div v-if="value==='result-img'">
 
-                <img  v-if="resultImg" :src="resultImg.original"   class="img-fluid hidden-xs" :class="'img'+storeParam('activeResultImg')" />
-                <img  v-if="resultImg" :src="resultImg.medium"   class="img-fluid visible-xs" :class="'img'+storeParam('activeResultImg')" />
+                <img  v-if="resultImg" :src="resultImg"   class="img-fluid hidden-xs" :class="'img'+storeParam('activeResultImg')" />
+                <img  v-if="resultImg" :src="resultImg"   class="img-fluid visible-xs" :class="'img'+storeParam('activeResultImg')" />
 
               </div>
 
@@ -131,7 +131,7 @@
             return this.resultImg.medium+','+this.resultImg.original;
           },
           resultImg:function(i){
-            return store.state.resultImg[store.state.activeResultImg];
+            return store.state.resultImg[store.state.activeResultImg].original;
 
           },
 
