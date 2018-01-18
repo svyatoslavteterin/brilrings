@@ -23,7 +23,7 @@ class RingSessionController extends Controller
     public function create(){
 
       $data=request()->all();
-      
+
       $total_price=$data['store']['totalPrice'];
 
       $contents=json_encode($data['store']['session']);
@@ -46,7 +46,7 @@ class RingSessionController extends Controller
 
       $order=Order::create($order_params);
 
-      $manager_email='svyatoslavteterin@gmail.com';
+      $manager_email='info@brilliantrings.ru';
 
       $store=$data['store'];
       $formdata=$data['data'];
