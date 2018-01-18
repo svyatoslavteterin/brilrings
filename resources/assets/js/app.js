@@ -275,12 +275,15 @@ window.RingApp = new Vue({
                   this.$http.post('/call-order',{store:store.state,data:formData},options).then(function (response) {
 
                       // Success
-                        RingApp.$modal.show('thanks');
+                      RingApp.$modal.hide('call-order');
+                      RingApp.$modal.show('thanks');
+
                       console.log(response.data)
                   },function (response) {
                       // Error
                       console.log(response.data)
                   });
+
       },
       helpOrder:function(step){
         var formData = $("#help-order"+step+"-form").serializeArray();
@@ -290,6 +293,8 @@ window.RingApp = new Vue({
                   this.$http.post('/help-order',{store:store.state,data:formData},options).then(function (response) {
 
                       // Success
+
+                        RingApp.$modal.hide('help-order'+step);
                         RingApp.$modal.show('thanks');
                       console.log(response.data)
                   },function (response) {
@@ -322,6 +327,7 @@ window.RingApp = new Vue({
                   this.$http.post('/ring_sessions',{store:store.state,data:formData},options).then(function (response) {
 
                       // Success
+                        RingApp.$modal.hide('ring-order');
                         RingApp.$modal.show('thanks');
                       console.log(response.data)
                   },function (response) {
@@ -339,6 +345,7 @@ window.RingApp = new Vue({
         this.$http.post('/savetoemail',{store:store.state,data:formData},options).then(function (response) {
 
             // Success
+            RingApp.$modal.hide('save-to-email');
             RingApp.$modal.show('thanks');
             console.log(response.data)
         },function (response) {

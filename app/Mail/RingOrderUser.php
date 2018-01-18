@@ -50,7 +50,7 @@ class RingOrderUser extends Mailable
 
         $result_img=RingImageController::getResultImg($session['base'],$session['material'],$session['shape'],$session['weight'],'array');
 
-       $this->result_img='http://brilliantrings.ru/'.$result_img->image[0];
+        $this->result_img='http://brilliantrings.ru/'.$result_img->image[0]['medium'];
        $this->total_price=$data['store']['totalPrice'];
         $this->ringOptionValues=$output;
 
